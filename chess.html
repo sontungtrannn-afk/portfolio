@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Play Son Tung — Chess</title>
+<meta name="description" content="Play a game of chess against Son Tung's bot." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  /* ============ TOKENS (shared with index.html) ============ */
+  :root{
+    --bg:#F1EEE7; --tile:#FCFBF8; --ink:#1B1A17; --ink-2:#57544E; --muted:#908C83;
+    --line:#E7E2D8; --line-2:#D8D1C4; --accent:#C2603C; --accent-ink:#A24A29;
+    --t-lilac-1:#EEEAF4; --c-lilac:#6A5494;
+    --sans:'Inter',system-ui,-apple-system,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    /* board palette (warm paper) */
+    --sq-light:#EDE4D2; --sq-dark:#B9A47E;
+    --r:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:#E8C9B9}
+
+  .label{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+  .badge{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:6px;display:inline-flex;align-items:center;white-space:nowrap}
+  .b-lilac{background:var(--t-lilac-1);color:var(--c-lilac)}
+
+  /* ============ TOP BAR ============ */
+  .topbar{position:sticky;top:0;z-index:50;backdrop-filter:saturate(140%) blur(10px);background:color-mix(in srgb,var(--bg) 80%,transparent);border-bottom:1px solid var(--line)}
+  .topbar__in{max-width:1100px;margin:0 auto;padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between}
+  .back{font-family:var(--mono);font-weight:600;font-size:13px;display:flex;align-items:center;gap:7px;transition:color .18s}
+  .back:hover{color:var(--accent)}
+  .back .star{color:var(--accent)}
+  .topbar__meta{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+
+  /* ============ PAGE LAYOUT ============ */
+  .page{max-width:1100px;margin:0 auto;padding:32px 24px 64px}
+  .pagehead{margin-bottom:24px}
+  .pagehead h1{font-size:26px;font-weight:600;letter-spacing:-.02em}
+  .pagehead p{color:var(--ink-2);font-size:14px;margin-top:4px}
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:28px;align-items:start}
+  @media(max-width:840px){.layout{grid-template-columns:1fr}}
+
+  /* ============ BOARD ============ */
+  .board-area{display:flex;flex-direction:column;align-items:center;gap:14px;position:relative}
+  .promo{position:absolute;z-index:10;background:rgba(40,30,20,.34);border-radius:10px;overflow:hidden}
+  .promo-pc{position:absolute;width:12.5%;height:12.5%;padding:0;border:0;cursor:pointer;background:var(--tile);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px -6px rgba(0,0,0,.5);transition:background .12s}
+  .promo-pc:hover{background:var(--accent)}
+  .promo-pc img{width:84%;height:84%;pointer-events:none}
+  .board{container-type:inline-size;width:100%;max-width:560px;aspect-ratio:1;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--line-2);box-shadow:0 24px 54px -32px rgba(40,30,20,.55);user-select:none}
+  .sq{position:relative;display:flex;align-items:center;justify-content:center;cursor:default}
+  .sq.light{background:var(--sq-light)}
+  .sq.dark{background:var(--sq-dark)}
+  .piece{width:92%;height:92%;object-fit:contain;position:relative;z-index:2;pointer-events:none;-webkit-user-drag:none;filter:drop-shadow(0 2px 2px rgba(40,30,20,.20))}
+  /* coordinates */
+  .coord{position:absolute;font-family:var(--mono);font-size:9px;font-weight:600;opacity:.55;pointer-events:none;z-index:1}
+  .coord.file{right:4px;bottom:2px}
+  .coord.rank{left:3px;top:2px}
+  .sq.light .coord{color:#8A7855}
+  .sq.dark .coord{color:#EDE4D2}
+  /* interaction states */
+  .sq.sel{box-shadow:inset 0 0 0 3px var(--accent)}
+  .sq.lastmove::after{content:"";position:absolute;inset:0;background:rgba(194,96,60,.18);z-index:0}
+  .sq.target::before{content:"";position:absolute;width:30%;height:30%;border-radius:50%;background:rgba(40,30,20,.26);z-index:1}
+  .sq.target.cap::before{width:84%;height:84%;background:transparent;border:3px solid rgba(40,30,20,.30)}
+  .sq.check::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at center,rgba(206,52,52,.55),transparent 68%);z-index:0}
+  .sq.playable{cursor:pointer}
+
+  /* ============ CONFIG COLUMN ============ */
+  .config{display:flex;flex-direction:column;gap:18px}
+  .config[data-phase="setup"] .play-only{display:none}
+  .config[data-phase="playing"] .setup-only{display:none}
+  .panel{background:var(--tile);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .panel .label{display:block;margin-bottom:10px}
+  .seg{display:flex;border:1px solid var(--line-2);border-radius:9px;overflow:hidden}
+  .seg button{flex:1;padding:9px;background:var(--tile);font-family:var(--mono);font-size:12px;cursor:pointer;border:0;color:var(--ink-2);transition:background .15s,color .15s}
+  .seg button.on{background:var(--ink);color:var(--bg)}
+  select{width:100%;padding:9px 10px;border:1px solid var(--line-2);border-radius:9px;background:var(--tile);font-family:var(--mono);font-size:12px;color:var(--ink);cursor:pointer}
+  .hint{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:8px;line-height:1.5}
+  .btnrow{display:flex;flex-direction:column;gap:9px}
+  .btn{width:100%;padding:11px;border:1px solid var(--line-2);border-radius:9px;background:var(--tile);font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:border-color .15s,color .15s,background .15s}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .btn.primary:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn:disabled,.btn:disabled:hover{opacity:.4;cursor:default;border-color:var(--line);color:var(--muted);background:var(--tile)}
+  .status{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--ink);min-height:20px}
+  .status.over{color:var(--accent-ink);font-weight:600}
+  .brainstate{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:8px;display:flex;align-items:center;gap:6px}
+  .brainstate .dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex:none}
+  .brainstate .dot.book{background:var(--c-lilac)}
+  .brainstate .dot.maia{background:var(--accent)}
+  .brainstate .dot.eng{background:var(--muted)}
+  .moves{font-family:var(--mono);font-size:12px;line-height:1.7;max-height:260px;overflow:auto;color:var(--ink-2)}
+  .moves .mv{display:grid;grid-template-columns:30px 1fr 1fr;gap:4px}
+  .moves .mv .n{color:var(--muted)}
+  .moves:empty::after{content:"No moves yet";color:var(--muted)}
+  .captured{display:flex;align-items:center;gap:2px;min-height:24px;flex-wrap:wrap}
+  .captured+.captured{margin-top:8px}
+  .capm{font-family:var(--mono);font-size:10px;color:var(--muted);width:36px;text-transform:uppercase;flex:none}
+  .capi{width:18px;height:18px;object-fit:contain}
+  .caplead{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent-ink);margin-left:6px}
+  .capnone{font-family:var(--mono);font-size:10px;color:var(--line-2)}
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__in">
+      <a class="back" href="index.html"><span>←</span> Son Tung <span class="star">✦</span></a>
+      <span class="topbar__meta">my book + my own Maia</span>
+    </div>
+  </header>
+
+  <div class="page">
+    <div class="pagehead">
+      <h1>Play me <span class="badge b-lilac" style="vertical-align:middle">2010 rapid chess.com</span></h1>
+      <p>This bot plays like me: my real openings, then a Maia neural net I fine-tuned on my own rapid games for everything after. About as close to playing me as it gets.</p>
+      <a href="chess-style.html" style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--accent-ink);font-weight:500">📊 See how I play — my style fingerprint →</a>
+    </div>
+
+    <div class="layout">
+      <!-- MAIN: board -->
+      <div class="board-area">
+        <div id="board" class="board" aria-label="Chess board"></div>
+        <div id="promo" class="promo" hidden></div>
+      </div>
+
+      <!-- RIGHT: game configuration -->
+      <aside class="config" id="config" data-phase="setup">
+        <!-- SETUP -->
+        <div class="panel setup-only">
+          <span class="label">You play</span>
+          <div class="seg" id="colorSeg">
+            <button data-color="w" class="on">White</button>
+            <button data-color="b">Black</button>
+          </div>
+        </div>
+        <button class="btn primary setup-only" id="start">Start</button>
+
+        <!-- PLAYING -->
+        <div class="panel play-only">
+          <span class="label">Moves</span>
+          <div class="moves" id="moves"></div>
+        </div>
+        <div class="panel play-only">
+          <span class="label">Status</span>
+          <div class="status" id="status">White to move</div>
+          <div class="brainstate" id="brainstate"></div>
+        </div>
+        <div class="panel play-only">
+          <span class="label">Material</span>
+          <div class="captured" id="cap-you"></div>
+          <div class="captured" id="cap-bot"></div>
+        </div>
+        <div class="panel play-only">
+          <div class="btnrow">
+            <button class="btn" id="undo">Undo move</button>
+            <button class="btn" id="resign">Resign</button>
+            <button class="btn" id="flip">Flip board</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script type="module">
+    import { Chess } from './chess/chess.js';
+
+    // Son Tung's real opening book — his moves, keyed by board position, built from ~4,000
+    // of his Chess.com games. The bot plays a weighted-random pick of HIS move when in book.
+    const BOOK = await fetch('./chess/book.json').then(r => r.json()).catch(() => ({}));
+    const BOOK_N = Object.keys(BOOK).length;
+    let maiaState = 'loading';       // 'loading' | 'ready' | 'failed' — his trained brain (async, optional)
+    let waitingForMaia = false;      // true while a bot move is blocked on the model finishing its load
+    let pickMove = null;             // assigned once maia.js + onnxruntime-web finish loading
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+    // Off-book, the bot wants Maia (his trained brain), not the basic practice engine. On a cold
+    // load the model is still downloading, so WAIT for it instead of playing a weak move. Resolves
+    // the moment Maia is ready OR has definitively failed (or we hit the timeout).
+    const waitForMaia = (timeoutMs = 20000) => new Promise(resolve => {
+      if(maiaState !== 'loading') return resolve();
+      const t0 = Date.now();
+      const iv = setInterval(() => {
+        if(maiaState !== 'loading' || Date.now() - t0 > timeoutMs){ clearInterval(iv); resolve(); }
+      }, 120);
+    });
+
+    // filled glyphs for both colours (recoloured via CSS); ︎ forces text (not emoji) rendering
+    const GLYPH = { k:'♚︎', q:'♛︎', r:'♜︎', b:'♝︎', n:'♞︎', p:'♟︎' };
+    const FILES = ['a','b','c','d','e','f','g','h'];
+    const VAL = { p:1, n:3, b:3, r:5, q:9, k:0 };
+
+    const game = new Chess();
+    let humanColor = 'w';     // 'w' | 'b'
+    let orientation = 'w';    // board perspective
+    let selected = null;      // e.g. 'e2'
+    let legalTargets = [];    // verbose move objects from `selected`
+    let lastMove = null;      // { from, to }
+    let botThinking = false;
+    let gameOver = false;
+    let lastBotSource = null;   // 'book' | 'maia' | 'engine'
+    let phase = 'setup';        // 'setup' | 'playing'
+    let pendingAnim = null;     // { from, to } — slide the just-moved piece into place
+
+    const boardEl  = document.getElementById('board');
+    const statusEl = document.getElementById('status');
+    const movesEl  = document.getElementById('moves');
+    const promoEl  = document.getElementById('promo');
+    let pendingPromo = null;    // { from, to } awaiting the promotion-piece choice
+
+    // ─────────────────────────────────────────────────────────────
+    // The bot's "brain". STAGE 0 = placeholder. The whole point of this
+    // seam is that Stage 0b can replace the body with a Maia call
+    // (onnxruntime-web → policy → mask to legal moves → pick) and nothing
+    // else on the page needs to change.
+    // ─────────────────────────────────────────────────────────────
+    function bookMove(){
+      const key = game.fen().split(' ').slice(0,4).join(' ');   // position, ignoring move clocks
+      const entry = BOOK[key];
+      if(!entry) return null;
+      const entries = Object.entries(entry);                    // [ [uci, count], … ]
+      const total = entries.reduce((s,[,c]) => s + c, 0);
+      let r = Math.random() * total, pick = entries[0][0];       // weighted by how often he played it
+      for(const [uci,c] of entries){ if((r -= c) < 0){ pick = uci; break; } }
+      const mv = { from: pick.slice(0,2), to: pick.slice(2,4) };
+      if(pick.length > 4) mv.promotion = pick[4];
+      return mv;
+    }
+
+    function chooseBotMove(){
+      const moves = game.moves({ verbose:true });
+      if(moves.length === 0) return null;
+      const mate = moves.find(m => m.san.includes('#'));
+      if(mate) return mate;                              // take a forced mate
+      const caps = moves.filter(m => m.captured)
+                        .sort((a,b) => VAL[b.captured] - VAL[a.captured]);
+      if(caps.length && Math.random() < 0.8) return caps[0];   // grab material
+      return moves[Math.floor(Math.random() * moves.length)];  // else wander
+    }
+
+    function squareName(f, r){ return FILES[f] + (8 - r); } // f,r are board() indices
+
+    function findKing(color){
+      const b = game.board();
+      for(let r=0;r<8;r++) for(let f=0;f<8;f++){
+        const c = b[r][f];
+        if(c && c.type==='k' && c.color===color) return squareName(f, r);
+      }
+      return null;
+    }
+
+    function render(){
+      if(pendingPromo) hidePromo();
+      boardEl.innerHTML = '';
+      const b = game.board();
+      const rankOrder = orientation==='w' ? [0,1,2,3,4,5,6,7] : [7,6,5,4,3,2,1,0];
+      const fileOrder = orientation==='w' ? [0,1,2,3,4,5,6,7] : [7,6,5,4,3,2,1,0];
+      const checkSq = game.isCheck() ? findKing(game.turn()) : null;
+      const yourTurn = !gameOver && !botThinking && game.turn()===humanColor;
+
+      rankOrder.forEach((r, ri) => fileOrder.forEach((f, fi) => {
+        const sq   = squareName(f, r);
+        const cell = b[r][f];
+        const div  = document.createElement('div');
+        div.className = 'sq ' + ((f + r) % 2 === 0 ? 'light' : 'dark');
+        div.dataset.square = sq;
+
+        if(selected === sq) div.classList.add('sel');
+        if(lastMove && (lastMove.from===sq || lastMove.to===sq)) div.classList.add('lastmove');
+        if(checkSq === sq) div.classList.add('check');
+        const tgt = legalTargets.find(m => m.to === sq);
+        if(tgt){ div.classList.add('target'); if(tgt.captured || tgt.flags.includes('e')) div.classList.add('cap'); }
+        if(yourTurn && cell && cell.color===humanColor) div.classList.add('playable');
+
+        if(cell){
+          const p = document.createElement('img');
+          p.className = 'piece';
+          p.src = `chess/pieces/${cell.color}${cell.type.toUpperCase()}.svg`;
+          p.draggable = false; p.alt = cell.color + cell.type;
+          div.appendChild(p);
+        }
+        // edge coordinates
+        if(fi === 0){ const c=document.createElement('span'); c.className='coord rank'; c.textContent=(8-r); div.appendChild(c); }
+        if(ri === 7){ const c=document.createElement('span'); c.className='coord file'; c.textContent=FILES[f]; div.appendChild(c); }
+
+        boardEl.appendChild(div);
+      }));
+
+      if(pendingAnim){                                   // slide the just-moved piece from its origin
+        const toSq   = boardEl.querySelector(`[data-square="${pendingAnim.to}"]`);
+        const fromSq = boardEl.querySelector(`[data-square="${pendingAnim.from}"]`);
+        const pc = toSq && toSq.querySelector('.piece');
+        if(pc && fromSq && toSq){
+          const a = fromSq.getBoundingClientRect(), z = toSq.getBoundingClientRect();
+          pc.style.transition = 'none';
+          pc.style.transform  = `translate(${a.left - z.left}px, ${a.top - z.top}px)`;
+          pc.getBoundingClientRect();                     // force reflow so the start position paints
+          pc.style.transition = 'transform .2s ease';
+          pc.style.transform  = 'translate(0, 0)';
+        }
+        pendingAnim = null;
+      }
+      refreshUndo();
+      updateCaptured();
+    }
+
+    function selectSquare(sq){
+      selected = sq;
+      legalTargets = game.moves({ square: sq, verbose:true });
+      render();
+    }
+    function clearSelection(){ selected=null; legalTargets=[]; }
+
+    function displayedPos(sqName){          // square name → on-screen {col,row} for the current orientation
+      const f = FILES.indexOf(sqName[0]);
+      const r = 8 - parseInt(sqName[1], 10);
+      const ord = orientation==='w' ? [0,1,2,3,4,5,6,7] : [7,6,5,4,3,2,1,0];
+      return { col: ord.indexOf(f), row: ord.indexOf(r) };
+    }
+    function showPromo(from, to, color){    // overlay the 4 promotion choices on the board
+      pendingPromo = { from, to };
+      promoEl.style.left = boardEl.offsetLeft + 'px';
+      promoEl.style.top = boardEl.offsetTop + 'px';
+      promoEl.style.width = boardEl.offsetWidth + 'px';
+      promoEl.style.height = boardEl.offsetHeight + 'px';
+      const { col, row } = displayedPos(to);
+      const dir = row < 4 ? 1 : -1;         // strip drops toward the board centre
+      promoEl.innerHTML = ['q','r','b','n'].map((pc,i) =>
+        `<button class="promo-pc" data-pc="${pc}" style="left:${col*12.5}%;top:${(row+dir*i)*12.5}%"><img src="chess/pieces/${color}${pc.toUpperCase()}.svg" alt="${pc}"></button>`
+      ).join('');
+      promoEl.hidden = false;
+    }
+    function hidePromo(){ promoEl.hidden = true; promoEl.innerHTML = ''; pendingPromo = null; }
+
+    function onSquareClick(sq){
+      if(pendingPromo || phase !== 'playing' || gameOver || botThinking || game.turn()!==humanColor) return;
+      const piece = game.get(sq);
+      if(selected){
+        const candidates = legalTargets.filter(m => m.to === sq);
+        if(candidates.length){
+          if(candidates[0].promotion){                 // pawn reaching the last rank → choose a piece
+            showPromo(selected, sq, humanColor);
+            return;
+          }
+          applyMove({ from:selected, to:sq });
+          clearSelection();
+          afterHumanMove();
+          return;
+        }
+        if(piece && piece.color===humanColor){ selectSquare(sq); return; }
+        clearSelection(); render();
+      } else if(piece && piece.color===humanColor){
+        selectSquare(sq);
+      }
+    }
+
+    function applyMove(moveObj){
+      const m = game.move(moveObj);
+      lastMove = { from:m.from, to:m.to };
+      pendingAnim = { from:m.from, to:m.to };
+      updateMoves();
+    }
+
+    function afterHumanMove(){
+      render();
+      if(checkGameOver()) return;
+      maybeBotMove();
+    }
+
+    async function maybeBotMove(){
+      if(gameOver || game.turn()===humanColor) return;
+      botThinking = true;
+      updateStatus(); updateBrainState(); refreshUndo();
+      await sleep(160);                                          // let the UI paint "thinking…"
+      let played = null, source = 'engine';
+
+      const bm = bookMove();                                    // layer 1: his repertoire
+      if(bm){ try{ played = game.move(bm); source = 'book'; }catch{ played = null; } }
+
+      // Off-book this should be Maia, not the practice engine. If the model is still loading
+      // (cold device / slow network), WAIT for it — the weak fallback is only for when Maia
+      // genuinely can't load. The opening book has bought most of the download time already.
+      if(!played && maiaState === 'loading'){
+        waitingForMaia = true; updateBrainState();
+        await waitForMaia();
+        waitingForMaia = false;
+      }
+
+      if(!played && maiaState === 'ready' && pickMove){         // layer 2: his Maia (human-like)
+        try{
+          const fenHistory = game.history({ verbose:true }).map(m => m.before).concat([game.fen()]);
+          const legal = game.moves({ verbose:true }).map(m => m.from + m.to + (m.promotion || ''));
+          const { move:u } = await pickMove(fenHistory, legal);
+          played = game.move({ from:u.slice(0,2), to:u.slice(2,4), promotion:u[4] });
+          source = 'maia';
+        }catch(e){ console.warn('Maia move failed, falling back:', e); played = null; }
+      }
+
+      if(!played){ played = game.move(chooseBotMove()); source = 'engine'; }   // layer 3: last resort
+
+      lastMove = { from:played.from, to:played.to };
+      pendingAnim = { from:played.from, to:played.to };
+      lastBotSource = source;
+      botThinking = false;
+      updateMoves(); render();
+      if(!checkGameOver()) updateStatus();
+      updateBrainState();
+    }
+
+    function checkGameOver(){
+      if(!game.isGameOver()) return false;
+      gameOver = true;
+      let msg = 'Game over';
+      if(game.isCheckmate())            msg = (game.turn()==='w'?'Black':'White') + ' wins · checkmate';
+      else if(game.isStalemate())       msg = 'Draw · stalemate';
+      else if(game.isThreefoldRepetition()) msg = 'Draw · threefold repetition';
+      else if(game.isInsufficientMaterial()) msg = 'Draw · insufficient material';
+      else if(game.isDraw())            msg = 'Draw · 50-move rule';
+      setStatus(msg, true);
+      refreshUndo();
+      return true;
+    }
+
+    function setStatus(text, over=false){
+      statusEl.textContent = text;
+      statusEl.classList.toggle('over', over);
+    }
+    function updateStatus(){
+      if(gameOver) return;
+      const turn = game.turn()==='w' ? 'White' : 'Black';
+      const chk = game.isCheck() ? ' · check' : '';
+      if(botThinking) setStatus('Bot thinking…' + chk);
+      else if(game.turn()===humanColor) setStatus('Your move · ' + turn + chk);
+      else setStatus(turn + ' to move' + chk);
+    }
+    function updateMoves(){
+      const h = game.history();
+      let rows = '';
+      for(let i=0;i<h.length;i+=2){
+        rows += `<div class="mv"><span class="n">${i/2+1}.</span><span>${h[i]||''}</span><span>${h[i+1]||''}</span></div>`;
+      }
+      movesEl.innerHTML = rows;
+      movesEl.scrollTop = movesEl.scrollHeight;
+    }
+
+    function updateCaptured(){              // captured pieces + material lead, from your perspective
+      const START = { p:8, n:2, b:2, r:2, q:1 }, VALS = { p:1, n:3, b:3, r:5, q:9 };
+      const cur = { w:{p:0,n:0,b:0,r:0,q:0}, b:{p:0,n:0,b:0,r:0,q:0} }, mat = { w:0, b:0 };
+      for(const row of game.board()) for(const cell of row){
+        if(!cell || cell.type==='k') continue;
+        cur[cell.color][cell.type]++; mat[cell.color] += VALS[cell.type];
+      }
+      const lost = c => { const o={}; for(const t of ['q','r','b','n','p']){ const n=START[t]-cur[c][t]; if(n>0) o[t]=n; } return o; };
+      const capturedBy = { w: lost('b'), b: lost('w') };    // pieces each colour has removed
+      const opp = humanColor==='w' ? 'b' : 'w';
+      const icons = (caps, color) => {
+        let h=''; for(const t of ['q','r','b','n','p']) for(let i=0;i<(caps[t]||0);i++) h += `<img class="capi" src="chess/pieces/${color}${t.toUpperCase()}.svg" alt="">`;
+        return h || '<span class="capnone">—</span>';
+      };
+      const lead = mat[humanColor] - mat[opp];              // + = you're ahead
+      const youEl = document.getElementById('cap-you'), botEl = document.getElementById('cap-bot');
+      if(youEl) youEl.innerHTML = `<span class="capm">You</span>${icons(capturedBy[humanColor], opp)}${lead>0?`<span class="caplead">+${lead}</span>`:''}`;
+      if(botEl) botEl.innerHTML = `<span class="capm">Bot</span>${icons(capturedBy[opp], humanColor)}${lead<0?`<span class="caplead">+${-lead}</span>`:''}`;
+    }
+
+    function updateBrainState(){
+      const el = document.getElementById('brainstate');
+      if(!el) return;
+      if(waitingForMaia){ el.innerHTML = '<span class="dot maia"></span> loading the real bot…'; return; }
+      if(lastBotSource === 'book')        el.innerHTML = '<span class="dot book"></span> playing my repertoire';
+      else if(lastBotSource === 'maia')   el.innerHTML = '<span class="dot maia"></span> my Maia · trained on my games';
+      else if(lastBotSource === 'engine') el.innerHTML = maiaState === 'failed'
+        ? '<span class="dot eng"></span> couldn’t load my Maia · basic fallback'
+        : '<span class="dot eng"></span> off-book · practice engine';
+      else el.innerHTML = maiaState === 'ready'
+        ? `<span class="dot maia"></span> ${BOOK_N.toLocaleString()} positions + my Maia ready`
+        : maiaState === 'failed'
+          ? `<span class="dot eng"></span> couldn’t load my Maia (${BOOK_N.toLocaleString()} book positions ready)`
+          : `loading my Maia… (${BOOK_N.toLocaleString()} book positions ready)`;
+    }
+
+    function newGame(color){
+      humanColor = color;
+      orientation = color;
+      game.reset();
+      clearSelection();
+      lastMove = null; pendingAnim = null; gameOver = false; botThinking = false; lastBotSource = null;
+      render(); updateMoves(); updateStatus(); updateBrainState();
+      if(humanColor==='b') maybeBotMove(); // bot is White → it opens
+    }
+
+    function applyPhase(){ document.getElementById('config').dataset.phase = phase; }
+
+    function toSetup(){                  // back to the start screen (Resign / New game)
+      phase = 'setup';
+      game.reset(); clearSelection();
+      lastMove = null; pendingAnim = null; gameOver = false; botThinking = false; lastBotSource = null;
+      orientation = humanColor;
+      applyPhase(); render(); updateMoves(); updateStatus();
+    }
+
+    function refreshUndo(){
+      const undoBtn = document.getElementById('undo');
+      if(undoBtn) undoBtn.disabled = botThinking || !game.history({ verbose:true }).some(m => m.color === humanColor);
+      const resignBtn = document.getElementById('resign');
+      if(resignBtn) resignBtn.textContent = gameOver ? 'New game' : 'Resign';
+    }
+
+    function undoMove(){               // take back your last move AND the bot's reply
+      if(botThinking) return;
+      const hist = game.history({ verbose:true });
+      let idx = -1;
+      for(let i=hist.length-1;i>=0;i--){ if(hist[i].color===humanColor){ idx=i; break; } }
+      if(idx < 0) return;             // nothing of yours to take back yet
+      for(let i=hist.length-1;i>=idx;i--) game.undo();
+      gameOver = false; lastBotSource = null; clearSelection();
+      const h = game.history({ verbose:true }); const last = h[h.length-1];
+      lastMove = last ? { from:last.from, to:last.to } : null;
+      render(); updateMoves(); updateStatus(); updateBrainState();
+    }
+
+    // ── events ──
+    boardEl.addEventListener('click', e => {
+      const cell = e.target.closest('.sq');
+      if(cell) onSquareClick(cell.dataset.square);
+    });
+    promoEl.addEventListener('click', e => {
+      const btn = e.target.closest('.promo-pc');
+      if(btn && pendingPromo){
+        const { from, to } = pendingPromo; const pc = btn.dataset.pc;
+        hidePromo();
+        applyMove({ from, to, promotion: pc });
+        clearSelection();
+        afterHumanMove();
+      } else {                              // clicked the dim backdrop → cancel the move
+        hidePromo(); clearSelection(); render();
+      }
+    });
+    document.getElementById('colorSeg').addEventListener('click', e => {
+      const btn = e.target.closest('button'); if(!btn) return;
+      [...e.currentTarget.children].forEach(b => b.classList.toggle('on', b===btn));
+      humanColor = btn.dataset.color; orientation = humanColor;   // preview the board from your side
+      game.reset(); clearSelection(); lastMove = null; render();
+    });
+    document.getElementById('start').addEventListener('click', () => {
+      phase = 'playing'; applyPhase(); newGame(humanColor);
+    });
+    document.getElementById('undo').addEventListener('click', undoMove);
+    document.getElementById('resign').addEventListener('click', toSetup);   // "Resign" / "New game" → start screen
+    document.getElementById('flip').addEventListener('click', () => {
+      orientation = orientation==='w' ? 'b' : 'w'; render();
+    });
+
+    // ── boot ──
+    applyPhase();                       // start on the setup screen
+    render(); updateMoves(); updateStatus();
+
+    // Load my personalized Maia (fine-tuned on my rapid games) in the background. If it (or
+    // onnxruntime-web) fails, the page still works — off-book falls back to the practice engine.
+    (async () => {
+      try {
+        const maia = await import('./chess/maia/maia.js');
+        await maia.initMaia('./chess/son-tung-rapid.onnx');
+        pickMove = maia.pickMove;
+        maiaState = 'ready';
+        updateBrainState();
+      } catch (e){
+        maiaState = 'failed';
+        console.warn('Maia unavailable (off-book uses practice engine):', e);
+        updateBrainState();
+      }
+    })();
+  </script>
+</body>
+</html>

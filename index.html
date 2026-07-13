@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Son Tung — Product Designer</title>
+<meta name="description" content="Product designer focused on user experience and the behavioural psychology beneath it. I also design and build my own mobile apps." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --bg:#F1EEE7;
+    --tile:#FCFBF8;
+    --ink:#1B1A17;
+    --ink-2:#57544E;
+    --muted:#908C83;
+    --line:#E7E2D8;
+    --line-2:#D8D1C4;
+    --accent:#C2603C;
+    --accent-ink:#A24A29;
+
+    --t-blue-1:#EAF0F7;--c-blue:#3E5B86;
+    --t-green-1:#E9F0E6;--c-green:#4C6B3C;
+    --t-lilac-1:#EEEAF4;--c-lilac:#6A5494;
+    --t-amber-1:#F6EEDC;--c-amber:#8A6A2F;
+    --t-clay-1:#F6E7DF;--c-clay:#B5532F;
+
+    --sans:'Inter',system-ui,-apple-system,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    --r:18px;
+    --maxw:1320px;
+    --gap:16px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:#E8C9B9}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+  .label{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+  .badge{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:6px;display:inline-flex;align-items:center;white-space:nowrap}
+  .b-green{background:var(--t-green-1);color:var(--c-green)}
+  .b-blue{background:var(--t-blue-1);color:var(--c-blue)}
+  .b-lilac{background:var(--t-lilac-1);color:var(--c-lilac)}
+  .b-amber{background:var(--t-amber-1);color:var(--c-amber)}
+  .b-clay{background:var(--t-clay-1);color:var(--c-clay)}
+  .b-line{background:transparent;border:1px solid var(--line-2);color:var(--muted)}
+
+  /* ============ NAV ============ */
+  .nav{position:sticky;top:0;z-index:50;backdrop-filter:saturate(140%) blur(10px);background:color-mix(in srgb,var(--bg) 80%,transparent);border-bottom:1px solid var(--line)}
+  .nav__in{display:flex;align-items:center;justify-content:space-between;height:58px}
+  .brand{font-family:var(--mono);font-weight:600;font-size:13px;display:flex;align-items:center;gap:7px}
+  .brand .star{color:var(--accent)}
+  .nav__links{display:flex;gap:24px;font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+  .nav__links a{transition:color .18s}
+  .nav__links a:hover{color:var(--accent)}
+  @media(max-width:560px){.nav__links{display:none}}
+
+  /* ============ BENTO GRID (4-col, uniform 16px gaps) ============ */
+  .bento{display:grid;gap:var(--gap);grid-template-columns:1fr;padding:22px 0 46px}
+  @media(min-width:641px){
+    .bento{grid-template-columns:repeat(2,1fr)}
+    .t-full{grid-column:1/-1}
+  }
+  @media(min-width:1001px){
+    .bento{grid-template-columns:repeat(4,1fr)}
+    .t-full{grid-column:auto}
+    .w1{grid-column:span 1}.w2{grid-column:span 2}.w3{grid-column:span 3}.w4{grid-column:span 4}
+  }
+
+  /* ============ TILE BASE ============ */
+  .tile{background:var(--tile);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;min-height:150px;position:relative}
+  .arrow{position:absolute;top:16px;right:18px;color:var(--muted);font-size:15px;transition:transform .22s,color .22s;z-index:3}
+  .link-tile{cursor:pointer;transition:border-color .25s,box-shadow .25s}
+  /* hover: the card itself stays put — only border + shadow change; the device visual is what scales */
+  .link-tile:hover{border-color:var(--line-2);box-shadow:0 16px 34px -22px rgba(40,30,20,.4)}
+  .link-tile:hover .arrow{color:var(--accent)}
+
+  /* ============ INTRO ============ */
+  .intro{justify-content:center;padding:34px}
+  .intro .kicker{margin-bottom:18px}
+  .intro h1{font-size:clamp(28px,3vw,40px);line-height:1.15;font-weight:500;letter-spacing:-.03em}
+  .intro h1 em{font-style:normal;font-weight:700}
+  .intro h1 .blue{color:var(--c-blue)}
+  .intro h1 .clay{color:var(--c-clay)}
+  .intro h1 .green{color:var(--c-green)}
+  /* hover a phrase → its logo cluster fades into the intro's right whitespace (CSS-only via :has) */
+  .intrologos{position:absolute;right:60px;top:50%;transform:translateY(-50%);width:304px;height:140px;pointer-events:none}
+  .loset{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:30px;opacity:0;transform:translateY(10px);transition:opacity .35s ease,transform .35s ease}
+  .loset svg{display:block}
+  /* big app-icon tiles, tilted & spaced (not overlapping) for a playful hand-tossed look */
+  .lgtile{width:80px;height:80px;border-radius:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 28px -12px rgba(40,35,30,.45)}
+  .loset .lgtile:nth-child(1){transform:rotate(-8deg) translateY(-12px)}
+  .loset .lgtile:nth-child(2){transform:rotate(9deg) translateY(13px)}
+  .loset .lgtile:nth-child(3){transform:rotate(-5deg) translateY(-5px)}
+  .intro:has(.blue:hover) .loset--design{opacity:1;transform:none}
+  .intro:has(.clay:hover) .loset--psych{opacity:1;transform:none}
+  .intro:has(.green:hover) .loset--games{opacity:1;transform:none}
+  @media(max-width:1000px){.intrologos{display:none}}
+  .intro .lead{margin-top:16px;max-width:50ch;color:var(--ink-2);font-size:17px}
+  .intro .lead b{color:var(--ink);font-weight:600}
+  .intro .meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:22px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .intro .meta span{display:flex;align-items:center;gap:7px}
+  .dot{width:7px;height:7px;border-radius:50%;background:#5BA46B;box-shadow:0 0 0 3px #5ba46b22}
+
+  /* ============ CURRENTLY ============ */
+  .now{padding:24px}
+  .now .label{margin-bottom:13px}
+  .now ul{list-style:none;display:flex;flex-direction:column;gap:16px}
+  .now li{display:flex;flex-direction:column;gap:1px}
+  .now li b{font-family:var(--mono);color:var(--muted);font-weight:500;letter-spacing:.07em;font-size:10px}
+  .now li span{color:var(--ink);font-size:13px;font-weight:500}
+
+  /* ============ WORK CARDS ============ */
+  .proj{cursor:pointer;min-height:450px}
+  .proj-shot{flex:1;min-height:130px;order:1;position:relative}            /* empty placeholder for a real screenshot */
+  .proj-body{padding:18px 22px 22px}
+  .proj-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px;padding-right:20px}
+  .proj-head h3{font-size:18px;font-weight:600;letter-spacing:-.01em}
+  .tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0}
+  .proj-desc{color:var(--ink-2);font-size:14px;line-height:1.4}
+
+  /* device mockups — sit in the lower area, cropped by the card's rounded bottom */
+  .device{position:absolute;left:50%;transform:translateX(-50%);top:24px}
+  .device--pc{width:86%;max-width:540px;transition:width .35s cubic-bezier(.2,.7,.2,1),max-width .35s cubic-bezier(.2,.7,.2,1)}
+  /* hover: browser visual grows to sit flush with the text column (22px inset each side, identical on all 3 PC cards) */
+  .proj:hover .device--pc{width:calc(100% - 44px);max-width:760px}
+  /* phones (AllyUp, Questie): pre-rendered iPhone mockup image — transparent PNG with the frame baked in */
+  .device--mock{display:block;width:79%;max-width:243px;top:7px;transform:translateX(-50%);transform-origin:top center;transition:transform .35s cubic-bezier(.2,.7,.2,1);filter:drop-shadow(0 22px 38px rgba(35,35,50,.28))}
+  .proj:hover .device--mock{transform:translateX(-50%) scale(1.05)}
+  /* container-type makes the browser a query container; --u = 1px at the 536px design width, so the chrome bar scales with the mockup (hover + responsive) */
+  .browser{background:#fff;border-radius:11px 11px 4px 4px;border:1px solid rgba(0,0,0,.07);box-shadow:0 26px 60px -30px rgba(40,40,60,.45);overflow:hidden;container-type:inline-size;--u:calc(100cqw / 536)}
+  .bbar{height:calc(28 * var(--u));background:#fff;display:flex;align-items:center;gap:calc(6 * var(--u));padding:0 calc(12 * var(--u));border-bottom:1px solid #ececec}
+  .bbar i{width:calc(9 * var(--u));height:calc(9 * var(--u));border-radius:50%}
+  .bbar i:nth-child(1){background:#FF5F57}
+  .bbar i:nth-child(2){background:#FEBC2E}
+  .bbar i:nth-child(3){background:#28C840}
+  .bbar .burl{flex:1;height:calc(11 * var(--u));border-radius:calc(6 * var(--u));background:#f0eee9;margin-left:calc(10 * var(--u));max-width:calc(170 * var(--u))}
+  .bbar--dark{background:#26231F;border-bottom-color:rgba(255,255,255,.08)}
+  .bbar--dark .burl{background:rgba(255,255,255,.1)}
+  .bscreen{display:flex;gap:12px;padding:14px;min-height:240px}
+  .bside{width:48px;flex:none;display:flex;flex-direction:column;gap:8px}
+  .bside span{height:9px;border-radius:4px;background:#edece7}
+  .bside span:first-child{height:11px;background:var(--acc)}
+  .bmain{flex:1;display:flex;flex-direction:column;gap:10px}
+  .bmh{height:14px;width:52%;border-radius:5px;background:#e3e1db}
+  .bcards{display:flex;gap:10px}
+  .bcards>div{flex:1;height:50px;border-radius:8px;background:#f1efea}
+  .bcards>div:first-child{background:var(--acc);opacity:.24}
+  .bln{height:10px;border-radius:5px;background:#edece7}
+  .bln.w70{width:70%}.bln.w50{width:50%}
+  .bshot{display:block;width:100%;height:auto;min-height:230px;background:#f3f2ef}
+
+  /* ============ PLAY ============ */
+  .play{padding:22px;justify-content:space-between;gap:14px;min-height:230px}
+  .play .top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .play h3{font-size:17px;font-weight:600}
+  .play .sub{font-size:14px;color:var(--ink-2);margin-top:3px}
+  .play .viz{margin-top:auto;display:flex;align-items:flex-end;min-height:50px}
+  .chessboard{position:absolute;left:50%;transform:translateX(-50%);bottom:-30px;width:176px;height:176px;border-radius:10px;border:1px solid #d8cfbf;background-color:#efe9dc;background-image:conic-gradient(#7c6f59 90deg,transparent 90deg 180deg,#7c6f59 180deg 270deg,transparent 270deg);background-size:44px 44px}
+  .piano{position:absolute;left:0;right:0;bottom:-40px;display:flex;justify-content:center}
+  .pkeys{position:relative;display:flex;border:1px solid #ddd6c8;border-bottom:0;border-radius:5px 5px 0 0;overflow:hidden}
+  .pkeys .wk{width:28px;height:150px;background:#fff;border-left:1px solid #ddd6c8}
+  .pkeys .wk:first-child{border-left:0}
+  .pkeys .bk{position:absolute;top:0;width:16px;height:74px;background:#33302b;border-radius:0 0 3px 3px;z-index:2}
+
+  /* ============ GRATEFUL / BRANDS ============ */
+  .grateful{padding:42px 34px 46px;text-align:center;align-items:center}
+  .grateful .gh{font-size:20px;color:var(--ink-2);font-weight:500;max-width:36ch;line-height:1.4}
+  .grateful .gs{font-size:28px;font-weight:700;color:var(--ink);margin-top:10px;letter-spacing:-.02em}
+  .brands-cluster{display:flex;justify-content:center;align-items:flex-end;margin-top:38px}
+  .bc{border-radius:50%;border:4px solid var(--tile);box-shadow:0 12px 26px -12px rgba(40,30,20,.28);flex:none}
+  .bc+.bc{margin-left:-22px}
+
+  /* ============ READING ============ */
+  .reading{padding:24px}
+  .reading .label{margin-bottom:18px}
+  .shelf{display:flex;gap:13px;flex-wrap:wrap}
+  .book{width:110px}
+  .book .cover{display:block;width:100%;height:166px;object-fit:cover;border-radius:4px 8px 8px 4px;box-shadow:0 14px 28px -16px rgba(40,30,20,.5);background:#eceae3}
+  .book .meta-row{margin-top:10px}
+
+  /* ============ CONTACT ============ */
+  .contact{padding:34px;justify-content:center;background:#16140F;border-color:#16140F;color:#F1EEE7}
+  .contact .label{color:#8d877a}
+  .contact h2{font-size:clamp(28px,3vw,42px);font-weight:600;letter-spacing:-.03em;line-height:1.08;margin-top:14px;max-width:20ch}
+  .contact h2 a{color:#E8855F;border-bottom:2px solid transparent;transition:border-color .2s}
+  .contact h2 a:hover{border-color:#E8855F}
+  .contact .sub{margin-top:14px;color:#b8b2a6;max-width:46ch;font-size:15px}
+  .contact .socials{display:flex;flex-wrap:wrap;gap:9px 20px;margin-top:24px;font-family:var(--mono);font-size:13px}
+  .contact .socials a{display:inline-flex;align-items:center;gap:6px;color:#d8d2c6;transition:color .18s}
+  .contact .socials a:hover{color:#E8855F}
+  .contact .socials a span{color:#7d776b}
+
+  footer{border-top:1px solid var(--line);padding:20px 0 36px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.03em}
+
+  @media(max-width:640px){.wrap{padding:0 16px}.intro h1{font-size:28px}}
+
+  /* ===== Lanyard widget (self-contained built R3F bundle, mounted into #lanyard-root) ===== */
+  .wrap{position:relative}
+  /* lanyard hangs in the intro's right whitespace; canvas extends below the card so a dragged badge stays visible outside the section (transparent, sits above the grid) */
+  /* large click-through overlay (pointer-events:none) so the page underneath stays clickable; fades out while a headline phrase is hovered so its logo cluster shows unobstructed */
+  #lanyard-root{position:absolute;top:22px;right:176px;width:700px;height:780px;z-index:15;pointer-events:none;transition:opacity .3s ease}
+  #lanyard-root *{pointer-events:none !important} /* R3F forces its canvas + container to pointer-events:auto; override the whole subtree so it never blocks the page underneath */
+  .wrap:has(.intro h1 em:hover) #lanyard-root{opacity:0}
+  .lanyard-wrapper{position:relative;width:100%;height:100%}
+  @media(max-width:1000px){#lanyard-root{display:none}}
+</style>
+</head>
+<body id="top">
+
+  <header class="nav">
+    <div class="wrap nav__in">
+      <a href="#top" class="brand">Son&nbsp;Tung<span class="star">✦</span></a>
+      <nav class="nav__links">
+        <a href="#work">Work</a><a href="#play">Play</a><a href="#reading">Reading</a><a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <main class="bento">
+
+      <!-- ROW 1 : intro (3) + currently (1) -->
+      <section class="tile intro t-full w3">
+        <p class="kicker label">Product Designer · UX &amp; Behavioural Psychology</p>
+        <h1>James likes <em class="blue">designing stuff</em>,<br><em class="clay">yapping about psychology</em>,<br><em class="green">playing games</em>.</h1>
+        <div class="intrologos" aria-hidden="true">
+          <div class="loset loset--design">
+            <span class="lgtile" style="background:#0E0E10"><svg viewBox="0 0 38 57" width="30" height="45"><path fill="#1ABCFE" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0Z"/><path fill="#0ACF83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0Z"/><path fill="#FF7262" d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19Z"/><path fill="#F24E1E" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5Z"/><path fill="#A259FF" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5Z"/></svg></span>
+            <span class="lgtile" style="background:#C2603C"><svg viewBox="0 0 44 44" width="48" height="48"><g stroke="#fff" stroke-width="3.4" stroke-linecap="round"><line x1="6" y1="22" x2="38" y2="22"/><line x1="8.1" y1="14" x2="35.9" y2="30"/><line x1="14" y1="8.1" x2="30" y2="35.9"/><line x1="22" y1="6" x2="22" y2="38"/><line x1="30" y1="8.1" x2="14" y2="35.9"/><line x1="35.9" y1="14" x2="8.1" y2="30"/></g></svg></span>
+          </div>
+          <div class="loset loset--psych">
+            <span class="lgtile" style="background:#3E5B86"><svg width="34" height="34" viewBox="0 0 22 22"><circle cx="11" cy="11" r="8" fill="#fff"/></svg></span>
+            <span class="lgtile" style="background:#6A5494"><svg width="34" height="34" viewBox="0 0 22 22"><path d="M11 3 19 18.5 3 18.5Z" fill="#fff"/></svg></span>
+            <span class="lgtile" style="background:#8A6A2F"><svg width="32" height="32" viewBox="0 0 22 22"><rect x="3" y="3" width="16" height="16" rx="4.5" fill="#fff"/></svg></span>
+          </div>
+          <div class="loset loset--games">
+            <span class="lgtile" style="background:#26231F"><svg viewBox="0 0 40 40" width="50" height="50"><circle cx="20" cy="20" r="17.5" fill="#fff"/><polygon points="20,11.5 27.6,17 24.7,26 15.3,26 12.4,17" fill="#1B1A17"/><path d="M20 4.5 20 11.5 M35.2 16 27.6 17 M29 33 24.7 26 M11 33 15.3 26 M4.8 16 12.4 17" stroke="#1B1A17" stroke-width="1.7" fill="none"/></svg></span>
+            <span class="lgtile" style="background:#81B64C"><svg viewBox="0 0 50 50" width="56" height="56"><text x="25" y="37" font-size="40" text-anchor="middle" fill="#fff" font-family="Georgia,serif">&#9822;</text></svg></span>
+            <span class="lgtile" style="background:#6A5494"><svg viewBox="0 0 40 40" width="44" height="44"><g fill="#fff"><rect x="15" y="10" width="2.8" height="19" rx="1.4"/><rect x="28" y="8" width="2.8" height="19" rx="1.4"/><path d="M15 10 30.8 8 30.8 12.8 15 14.8Z"/><ellipse cx="13" cy="29" rx="4.8" ry="3.7"/><ellipse cx="26" cy="27" rx="4.8" ry="3.7"/></g></svg></span>
+          </div>
+        </div>
+      </section>
+
+      <aside class="tile now w1">
+        <p class="label">Currently</p>
+        <ul>
+          <li><b>BUILDING</b><span>Tempo v2</span></li>
+          <li><b>READING</b><span>Dune — F. Herbert</span></li>
+          <li><b>PLAYING</b><span>e4 openings</span></li>
+          <li><b>LEARNING</b><span>SwiftUI &amp; Metal</span></li>
+          <li><b>LISTENING</b><span>Lo-fi &amp; jazz</span></li>
+        </ul>
+      </aside>
+
+      <!-- ROW 2 : mapEDU (2) + AllyUp (1) + Questie (1) -->
+      <a id="work" class="tile proj link-tile w2" href="https://mapedu.com" target="_blank" rel="noopener">
+        <span class="arrow">↗</span>
+        <div class="proj-shot"><div class="device device--pc" style="--acc:#4C6B3C"><div class="browser"><div class="bbar"><i></i><i></i><i></i><span class="burl"></span></div><img class="bshot" src="shots/mapedu.png" alt="mapEDU — Insight dashboard" /></div></div></div>
+        <div class="proj-body">
+          <div class="proj-head">
+            <h3>mapEDU</h3>
+            <div class="tags"><span class="badge b-amber">AI</span><span class="badge b-green">SaaS</span><span class="badge b-line">EdTech</span></div>
+          </div>
+          <p class="proj-desc">Improve curriculum mapping with AI</p>
+        </div>
+      </a>
+
+      <a class="tile proj link-tile w1" href="https://allyup.club/" target="_blank" rel="noopener">
+        <span class="arrow">↗</span>
+        <div class="proj-shot"><img class="device device--mock" src="shots/allyup.png" alt="AllyUp app" /></div>
+        <div class="proj-body">
+          <div class="proj-head">
+            <h3>AllyUp</h3>
+            <div class="tags"><span class="badge b-lilac">Self</span><span class="badge b-clay">Mobile</span></div>
+          </div>
+          <p class="proj-desc">Habits with friends</p>
+        </div>
+      </a>
+
+      <a class="tile proj link-tile w1" href="https://sidequestie.app/" target="_blank" rel="noopener">
+        <span class="arrow">↗</span>
+        <div class="proj-shot"><img class="device device--mock" src="shots/questie.png" alt="Questie app" /></div>
+        <div class="proj-body">
+          <div class="proj-head">
+            <h3>Questie</h3>
+            <div class="tags"><span class="badge b-lilac">Self</span><span class="badge b-clay">Mobile</span></div>
+          </div>
+          <p class="proj-desc">Side quests for a better life</p>
+        </div>
+      </a>
+
+      <!-- ROW 3 : ARQ (2) + Reach.cat (2) -->
+      <a class="tile proj link-tile w2" href="https://arq.live" target="_blank" rel="noopener">
+        <span class="arrow">↗</span>
+        <div class="proj-shot"><div class="device device--pc" style="--acc:#8A6A2F"><div class="browser"><div class="bbar bbar--dark"><i></i><i></i><i></i><span class="burl"></span></div><img class="bshot" src="shots/arq.png" alt="ARQ — Editor" /></div></div></div>
+        <div class="proj-body">
+          <div class="proj-head">
+            <h3>ARQ</h3>
+            <div class="tags"><span class="badge b-amber">Generative AI</span><span class="badge b-green">SaaS</span></div>
+          </div>
+          <p class="proj-desc">Create production-ready movies with AI</p>
+        </div>
+      </a>
+
+      <a class="tile proj link-tile w2" href="https://reach.cat" target="_blank" rel="noopener">
+        <span class="arrow">↗</span>
+        <div class="proj-shot"><div class="device device--pc" style="--acc:#3E5B86"><div class="browser"><div class="bbar"><i></i><i></i><i></i><span class="burl"></span></div><img class="bshot" src="shots/reach.png" alt="Reach.cat — Business dashboard" /></div></div></div>
+        <div class="proj-body">
+          <div class="proj-head">
+            <h3>Reach.cat</h3>
+            <div class="tags"><span class="badge b-blue">Marketing</span><span class="badge b-green">SaaS</span></div>
+          </div>
+          <p class="proj-desc">Personalized outreach at scale with AI</p>
+        </div>
+      </a>
+
+      <!-- ROW 4 : grateful / brands (full width) -->
+      <section class="tile grateful t-full w4">
+        <p class="gh">More products / brands I had the chance to work with / on</p>
+        <p class="gs">I'm grateful 🙌</p>
+        <div class="brands-cluster">
+          <span class="bc" style="width:104px;height:104px;background:#E3E8F0;margin-bottom:2px"></span>
+          <span class="bc" style="width:128px;height:128px;background:#3E5B86;margin-bottom:14px"></span>
+          <span class="bc" style="width:126px;height:126px;background:#1B1A17;margin-bottom:78px"></span>
+          <span class="bc" style="width:118px;height:118px;background:#6A5494;margin-bottom:6px"></span>
+          <span class="bc" style="width:120px;height:120px;background:#CDBFE6;margin-bottom:54px"></span>
+          <span class="bc" style="width:120px;height:120px;background:#B5532F;margin-bottom:4px"></span>
+          <span class="bc" style="width:122px;height:122px;background:#2F8FE0;margin-bottom:66px"></span>
+          <span class="bc" style="width:108px;height:108px;background:#2C4A3A;margin-bottom:2px"></span>
+        </div>
+      </section>
+
+      <!-- ROW 5 : books (2) + chess (1) + piano (1) -->
+      <section id="reading" class="tile reading w2">
+        <p class="label">Books I read</p>
+        <div class="shelf">
+          <div class="book"><img class="cover" src="covers/midnight-library.jpg" alt="The Midnight Library — Matt Haig" loading="lazy" /><div class="meta-row"><span class="badge b-line">Read</span></div></div>
+          <div class="book"><img class="cover" src="covers/hyunam-dong-bookshop.jpg" alt="Welcome to the Hyunam-dong Bookshop — Hwang Bo-reum" loading="lazy" /><div class="meta-row"><span class="badge b-line">Read</span></div></div>
+          <div class="book"><img class="cover" src="covers/hooked.jpg" alt="Hooked — Nir Eyal" loading="lazy" /><div class="meta-row"><span class="badge b-line">Read</span></div></div>
+          <div class="book"><img class="cover" src="covers/atomic-habits.jpg" alt="Atomic Habits — James Clear" loading="lazy" /><div class="meta-row"><span class="badge b-line">Read</span></div></div>
+        </div>
+      </section>
+
+      <a id="play" href="chess.html" class="tile play w1 link-tile">
+        <span class="arrow">↗</span>
+        <div class="top">
+          <div>
+            <h3>Chess</h3>
+            <div style="margin-top:10px"><span class="badge b-lilac">2010 rapid chess.com</span></div>
+            <p class="sub" style="margin-top:8px">Play me →</p>
+          </div>
+        </div>
+        <div class="chessboard"></div>
+      </a>
+
+      <section class="tile play w1">
+        <div class="top">
+          <div><h3>Piano</h3><p class="sub">I heal by playing music</p></div>
+        </div>
+        <div class="piano">
+          <div class="pkeys">
+            <span class="wk"></span><span class="wk"></span><span class="wk"></span><span class="wk"></span><span class="wk"></span><span class="wk"></span><span class="wk"></span>
+            <span class="bk" style="left:20px"></span><span class="bk" style="left:48px"></span><span class="bk" style="left:104px"></span><span class="bk" style="left:132px"></span><span class="bk" style="left:160px"></span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <div id="lanyard-root"></div>
+  </div>
+
+  <script type="module" src="lanyard/lanyard.js"></script>
+</body>
+</html>

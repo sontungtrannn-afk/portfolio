@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Son Tung — How I actually play</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#F1EEE7; --tile:#FCFBF8; --ink:#1B1A17; --ink-2:#57544E; --muted:#908C83;
+    --line:#E7E2D8; --line-2:#D8D1C4; --accent:#C2603C; --accent-ink:#A24A29;
+    --paper:#EFE7D8; --c-blue:#3E5B86; --c-green:#4C6B3C; --c-lilac:#6A5494;
+    --sans:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .label{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+
+  .topbar{position:sticky;top:0;z-index:50;backdrop-filter:saturate(140%) blur(10px);background:color-mix(in srgb,var(--bg) 80%,transparent);border-bottom:1px solid var(--line)}
+  .topbar__in{max-width:1000px;margin:0 auto;padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between}
+  .back{font-family:var(--mono);font-weight:600;font-size:13px;display:flex;align-items:center;gap:7px}
+  .back:hover{color:var(--accent)} .back .star{color:var(--accent)}
+  .topbar__meta{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+
+  .page{max-width:1000px;margin:0 auto;padding:48px 24px 80px}
+
+  /* hero */
+  .hero{max-width:760px}
+  .hero h1{font-size:clamp(32px,5vw,52px);font-weight:600;letter-spacing:-.035em;line-height:1.05;margin:14px 0 18px}
+  .hero p{font-size:18px;line-height:1.6;color:var(--ink-2)}
+  .hero .em{color:var(--accent-ink);font-weight:600}
+  .herostats{display:flex;gap:40px;margin-top:30px;flex-wrap:wrap}
+  .hstat .hn{font-size:34px;font-weight:700;color:var(--accent-ink);letter-spacing:-.02em;line-height:1}
+  .hstat .hl{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:7px;max-width:150px;line-height:1.4}
+
+  /* section */
+  .sec{margin-top:72px}
+  .sechead{display:flex;align-items:flex-start;gap:20px;padding-bottom:20px;border-bottom:1px solid var(--line-2);margin-bottom:26px}
+  .secnum{font-family:var(--mono);font-size:44px;font-weight:600;color:var(--line-2);line-height:.85;flex:none}
+  .sechead h2{font-size:27px;font-weight:600;letter-spacing:-.02em}
+  .secsub{font-family:var(--mono);font-size:12px;color:var(--accent-ink);letter-spacing:.04em;text-transform:uppercase;margin-top:6px}
+  .lead{font-size:16px;line-height:1.75;color:var(--ink-2);max-width:740px;margin-bottom:28px}
+  .lead b{color:var(--ink);font-weight:600} .lead .hl{color:var(--accent-ink);font-weight:600}
+
+  .sublabel{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin:30px 0 14px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:720px){.cols{grid-template-columns:1fr}}
+  .panel{background:var(--tile);border:1px solid var(--line);border-radius:16px;padding:20px}
+  .panel .label{display:block;margin-bottom:14px}
+  .note{font-size:14px;line-height:1.65;color:var(--ink-2);margin-top:14px;max-width:740px}
+  .note b{color:var(--ink);font-weight:600}
+
+  /* win-rate bars */
+  .wbar{display:grid;grid-template-columns:165px 1fr 42px;gap:14px;align-items:center;margin:11px 0}
+  .wlabel{font-size:13px;color:var(--ink-2)}
+  .track{position:relative;height:9px;border-radius:5px;background:var(--line)}
+  .track::after{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--line-2)}
+  .fill{position:absolute;left:0;top:0;bottom:0;border-radius:5px}
+  .fill.hi{background:var(--c-green)} .fill.mid{background:var(--accent)} .fill.lo{background:var(--muted)}
+  .val{font-family:var(--mono);font-size:12px;font-weight:600;text-align:right}
+  .legend{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:12px}
+
+  /* stat callouts */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  @media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--tile);border:1px solid var(--line);border-radius:16px;padding:18px}
+  .stat .big{font-size:30px;font-weight:700;letter-spacing:-.02em;color:var(--accent-ink);line-height:1}
+  .stat .cap{font-weight:600;font-size:14px;margin:8px 0 6px}
+  .stat .sub{font-family:var(--mono);font-size:10px;color:var(--muted);line-height:1.55}
+
+  /* piece heatmaps */
+  .heat3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:620px){.heat3{grid-template-columns:1fr 1fr}}
+  .heat2{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:430px}
+  .pcard{background:var(--tile);border:1px solid var(--line);border-radius:16px;padding:14px}
+  .pcard .ph{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+  .pcard .glyph{width:20px;height:20px;object-fit:contain}
+  .pcard .pname{font-weight:600;font-size:14px}
+  .pcard .pins{font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:11px;min-height:13px;line-height:1.3}
+  .hb{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);aspect-ratio:1;border-radius:8px;overflow:hidden;border:1px solid var(--line-2);background:var(--line-2);gap:1px}
+  .hc{background:var(--paper);position:relative}
+  .hc::after{content:"";position:absolute;inset:0;background:var(--accent);opacity:var(--a,0)}
+
+  .endgrid{display:grid;grid-template-columns:1fr 280px;gap:28px;align-items:start}
+  @media(max-width:720px){.endgrid{grid-template-columns:1fr}}
+
+  /* mini opening boards */
+  .ominis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:30px}
+  @media(max-width:720px){.ominis{grid-template-columns:repeat(2,1fr)}}
+  .obcard{background:var(--tile);border:1px solid var(--line);border-radius:14px;padding:12px}
+  .omini{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);aspect-ratio:1;border-radius:7px;overflow:hidden;border:1px solid var(--line-2)}
+  .oc{display:flex;align-items:center;justify-content:center}
+  .oc.l{background:#EDE4D2} .oc.d{background:#B9A47E}
+  .oc img{width:84%;height:84%}
+  .oname{font-weight:600;font-size:13px;margin-top:10px}
+  .omoves{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:3px;line-height:1.4}
+  .omoves b{color:var(--accent-ink);font-weight:600}
+
+  .foot{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);line-height:1.6}
+  .foot a{color:var(--accent-ink);font-weight:500}
+</style>
+</head>
+<body>
+  <header class="topbar"><div class="topbar__in">
+    <a class="back" href="chess.html"><span>←</span> Play me <span class="star">✦</span></a>
+    <span class="topbar__meta">how I play · 3,900+ games</span>
+  </div></header>
+
+  <div class="page">
+    <div class="hero">
+      <span class="label">Read from my real games — no self-flattery</span>
+      <h1>How I actually play.</h1>
+      <p>Pulled from <b id="sampleN">3,900+</b> of my rated games: a patient, classical <b>1.e4</b> player who keeps the
+      king safe and stays out of needless trades — then <span class="em">strikes with a sacrifice</span>, and quietly
+      grinds a strong endgame.</p>
+      <div class="herostats">
+        <div class="hstat"><div class="hn">52%</div><div class="hl">overall score</div></div>
+        <div class="hstat"><div class="hn">1.9×</div><div class="hl">sacrifice rate vs a normal 1900</div></div>
+        <div class="hstat"><div class="hn">55%</div><div class="hl">once it reaches an endgame</div></div>
+      </div>
+    </div>
+
+    <!-- ===== 01 OPENINGS ===== -->
+    <section class="sec">
+      <div class="sechead">
+        <span class="secnum">01</span>
+        <div><h2>Openings</h2><div class="secsub">1.e4 gambiteer · Caro-Kann specialist</div></div>
+      </div>
+      <p class="lead">I've played <b>1.e4</b> almost my whole life — and at heart I'm a gambiteer. As Black the
+      <span class="hl">Caro-Kann is my rock (61%)</span>, but my real signature is the offbeat <b>Elephant Gambit</b> —
+      320 games of throwing a pawn at move two. Against 1.d4 I hit back with the sharp <b>Austrian Defense</b>, and as
+      White I meet the Sicilian head-on with the <b>Smith-Morra Gambit</b>. I'd rather make chaos than shuffle pieces.</p>
+
+      <div class="sublabel" style="margin-top:0">My signature openings</div>
+      <div class="ominis" id="ominis"></div>
+
+      <div class="cols">
+        <div class="panel">
+          <span class="label">As White — how I score vs each defense</span>
+          <div id="open-white"></div>
+        </div>
+        <div class="panel">
+          <span class="label">As Black — my defenses</span>
+          <div id="open-black"></div>
+        </div>
+      </div>
+      <div class="legend">bar fills past the centre line = winning record · <span style="color:var(--c-green)">green</span> ≥ 55% · <span style="color:var(--accent)">clay</span> 50–54% · grey &lt; 50%</div>
+
+      <div class="sublabel">How I develop</div>
+      <p class="note" style="margin-top:0;margin-bottom:16px">By the book and fast: knights to <b>f3 &amp; c3</b> then the <b>e5 outpost</b>, bishops out to active squares — <b>c4, b5, the g5 pin</b> — rooks straight to the <b>e-file</b>, and I castle short <b>87%</b> of the time.</p>
+      <div class="heat3" id="dev-heat"></div>
+    </section>
+
+    <!-- ===== 02 MIDDLEGAME ===== -->
+    <section class="sec">
+      <div class="sechead">
+        <span class="secnum">02</span>
+        <div><h2>Middlegame</h2><div class="secsub">Patient — then a sudden sacrifice</div></div>
+      </div>
+      <p class="lead">I'm not a brawler. I trade less, check less, and push into your half less than a normal 1900 — I'd
+      rather <b>build</b>. But when the moment comes I'll give up material: <span class="hl">I sacrifice nearly twice as
+      often</span> as a typical player. I keep the <b>queens on</b> and play with an unusually active queen and king —
+      I'm a piece-player, not a pawn-pusher.</p>
+
+      <div class="stats" id="mid-stats"></div>
+
+      <div class="sublabel">Where my heavy pieces flow</div>
+      <p class="note" style="margin-top:0;margin-bottom:16px">My queen and king are each ~<b>13%</b> of my moves — both above a normal player — while pawns are only <b>24%</b>. I move pieces, not pawns; the rooks live on the <b>e-file</b>.</p>
+      <div class="heat2" id="mid-heat"></div>
+    </section>
+
+    <!-- ===== 03 ENDGAMES ===== -->
+    <section class="sec">
+      <div class="sechead">
+        <span class="secnum">03</span>
+        <div><h2>Endgames</h2><div class="secsub">A quiet strength — especially with queens on</div></div>
+      </div>
+      <p class="lead">When the dust settles I'm better than my rating: I win <span class="hl">55% of games that reach an
+      endgame</span>, versus 51% of the ones decided earlier, and I <b>activate my king</b> (13% of my moves — well above
+      normal). My favourite finishes keep pieces active: I convert <b>queen endings 63%</b> and <b>rook endings 57%</b> —
+      pure pawn endings I draw a lot.</p>
+
+      <div class="endgrid">
+        <div class="panel">
+          <span class="label">Win rate by endgame type</span>
+          <div id="endg-bars"></div>
+          <div class="legend">≈ 1 in 4 of my games reaches a clean endgame (1,060 of them) · rook endings are by far the most common</div>
+        </div>
+        <div class="heat2" style="grid-template-columns:1fr;max-width:280px" id="end-heat"></div>
+      </div>
+    </section>
+
+    <div class="foot">
+      Every number here is computed from my real Chess.com games — openings &amp; endgame records across ~3,900 rated
+      games, the middlegame fingerprint from 10,000 sampled positions. It's also the soul of
+      <a href="chess.html">the bot</a> you can play.
+    </div>
+  </div>
+
+  <script type="module">
+    const D = await fetch('./chess/style_profile.json').then(r => r.json()).catch(() => ({ you:{ heat:{} } }));
+    const heat = (D.you && D.you.heat) || {};
+
+    // win-rate bars
+    const bar = (name, v) => {
+      const cls = v >= 55 ? 'hi' : v >= 50 ? 'mid' : 'lo';
+      return `<div class="wbar"><span class="wlabel">${name}</span><div class="track"><i class="fill ${cls}" style="width:${v}%"></i></div><span class="val">${v}%</span></div>`;
+    };
+    const bars = data => data.map(([n,v]) => bar(n,v)).join('');
+    document.getElementById('open-white').innerHTML = bars([['vs Sicilian',58],['vs Scandinavian',57],['vs Caro-Kann',54],['Ruy Lopez',50],['Italian Game',49]]);
+    document.getElementById('open-black').innerHTML = bars([['Caro-Kann',61],['vs 1.e4 (…e5)',56],['Bishop’s / Berlin',57],['vs 1.d4 (…d5)',50],['Queen’s Gambit Declined',46]]);
+    document.getElementById('endg-bars').innerHTML  = bars([['Queen endings',63],['Rook endings',57],['Minor-piece endings',46],['Pawn endings',43]]);
+
+    // middlegame stat callouts
+    document.getElementById('mid-stats').innerHTML = [
+      ['1.9×','More sacrifices','0.84% of my moves vs 0.45% for a normal 1900 — calculated risk'],
+      ['24%','I trade less','vs 28% for a normal player — I build instead of swapping'],
+      ['28%','Pressure your king','share of my moves that hit the squares around your king'],
+      ['13%','Active queen & king','each — above a normal 1900; pawns only 24% of my moves'],
+    ].map(([b,c,s]) => `<div class="stat"><div class="big">${b}</div><div class="cap">${c}</div><div class="sub">${s}</div></div>`).join('');
+
+    // piece heatmaps (white-perspective, where my pieces live)
+    const board = k => {
+      const arr = heat[k] || new Array(64).fill(0); const max = Math.max(...arr, 1);
+      let c = '';
+      for(let r=7;r>=0;r--) for(let f=0;f<8;f++) c += `<div class="hc" style="--a:${(arr[r*8+f]/max).toFixed(3)}"></div>`;
+      return c;
+    };
+    const card = (k,name,ins) => `<div class="pcard"><div class="ph"><img class="glyph" src="chess/pieces/b${k}.svg" alt=""><span class="pname">${name}</span></div><div class="pins">${ins}</div><div class="hb">${board(k)}</div></div>`;
+    document.getElementById('dev-heat').innerHTML = card('P','Pawns','center — e4 & d4') + card('N','Knights','f3 / c3 → e5 outpost') + card('B','Bishops','c4, b5, g5 pins');
+    document.getElementById('mid-heat').innerHTML = card('Q','Queen','central, leans kingside') + card('R','Rooks','the e-file');
+    document.getElementById('end-heat').innerHTML = card('K','King','short castle, then active in endings');
+
+    // mini opening boards (FEN piece-placement → 8×8)
+    const OPENINGS = [   // [name, caption, FEN, flipToBlack]
+      ['Caro-Kann', '1.e4 c6 · <b>61%</b> as Black · 236 games', 'rnbqkbnr/pp2pppp/2p5/3p4/3PP3/8/PPP2PPP/RNBQKBNR', true],
+      ['Elephant Gambit', '1.e4 e5 2.Nf3 d5 · <b>54%</b> as Black · 320 games', 'rnbqkbnr/ppp2ppp/8/3pp3/4P3/5N2/PPPP1PPP/RNBQKB1R', true],
+      ['Austrian Defense', '1.d4 d5 2.c4 c5 · <b>54%</b> as Black · 85 games', 'rnbqkbnr/pp2pppp/8/2pp4/2PP4/8/PP2PPPP/RNBQKBNR', true],
+      ['Smith-Morra Gambit', '1.e4 c5 2.d4 · <b>57%</b> as White · 283 games', 'rnbqkbnr/pp1ppppp/8/2p5/3PP3/8/PPP2PPP/RNBQKBNR', false],
+    ];
+    function miniBoard(p, flip){
+      const rows = p.split('/'); const cells = [];
+      rows.forEach((row, ri) => { let fi = 0;
+        for(const ch of row){
+          if(ch>='1' && ch<='8'){ for(let k=0;k<+ch;k++){ cells.push(`<div class="oc ${(ri+fi)%2?'d':'l'}"></div>`); fi++; } }
+          else { const col = ch===ch.toUpperCase()?'w':'b'; cells.push(`<div class="oc ${(ri+fi)%2?'d':'l'}"><img src="chess/pieces/${col}${ch.toUpperCase()}.svg" alt=""></div>`); fi++; }
+        }
+      });
+      return (flip ? cells.reverse() : cells).join('');   // 180° flip → Black's perspective
+    }
+    document.getElementById('ominis').innerHTML = OPENINGS.map(([name,moves,fen,flip]) =>
+      `<div class="obcard"><div class="omini">${miniBoard(fen,flip)}</div><div class="oname">${name}</div><div class="omoves">${moves}</div></div>`).join('');
+  </script>
+</body>
+</html>
