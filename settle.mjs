@@ -1,4 +1,4 @@
-/* Brand row — a single line of balls resting on the floor, with seeded-random gaps.
+/* Brand row - a single line of balls resting on the floor, with seeded-random gaps.
    They roll in from the right: the spin is tied to the distance travelled
    (rolling without slipping, theta = distance / radius), otherwise they look like they slide.
    Re-run with `node settle.mjs` if the set changes. */

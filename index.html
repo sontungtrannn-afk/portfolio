@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Son Tung — Product Designer</title>
+<title>Son Tung - Product Designer</title>
 <meta name="description" content="Product designer focused on user experience and the behavioural psychology beneath it. I also design and build my own mobile apps." />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -67,7 +67,7 @@
   /* ============ TILE BASE ============ */
   .tile{background:var(--tile);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;min-height:150px;position:relative}
   .link-tile{cursor:pointer;transition:border-color .25s,box-shadow .25s}
-  /* hover: the card itself stays put — only border + shadow change; the device visual is what scales */
+  /* hover: the card itself stays put - only border + shadow change; the device visual is what scales */
   .link-tile:hover{border-color:var(--line-2);box-shadow:0 16px 34px -22px rgba(40,30,20,.4)}
 
   /* ============ INTRO ============ */
@@ -125,12 +125,12 @@
   .tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0}
   .proj-desc{color:var(--ink-2);font-size:14px;line-height:1.4}
 
-  /* device mockups — sit in the lower area, cropped by the card's rounded bottom */
+  /* device mockups - sit in the lower area, cropped by the card's rounded bottom */
   .device{position:absolute;left:50%;transform:translateX(-50%);top:24px}
   .device--pc{width:86%;max-width:540px;transition:width .35s cubic-bezier(.2,.7,.2,1),max-width .35s cubic-bezier(.2,.7,.2,1)}
   /* hover: browser visual grows to sit flush with the text column (22px inset each side, identical on all 3 PC cards) */
   .proj:hover .device--pc{width:calc(100% - 44px);max-width:760px}
-  /* phones (AllyUp, Questie): pre-rendered iPhone mockup image — transparent PNG with the frame baked in */
+  /* phones (AllyUp, Questie): pre-rendered iPhone mockup image - transparent PNG with the frame baked in */
   .device--mock{display:block;width:79%;max-width:243px;top:7px;transform:translateX(-50%);transform-origin:top center;transition:transform .35s cubic-bezier(.2,.7,.2,1);filter:drop-shadow(0 22px 38px rgba(35,35,50,.28))}
   /* CSS bezel for raw screenshots; matches the footprint of the baked-in mockups */
   .device--iphone{width:66%;max-width:204px;top:7px;transform:translateX(-50%);transform-origin:top center;transition:transform .35s cubic-bezier(.2,.7,.2,1);filter:drop-shadow(0 22px 38px rgba(35,35,50,.28))}
@@ -183,7 +183,7 @@
   .playme{position:absolute;left:50%;bottom:132px;transform:translateX(-50%) rotate(-5deg);font-family:Caveat,cursive;font-size:24px;font-weight:600;line-height:1;color:var(--accent-ink);pointer-events:none;z-index:3;white-space:nowrap}
   .piano{position:absolute;left:0;right:0;bottom:-32px;display:flex;justify-content:center}
 
-  /* Pedal coach-mark — body-level + fixed so the card's overflow:hidden can't clip it */
+  /* Pedal coach-mark - body-level + fixed so the card's overflow:hidden can't clip it */
   .coach{position:fixed;left:0;top:0;z-index:60;display:flex;align-items:flex-start;gap:8px;width:236px;
     font-family:var(--mono);font-size:10px;line-height:1.7;letter-spacing:.03em;color:#F1EEE7;
     background:#26231F;padding:9px 9px 9px 12px;border-radius:8px;box-shadow:0 8px 22px rgba(27,26,23,.24);
@@ -218,7 +218,7 @@
      whole pile scales with the container. */
   .grateful-copy{flex:none}
   .brands-cluster{position:relative;align-self:flex-end;flex:1;max-width:744px;aspect-ratio:930.86/128;margin:0 0 -48px auto}
-  /* no overflow:hidden here — it would clip the tooltip; the img itself is rounded instead */
+  /* no overflow:hidden here - it would clip the tooltip; the img itself is rounded instead */
   .bc{position:absolute;aspect-ratio:1;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
   .bc img{border-radius:50%}
   .bc img{transition:transform .28s cubic-bezier(.2,.7,.2,1)}
@@ -227,7 +227,7 @@
   .bc:hover::after{opacity:1;transform:translateX(-50%) translateY(0)}
   @media(hover:none){.bc::after{display:none}}
   .bc img{width:62%;height:62%;object-fit:contain;display:block}
-  /* app-icon style marks already carry their own coloured background — let them fill the ball */
+  /* app-icon style marks already carry their own coloured background - let them fill the ball */
   .bc--fill img{width:100%;height:100%;object-fit:cover}
   @keyframes balldrop{
     0%{transform:translateY(-380px);opacity:0}
@@ -244,7 +244,7 @@
     12%{opacity:1}
     to{transform:translateX(0) rotate(0deg);opacity:1}
   }
-  /* accelerating fall, then a small bounce — see the keyframe timing-function switch */
+  /* accelerating fall, then a small bounce - see the keyframe timing-function switch */
   .brands-cluster.dropped .bc{animation:rollin 1500ms cubic-bezier(.37,0,.63,1) both}
   .brands-cluster.dropped .bc:nth-child(1){animation-delay:0ms}
   .brands-cluster.dropped .bc:nth-child(2){animation-delay:170ms}
@@ -254,7 +254,7 @@
   .brands-cluster.dropped .bc:nth-child(6){animation-delay:850ms}
   .brands-cluster.dropped .bc:nth-child(7){animation-delay:1020ms}
   /* after landing the animation is removed entirely, so the balls can never be stranded on the
-     0% keyframe (opacity:0) if the keyframes never advance — backgrounded tab, headless capture, etc. */
+     0% keyframe (opacity:0) if the keyframes never advance - backgrounded tab, headless capture, etc. */
   .brands-cluster.landed .bc{animation:none}
   @media(prefers-reduced-motion:reduce){.brands-cluster.dropped .bc{animation:none}}
   /* ============ CERTIFICATES ============ */
@@ -332,7 +332,7 @@
 
   /* ============ SPORTS BALL PIT ============ */
   /* diameters are the real objects to scale: basketball 24.0cm, football 22.0cm,
-     tennis 6.7cm, shuttlecock skirt 6.5cm — positions from settle.mjs's sim (0.0000 overlap). */
+     tennis 6.7cm, shuttlecock skirt 6.5cm - positions from settle.mjs's sim (0.0000 overlap). */
   .ballpit{position:absolute;left:0;right:0;bottom:0;aspect-ratio:255.47/76.63;container-type:inline-size;pointer-events:none}
   .sball{position:absolute;aspect-ratio:1;display:flex;align-items:center;justify-content:center;line-height:1;overflow:visible}
   /* a shuttlecock stands cork-down, so it is bottom-anchored rather than centred in its circle.
@@ -349,7 +349,7 @@
   .ballpit.landed .sball{animation:none}
   @media(prefers-reduced-motion:reduce){.ballpit.dropped .sball{animation:none}}
 
-  /* ============ PLAY ME — square tile ============ */
+  /* ============ PLAY ME - square tile ============ */
   .chesscard{min-height:250px}
   .chesscard h3{margin-top:0}
   .chesscard .sub{margin-top:6px}
@@ -434,7 +434,7 @@
         <div class="case-body">
           <p class="label">A Chess.com case study</p>
           <h2>Challenging a friend who is already playing</h2>
-          <p class="case-lead">Challenge is unavailable at the moment you most want it — when a friend is <em>in a game</em>. So it waits its turn instead: <b>Play next</b>.</p>
+          <p class="case-lead">Challenge is unavailable at the moment you most want it - when a friend is <em>in a game</em>. So it waits its turn instead: <b>Play next</b>.</p>
           <a class="case-cta" href="case-connect.html">Read experiment <span aria-hidden="true">→</span></a>
         </div>
         <div class="case-viz" aria-hidden="true">
@@ -447,7 +447,7 @@
             </div>
             <div class="pm-row pm-row--hi">
               <span class="pm-av pm-av--2"></span>
-              <div class="pm-txt"><b>Linh</b><span>Queued — you are up next</span></div>
+              <div class="pm-txt"><b>Linh</b><span>Queued - you are up next</span></div>
               <span class="pm-btn">Play next</span>
             </div>
           </div>
@@ -505,7 +505,7 @@
 
       <div class="strip3 t-full w4">
         <a class="tile proj link-tile proj--sm" data-tip="mapedu.com" href="https://mapedu.com" target="_blank" rel="noopener">
-          <div class="proj-shot"><div class="device device--pc" style="--acc:#4C6B3C"><div class="browser"><div class="bbar"><i></i><i></i><i></i><span class="burl"></span></div><img class="bshot" src="shots/mapedu.png" alt="mapEDU — Insight dashboard" /></div></div></div>
+          <div class="proj-shot"><div class="device device--pc" style="--acc:#4C6B3C"><div class="browser"><div class="bbar"><i></i><i></i><i></i><span class="burl"></span></div><img class="bshot" src="shots/mapedu.png" alt="mapEDU - Insight dashboard" /></div></div></div>
           <div class="proj-body">
             <div class="proj-head">
               <h3>mapEDU</h3>
@@ -516,7 +516,7 @@
         </a>
 
         <a class="tile proj link-tile proj--sm" data-tip="arq.live" href="https://arq.live" target="_blank" rel="noopener">
-          <div class="proj-shot"><div class="device device--pc" style="--acc:#8A6A2F"><div class="browser"><div class="bbar bbar--dark"><i></i><i></i><i></i><span class="burl"></span></div><img class="bshot" src="shots/arq.png" alt="ARQ — Editor" /></div></div></div>
+          <div class="proj-shot"><div class="device device--pc" style="--acc:#8A6A2F"><div class="browser"><div class="bbar bbar--dark"><i></i><i></i><i></i><span class="burl"></span></div><img class="bshot" src="shots/arq.png" alt="ARQ - Editor" /></div></div></div>
           <div class="proj-body">
             <div class="proj-head">
               <h3>ARQ</h3>
@@ -527,7 +527,7 @@
         </a>
 
         <a class="tile proj link-tile proj--sm" data-tip="reach.cat" href="https://reach.cat" target="_blank" rel="noopener">
-          <div class="proj-shot"><div class="device device--pc" style="--acc:#3E5B86"><div class="browser"><div class="bbar"><i></i><i></i><i></i><span class="burl"></span></div><img class="bshot" src="shots/reach.png" alt="Reach.cat — Business dashboard" /></div></div></div>
+          <div class="proj-shot"><div class="device device--pc" style="--acc:#3E5B86"><div class="browser"><div class="bbar"><i></i><i></i><i></i><span class="burl"></span></div><img class="bshot" src="shots/reach.png" alt="Reach.cat - Business dashboard" /></div></div></div>
           <div class="proj-body">
             <div class="proj-head">
               <h3>Reach.cat</h3>
@@ -538,7 +538,7 @@
         </a>
       </div>
 
-      <!-- grateful / brands band — restored 2026-09-22 -->
+      <!-- grateful / brands band - restored 2026-09-22 -->
       <section class="tile grateful t-full w4">
         <div class="grateful-copy">
           <p class="gh">More products / brands I had the chance to work with / on</p>
@@ -559,7 +559,7 @@
       <div class="sectitle t-full w4"><i></i><b>My certificates</b></div>
 
       <a class="tile cert-card w2 link-tile" data-tip="See course" href="https://growth.design/courses/product-psychology" target="_blank" rel="noopener">
-        <div class="cert-shot"><span class="cert-img" style="--shine:.12"><img src="certs/product-psychology.jpg" alt="Product Psychology Certificate — growth.design" /></span></div>
+        <div class="cert-shot"><span class="cert-img" style="--shine:.12"><img src="certs/product-psychology.jpg" alt="Product Psychology Certificate - growth.design" /></span></div>
         <div class="cert-meta">
           <h3>Product Psychology Masterclass</h3>
           <p class="sub">growth.design · Sep 2026 · B.I.A.S. Framework</p>
@@ -567,7 +567,7 @@
       </a>
 
       <a class="tile cert-card w2 link-tile" data-tip="See course" href="https://uxfoundation.vn/Khoa-hoc-Psychology-in-UX-Design" target="_blank" rel="noopener">
-        <div class="cert-shot"><span class="cert-img"><img src="certs/psychology-in-ux-design.jpg" alt="Psychology in UX Design — UX Foundation" /></span></div>
+        <div class="cert-shot"><span class="cert-img"><img src="certs/psychology-in-ux-design.jpg" alt="Psychology in UX Design - UX Foundation" /></span></div>
         <div class="cert-meta">
           <h3>Psychology in UX Design</h3>
           <p class="sub">UX Foundation · Aug 2024 · Outstanding Student</p>
@@ -581,9 +581,9 @@
         <section id="reading" class="tile reading tile-late">
           <p class="label">Books I read</p>
           <div class="shelf">
-            <a class="book" href="https://www.goodreads.com/book/show/52578297-the-midnight-library" target="_blank" rel="noopener" data-gr="See on Goodreads"><img class="cover" src="covers/midnight-library.jpg" alt="The Midnight Library — Matt Haig" loading="lazy" /><div class="meta-row"><span class="badge b-line">Read</span></div></a>
-            <a class="book" href="https://www.goodreads.com/book/show/133938826-welcome-to-the-hyunam-dong-bookshop" target="_blank" rel="noopener" data-gr="See on Goodreads"><img class="cover" src="covers/hyunam-dong-bookshop.jpg" alt="Welcome to the Hyunam-dong Bookshop — Hwang Bo-reum" loading="lazy" /><div class="meta-row"><span class="badge b-line">Read</span></div></a>
-            <a class="book" href="https://www.goodreads.com/book/show/2883244-1-litre-of-tears" target="_blank" rel="noopener" data-gr="See on Goodreads"><img class="cover" src="covers/1-litre-of-tears.jpg" alt="1 Litre of Tears — Kito Aya" loading="lazy" onerror="this.onerror=null;this.removeAttribute('src');this.alt=''" /><div class="meta-row"><span class="badge b-line">Read</span></div></a>
+            <a class="book" href="https://www.goodreads.com/book/show/52578297-the-midnight-library" target="_blank" rel="noopener" data-gr="See on Goodreads"><img class="cover" src="covers/midnight-library.jpg" alt="The Midnight Library - Matt Haig" loading="lazy" /><div class="meta-row"><span class="badge b-line">Read</span></div></a>
+            <a class="book" href="https://www.goodreads.com/book/show/133938826-welcome-to-the-hyunam-dong-bookshop" target="_blank" rel="noopener" data-gr="See on Goodreads"><img class="cover" src="covers/hyunam-dong-bookshop.jpg" alt="Welcome to the Hyunam-dong Bookshop - Hwang Bo-reum" loading="lazy" /><div class="meta-row"><span class="badge b-line">Read</span></div></a>
+            <a class="book" href="https://www.goodreads.com/book/show/2883244-1-litre-of-tears" target="_blank" rel="noopener" data-gr="See on Goodreads"><img class="cover" src="covers/1-litre-of-tears.jpg" alt="1 Litre of Tears - Kito Aya" loading="lazy" onerror="this.onerror=null;this.removeAttribute('src');this.alt=''" /><div class="meta-row"><span class="badge b-line">Read</span></div></a>
             
           </div>
         </section>
@@ -629,7 +629,7 @@
 
 
   <script>
-  /* Live Chess.com rating (public API, no auth, no server — fine on static hosting).
+  /* Live Chess.com rating (public API, no auth, no server - fine on static hosting).
      The number in the HTML is the fallback: if the API is slow, down or rate-limited,
      the baked-in value just stays, so this can only ever improve what is shown.
      Cached in localStorage for 6h so a reload is not a request. */
@@ -686,7 +686,7 @@
   </div>
 
   <script>
-  /* Playable piano — Web Audio, no assets. Keyboard row S/E/D/R/F G/Y/H/U/J/I/K = C4..B4,
+  /* Playable piano - Web Audio, no assets. Keyboard row S/E/D/R/F G/Y/H/U/J/I/K = C4..B4,
      which is why the keycaps are labelled that way.
      Notes SUSTAIN while the key is held (slow natural decay) and are damped on release,
      the way a real piano's damper drops back onto the string. */
@@ -728,7 +728,7 @@
       osc.type='triangle'; osc.frequency.value=freq;
       harm.type='sine';    harm.frequency.value=freq*2; hg.gain.value=0.22;
       osc.connect(g); harm.connect(hg); hg.connect(g); g.connect(master);
-      /* hammer strike, then the long decay of a held string — it keeps ringing until released */
+      /* hammer strike, then the long decay of a held string - it keeps ringing until released */
       g.gain.setValueAtTime(0.0001,t);
       g.gain.exponentialRampToValueAtTime(PEAK,t+ATTACK);
       g.gain.exponentialRampToValueAtTime(PEAK*0.22,t+2.4);
@@ -739,7 +739,7 @@
     function press(el){ if(!el||el.classList.contains('is-down')) return;
       el.classList.add('is-down'); strike(el.dataset.key,parseFloat(el.dataset.f)); coachPlay(); }
     /* Half-pedalling is real: the damper rests partly on the string, so release time grows
-       exponentially with pedal travel — 0.19s fully down, ~1.1s at half, ~6.5s fully lifted. */
+       exponentially with pedal travel - 0.19s fully down, ~1.1s at half, ~6.5s fully lifted. */
     function releaseTime(){ return DAMP*Math.pow(6.5/DAMP,pedal); }
     function release(el){ if(!el||!el.classList.contains('is-down')) return;
       el.classList.remove('is-down');
@@ -816,7 +816,7 @@
 
     function coachPlay(){
       if(coachDone||!coach) return;
-      if(stage===0&&!pedalFound){ stage=1; showCoach('Drag the Pedal slider — like a real sustain pedal, the notes keep ringing after you let go.'); }
+      if(stage===0&&!pedalFound){ stage=1; showCoach('Drag the Pedal slider - like a real sustain pedal, the notes keep ringing after you let go.'); }
       else if(stage===2){ stage=3; showCoach('Nice!',true,true); fadeTimer=setTimeout(killCoach,1600); }
     }
     function coachPedal(){
@@ -827,7 +827,7 @@
 
     if(coach){
       coachX.addEventListener('click',killCoach);
-      /* "outside" means outside the piano card — playing a key or nudging the pedal must not
+      /* "outside" means outside the piano card - playing a key or nudging the pedal must not
          dismiss it, or stages 2 and 3 could never be reached. */
       document.addEventListener('pointerdown',function(e){
         if(coachDone||!coach.classList.contains('is-on')) return;

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Play Son Tung — Chess</title>
+<title>Play Son Tung - Chess</title>
 <meta name="description" content="Play a game of chess against Son Tung's bot." />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -41,7 +41,7 @@
   .back .star{color:var(--accent)}
   .topbar__meta{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
 
-  /* pill CTA — same one the homepage uses for "Read experiment" */
+  /* pill CTA - same one the homepage uses for "Read experiment" */
   .case-cta{display:inline-flex;align-items:center;gap:9px;margin-top:16px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:12px 20px;border-radius:999px;background:var(--ink);color:var(--bg);transition:background .2s}
   .case-cta span{transition:transform .2s}
   .case-cta:hover{background:var(--accent-ink)}
@@ -184,11 +184,11 @@
   <script type="module">
     import { Chess } from './chess/chess.js';
 
-    // Son Tung's real opening book — his moves, keyed by board position, built from ~4,000
+    // Son Tung's real opening book - his moves, keyed by board position, built from ~4,000
     // of his Chess.com games. The bot plays a weighted-random pick of HIS move when in book.
     const BOOK = await fetch('./chess/book.json').then(r => r.json()).catch(() => ({}));
     const BOOK_N = Object.keys(BOOK).length;
-    let maiaState = 'loading';       // 'loading' | 'ready' | 'failed' — his trained brain (async, optional)
+    let maiaState = 'loading';       // 'loading' | 'ready' | 'failed' - his trained brain (async, optional)
     let waitingForMaia = false;      // true while a bot move is blocked on the model finishing its load
     let pickMove = null;             // assigned once maia.js + onnxruntime-web finish loading
     const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -218,7 +218,7 @@
     let gameOver = false;
     let lastBotSource = null;   // 'book' | 'maia' | 'engine'
     let phase = 'setup';        // 'setup' | 'playing'
-    let pendingAnim = null;     // { from, to } — slide the just-moved piece into place
+    let pendingAnim = null;     // { from, to } - slide the just-moved piece into place
 
     const boardEl  = document.getElementById('board');
     const statusEl = document.getElementById('status');
@@ -396,7 +396,7 @@
       if(bm){ try{ played = game.move(bm); source = 'book'; }catch{ played = null; } }
 
       // Off-book this should be Maia, not the practice engine. If the model is still loading
-      // (cold device / slow network), WAIT for it — the weak fallback is only for when Maia
+      // (cold device / slow network), WAIT for it - the weak fallback is only for when Maia
       // genuinely can't load. The opening book has bought most of the download time already.
       if(!played && maiaState === 'loading'){
         waitingForMaia = true; updateBrainState();
@@ -473,7 +473,7 @@
       const opp = humanColor==='w' ? 'b' : 'w';
       const icons = (caps, color) => {
         let h=''; for(const t of ['q','r','b','n','p']) for(let i=0;i<(caps[t]||0);i++) h += `<img class="capi" src="chess/pieces/${color}${t.toUpperCase()}.svg" alt="">`;
-        return h || '<span class="capnone">—</span>';
+        return h || '<span class="capnone">-</span>';
       };
       const lead = mat[humanColor] - mat[opp];              // + = you're ahead
       const youEl = document.getElementById('cap-you'), botEl = document.getElementById('cap-bot');
@@ -574,7 +574,7 @@
     render(); updateMoves(); updateStatus();
 
     // Load my personalized Maia (fine-tuned on my rapid games) in the background. If it (or
-    // onnxruntime-web) fails, the page still works — off-book falls back to the practice engine.
+    // onnxruntime-web) fails, the page still works - off-book falls back to the practice engine.
     (async () => {
       try {
         const maia = await import('./chess/maia/maia.js');

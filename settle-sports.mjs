@@ -1,4 +1,4 @@
-/* Sports pile — EXACT TANGENCY, physically stable, true real-world proportions.
+/* Sports pile - EXACT TANGENCY, physically stable, true real-world proportions.
    basketball + football resting on the floor, touching each other
    tennis nested in the V between them (two contact points = a genuinely stable seat)
    shuttlecock LYING ON ITS SIDE on the floor beside the football.
