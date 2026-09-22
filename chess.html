@@ -13,9 +13,9 @@
 <style>
   /* ============ TOKENS (shared with index.html) ============ */
   :root{
-    --bg:#F1EEE7; --tile:#FCFBF8; --ink:#1B1A17; --ink-2:#57544E; --muted:#908C83;
-    --line:#E7E2D8; --line-2:#D8D1C4; --accent:#C2603C; --accent-ink:#A24A29;
-    --t-lilac-1:#EEEAF4; --c-lilac:#6A5494;
+    --bg:#EFEFEF; --tile:#FBFBFB; --ink:#1B1A17; --ink-2:#57544E; --muted:#908C83;
+    --line:#E6E6E6; --line-2:#D6D6D6; --accent:#C2603C; --accent-ink:#A24A29;
+    --t-green-1:#E9F0E6; --c-green:#4C6B3C;
     --sans:'Inter',system-ui,-apple-system,sans-serif;
     --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
     /* board palette (warm paper) */
@@ -28,8 +28,10 @@
   ::selection{background:#E8C9B9}
 
   .label{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
-  .badge{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:6px;display:inline-flex;align-items:center;white-space:nowrap}
-  .b-lilac{background:var(--t-lilac-1);color:var(--c-lilac)}
+  .cstat{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border:1px solid var(--line-2);border-radius:6px;white-space:nowrap}
+  .cstat b{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.06em}
+  .cstat--rapid{background:var(--t-green-1);color:var(--c-green)}
+  .cstat .ci{flex:none;display:block;width:11px;height:11px}
 
   /* ============ TOP BAR ============ */
   .topbar{position:sticky;top:0;z-index:50;backdrop-filter:saturate(140%) blur(10px);background:color-mix(in srgb,var(--bg) 80%,transparent);border-bottom:1px solid var(--line)}
@@ -39,11 +41,20 @@
   .back .star{color:var(--accent)}
   .topbar__meta{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
 
+  /* pill CTA — same one the homepage uses for "Read experiment" */
+  .case-cta{display:inline-flex;align-items:center;gap:9px;margin-top:16px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:12px 20px;border-radius:999px;background:var(--ink);color:var(--bg);transition:background .2s}
+  .case-cta span{transition:transform .2s}
+  .case-cta:hover{background:var(--accent-ink)}
+  .case-cta:hover span{transform:translateX(3px)}
+
   /* ============ PAGE LAYOUT ============ */
   .page{max-width:1100px;margin:0 auto;padding:32px 24px 64px}
-  .pagehead{margin-bottom:24px}
+  /* title + blurb on the left, the style-page CTA parked on the right of them */
+  .pagehead{margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap}
+  .pagehead__txt{max-width:720px;flex:1 1 420px}
   .pagehead h1{font-size:26px;font-weight:600;letter-spacing:-.02em}
   .pagehead p{color:var(--ink-2);font-size:14px;margin-top:4px}
+  .pagehead .case-cta{margin-top:0;flex:none}
   .layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:28px;align-items:start}
   @media(max-width:840px){.layout{grid-template-columns:1fr}}
 
@@ -111,16 +122,18 @@
 <body>
   <header class="topbar">
     <div class="topbar__in">
-      <a class="back" href="index.html"><span>←</span> Son Tung <span class="star">✦</span></a>
+      <a class="back" href="index.html"><span>←</span> Back</a>
       <span class="topbar__meta">my book + my own Maia</span>
     </div>
   </header>
 
   <div class="page">
     <div class="pagehead">
-      <h1>Play me <span class="badge b-lilac" style="vertical-align:middle">2010 rapid chess.com</span></h1>
+      <div class="pagehead__txt">
+      <h1>Play me <span class="cstat cstat--rapid" style="vertical-align:middle"><svg class="ci" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="currentColor"/><path d="M8.75 4.4a.75.75 0 0 0-1.5 0v3.9c0 .26.13.5.35.64l2.5 1.55a.75.75 0 1 0 .8-1.27L8.75 7.9z" fill="var(--t-green-1)"/></svg><b>2155</b> peak rapid</span></h1>
       <p>This bot plays like me: my real openings, then a Maia neural net I fine-tuned on my own rapid games for everything after. About as close to playing me as it gets.</p>
-      <a href="chess-style.html" style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--accent-ink);font-weight:500">📊 See how I play — my style fingerprint →</a>
+      </div>
+      <a class="case-cta" href="chess-style.html">See how I play <span aria-hidden="true">→</span></a>
     </div>
 
     <div class="layout">

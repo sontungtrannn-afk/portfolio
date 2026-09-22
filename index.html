@@ -8,18 +8,18 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Caveat:wght@600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
 <style>
   /* ============ TOKENS ============ */
   :root{
-    --bg:#F1EEE7;
-    --tile:#FCFBF8;
+    --bg:#EFEFEF;
+    --tile:#FBFBFB;
     --ink:#1B1A17;
     --ink-2:#57544E;
     --muted:#908C83;
-    --line:#E7E2D8;
-    --line-2:#D8D1C4;
+    --line:#E6E6E6;
+    --line-2:#D6D6D6;
     --accent:#C2603C;
     --accent-ink:#A24A29;
 
@@ -33,7 +33,7 @@
     --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
     --r:18px;
     --maxw:1320px;
-    --gap:16px;
+    --gap:32px;
   }
 
   *{box-sizing:border-box;margin:0;padding:0}
@@ -52,18 +52,8 @@
   .b-clay{background:var(--t-clay-1);color:var(--c-clay)}
   .b-line{background:transparent;border:1px solid var(--line-2);color:var(--muted)}
 
-  /* ============ NAV ============ */
-  .nav{position:sticky;top:0;z-index:50;backdrop-filter:saturate(140%) blur(10px);background:color-mix(in srgb,var(--bg) 80%,transparent);border-bottom:1px solid var(--line)}
-  .nav__in{display:flex;align-items:center;justify-content:space-between;height:58px}
-  .brand{font-family:var(--mono);font-weight:600;font-size:13px;display:flex;align-items:center;gap:7px}
-  .brand .star{color:var(--accent)}
-  .nav__links{display:flex;gap:24px;font-family:var(--mono);font-size:12px;color:var(--ink-2)}
-  .nav__links a{transition:color .18s}
-  .nav__links a:hover{color:var(--accent)}
-  @media(max-width:560px){.nav__links{display:none}}
-
   /* ============ BENTO GRID (4-col, uniform 16px gaps) ============ */
-  .bento{display:grid;gap:var(--gap);grid-template-columns:1fr;padding:22px 0 46px}
+  .bento{display:grid;gap:var(--gap);grid-template-columns:1fr;padding:80px 0 46px}
   @media(min-width:641px){
     .bento{grid-template-columns:repeat(2,1fr)}
     .t-full{grid-column:1/-1}
@@ -76,14 +66,12 @@
 
   /* ============ TILE BASE ============ */
   .tile{background:var(--tile);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;min-height:150px;position:relative}
-  .arrow{position:absolute;top:16px;right:18px;color:var(--muted);font-size:15px;transition:transform .22s,color .22s;z-index:3}
   .link-tile{cursor:pointer;transition:border-color .25s,box-shadow .25s}
   /* hover: the card itself stays put — only border + shadow change; the device visual is what scales */
   .link-tile:hover{border-color:var(--line-2);box-shadow:0 16px 34px -22px rgba(40,30,20,.4)}
-  .link-tile:hover .arrow{color:var(--accent)}
 
   /* ============ INTRO ============ */
-  .intro{justify-content:center;padding:34px}
+  .intro{overflow:visible;justify-content:center;padding:34px}
   .intro .kicker{margin-bottom:18px}
   .intro h1{font-size:clamp(28px,3vw,40px);line-height:1.15;font-weight:500;letter-spacing:-.03em}
   .intro h1 em{font-style:normal;font-weight:700}
@@ -91,17 +79,17 @@
   .intro h1 .clay{color:var(--c-clay)}
   .intro h1 .green{color:var(--c-green)}
   /* hover a phrase → its logo cluster fades into the intro's right whitespace (CSS-only via :has) */
-  .intrologos{position:absolute;right:60px;top:50%;transform:translateY(-50%);width:304px;height:140px;pointer-events:none}
-  .loset{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:30px;opacity:0;transform:translateY(10px);transition:opacity .35s ease,transform .35s ease}
+  .intrologos{position:absolute;inset:0;pointer-events:none;overflow:visible;z-index:20}
+  .loset{position:absolute;left:0;top:0;display:flex;align-items:center;gap:14px;opacity:0;transition:opacity .16s ease;will-change:transform}
   .loset svg{display:block}
   /* big app-icon tiles, tilted & spaced (not overlapping) for a playful hand-tossed look */
-  .lgtile{width:80px;height:80px;border-radius:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 28px -12px rgba(40,35,30,.45)}
+  .lgtile{width:64px;height:64px;border-radius:17px;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 28px -12px rgba(40,35,30,.45)}
+  .lgtile--emoji{width:auto;height:auto;background:none;box-shadow:none;border-radius:0;font-size:56px;line-height:1;filter:drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff) drop-shadow(0 10px 14px rgba(40,35,30,.28))}
+  .lgtile--logo{display:flex;align-items:center;justify-content:center;font-size:0}
+  .lgtile--logo img{display:block;width:62px;height:62px;border-radius:17px}
   .loset .lgtile:nth-child(1){transform:rotate(-8deg) translateY(-12px)}
   .loset .lgtile:nth-child(2){transform:rotate(9deg) translateY(13px)}
   .loset .lgtile:nth-child(3){transform:rotate(-5deg) translateY(-5px)}
-  .intro:has(.blue:hover) .loset--design{opacity:1;transform:none}
-  .intro:has(.clay:hover) .loset--psych{opacity:1;transform:none}
-  .intro:has(.green:hover) .loset--games{opacity:1;transform:none}
   @media(max-width:1000px){.intrologos{display:none}}
   .intro .lead{margin-top:16px;max-width:50ch;color:var(--ink-2);font-size:17px}
   .intro .lead b{color:var(--ink);font-weight:600}
@@ -113,15 +101,26 @@
   .now{padding:24px}
   .now .label{margin-bottom:13px}
   .now ul{list-style:none;display:flex;flex-direction:column;gap:16px}
-  .now li{display:flex;flex-direction:column;gap:1px}
-  .now li b{font-family:var(--mono);color:var(--muted);font-weight:500;letter-spacing:.07em;font-size:10px}
-  .now li span{color:var(--ink);font-size:13px;font-weight:500}
+  .now li{display:flex;align-items:flex-start;gap:11px}
+  .now li>div{display:flex;flex-direction:column;gap:1px;min-width:0}
+  /* tinted chip + solid icon, same pairing the badges use */
+  .ic{flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .ic--build{background:var(--t-clay-1);color:var(--c-clay)}
+  .ic--read{background:var(--t-blue-1);color:var(--c-blue)}
+  .ic--play{background:var(--t-green-1);color:var(--c-green)}
+  .ic--learn{background:var(--t-lilac-1);color:var(--c-lilac)}
+  .ic--listen{background:var(--t-amber-1);color:var(--c-amber)}
+  .now li>div>b{font-family:var(--mono);color:var(--muted);font-weight:500;letter-spacing:.07em;font-size:10px}
+  .now li>div>span{color:var(--ink);font-size:13px;font-weight:500}
 
   /* ============ WORK CARDS ============ */
   .proj{cursor:pointer;min-height:450px}
+  [data-tip]::after{content:attr(data-tip);position:absolute;left:0;top:0;transform:translate(var(--mx,16px),var(--my,16px));z-index:6;font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:#F1EEE7;background:#26231F;padding:5px 9px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .18s ease}
+  [data-tip]:hover::after{opacity:1}
+  @media(hover:none){[data-tip]::after{display:none}}
   .proj-shot{flex:1;min-height:130px;order:1;position:relative}            /* empty placeholder for a real screenshot */
   .proj-body{padding:18px 22px 22px}
-  .proj-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px;padding-right:20px}
+  .proj-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px}
   .proj-head h3{font-size:18px;font-weight:600;letter-spacing:-.01em}
   .tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0}
   .proj-desc{color:var(--ink-2);font-size:14px;line-height:1.4}
@@ -133,6 +132,13 @@
   .proj:hover .device--pc{width:calc(100% - 44px);max-width:760px}
   /* phones (AllyUp, Questie): pre-rendered iPhone mockup image — transparent PNG with the frame baked in */
   .device--mock{display:block;width:79%;max-width:243px;top:7px;transform:translateX(-50%);transform-origin:top center;transition:transform .35s cubic-bezier(.2,.7,.2,1);filter:drop-shadow(0 22px 38px rgba(35,35,50,.28))}
+  /* CSS bezel for raw screenshots; matches the footprint of the baked-in mockups */
+  .device--iphone{width:66%;max-width:204px;top:7px;transform:translateX(-50%);transform-origin:top center;transition:transform .35s cubic-bezier(.2,.7,.2,1);filter:drop-shadow(0 22px 38px rgba(35,35,50,.28))}
+  .device--iphone .ph-frame{display:block;width:100%;height:auto;position:relative;z-index:2}
+  /* the screenshot sits BEHIND the frame and shows through its transparent cutout;
+     the bezel covers the square corners, so no rounding is needed on the shot itself */
+  .device--iphone .ph-shot{position:absolute;left:4.381%;top:1.75%;width:91.237%;height:96.5%;object-fit:cover;border-radius:13.84%/6.35%;z-index:1}
+  .proj:hover .device--iphone{transform:translateX(-50%) scale(1.05)}
   .proj:hover .device--mock{transform:translateX(-50%) scale(1.05)}
   /* container-type makes the browser a query container; --u = 1px at the 536px design width, so the chrome bar scales with the mockup (hover + responsive) */
   .browser{background:#fff;border-radius:11px 11px 4px 4px;border:1px solid rgba(0,0,0,.07);box-shadow:0 26px 60px -30px rgba(40,40,60,.45);overflow:hidden;container-type:inline-size;--u:calc(100cqw / 536)}
@@ -155,96 +161,257 @@
   .bcards>div:first-child{background:var(--acc);opacity:.24}
   .bln{height:10px;border-radius:5px;background:#edece7}
   .bln.w70{width:70%}.bln.w50{width:50%}
-  .bshot{display:block;width:100%;height:auto;min-height:230px;background:#f3f2ef}
+  .bshot{display:block;width:100%;height:auto;background:#f3f2ef}
 
   /* ============ PLAY ============ */
   .play{padding:22px;justify-content:space-between;gap:14px;min-height:230px}
+  .play:has(.pkeys) .top{align-items:center}
   .play .top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
   .play h3{font-size:17px;font-weight:600}
   .play .sub{font-size:14px;color:var(--ink-2);margin-top:3px}
   .play .viz{margin-top:auto;display:flex;align-items:flex-end;min-height:50px}
   .chessboard{position:absolute;left:50%;transform:translateX(-50%);bottom:-30px;width:176px;height:176px;border-radius:10px;border:1px solid #d8cfbf;background-color:#efe9dc;background-image:conic-gradient(#7c6f59 90deg,transparent 90deg 180deg,#7c6f59 180deg 270deg,transparent 270deg);background-size:44px 44px}
-  .piano{position:absolute;left:0;right:0;bottom:-40px;display:flex;justify-content:center}
+  .pedal{display:flex;align-items:center;gap:9px;flex:none;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);background:var(--tile);border:1px solid var(--line-2);border-radius:999px;padding:6px 12px;cursor:pointer;transition:color .18s,border-color .18s}
+  .pedal.is-on{color:var(--ink);border-color:var(--muted)}
+  /* --p is written by the script so the filled part of the track follows the value */
+  .pedal input{-webkit-appearance:none;appearance:none;width:62px;height:4px;border-radius:2px;outline:none;cursor:pointer;background:linear-gradient(to right,var(--accent) 0 var(--p,0%),var(--line-2) var(--p,0%) 100%)}
+  .pedal input::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid var(--tile);box-shadow:0 1px 3px rgba(40,30,20,.35)}
+  .pedal input::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid var(--tile)}
+
+
+  /* handwritten nudge sitting just above the keys */
+  .playme{position:absolute;left:50%;bottom:132px;transform:translateX(-50%) rotate(-5deg);font-family:Caveat,cursive;font-size:24px;font-weight:600;line-height:1;color:var(--accent-ink);pointer-events:none;z-index:3;white-space:nowrap}
+  .piano{position:absolute;left:0;right:0;bottom:-32px;display:flex;justify-content:center}
+
+  /* Pedal coach-mark — body-level + fixed so the card's overflow:hidden can't clip it */
+  .coach{position:fixed;left:0;top:0;z-index:60;display:flex;align-items:flex-start;gap:8px;width:236px;
+    font-family:var(--mono);font-size:10px;line-height:1.7;letter-spacing:.03em;color:#F1EEE7;
+    background:#26231F;padding:9px 9px 9px 12px;border-radius:8px;box-shadow:0 8px 22px rgba(27,26,23,.24);
+    opacity:0;visibility:hidden;pointer-events:none;transform:translateY(4px);
+    transition:opacity .24s ease,transform .24s ease,visibility 0s linear .24s}
+  .coach.is-on{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);transition-delay:0s}
+  .coach .coach-msg{flex:1}
+  .coach .coach-x{flex:none;width:16px;height:16px;margin-top:1px;padding:0;border:0;border-radius:50%;
+    cursor:pointer;background:rgba(241,238,231,.14);color:#F1EEE7;font-family:var(--mono);font-size:9px;
+    line-height:16px;transition:background .18s}
+  .coach .coach-x:hover{background:rgba(241,238,231,.32)}
+  .coach.is-auto{width:auto}
+  .coach.is-final .coach-x{display:none}
+  .coach i{position:absolute;left:var(--ax,50%);bottom:-4px;width:10px;height:10px;margin-left:-5px;
+    background:#26231F;transform:rotate(45deg);border-radius:2px}
+  @media(prefers-reduced-motion:reduce){.coach{transition:opacity .01s}}
   .pkeys{position:relative;display:flex;border:1px solid #ddd6c8;border-bottom:0;border-radius:5px 5px 0 0;overflow:hidden}
-  .pkeys .wk{width:28px;height:150px;background:#fff;border-left:1px solid #ddd6c8}
+  .pkeys .wk{width:24px;height:150px;background:#fff;border-left:1px solid #ddd6c8;display:flex;align-items:flex-end;justify-content:center;padding-bottom:45px;font-family:var(--mono);font-size:9px;font-weight:500;color:#c4bdb0}
   .pkeys .wk:first-child{border-left:0}
-  .pkeys .bk{position:absolute;top:0;width:16px;height:74px;background:#33302b;border-radius:0 0 3px 3px;z-index:2}
+  .pkeys .bk{position:absolute;top:0;width:14px;height:74px;background:#33302b;border-radius:0 0 3px 3px;z-index:2;display:flex;align-items:flex-end;justify-content:center;padding-bottom:7px;font-family:var(--mono);font-size:8px;font-weight:500;color:rgba(255,255,255,.42)}
+
+  .pkeys .wk,.pkeys .bk{cursor:pointer;user-select:none;-webkit-user-select:none;transition:background .08s ease,color .08s ease}
+  .pkeys .wk.is-down{background:#EFE9DC;color:var(--accent-ink)}
+  .pkeys .bk.is-down{background:#5A5349;color:#fff}
 
   /* ============ GRATEFUL / BRANDS ============ */
-  .grateful{padding:42px 34px 46px;text-align:center;align-items:center}
-  .grateful .gh{font-size:20px;color:var(--ink-2);font-weight:500;max-width:36ch;line-height:1.4}
-  .grateful .gs{font-size:28px;font-weight:700;color:var(--ink);margin-top:10px;letter-spacing:-.02em}
-  .brands-cluster{display:flex;justify-content:center;align-items:flex-end;margin-top:38px}
-  .bc{border-radius:50%;border:4px solid var(--tile);box-shadow:0 12px 26px -12px rgba(40,30,20,.28);flex:none}
-  .bc+.bc{margin-left:-22px}
+  .grateful{flex-direction:row;align-items:center;justify-content:space-between;gap:34px;padding:48px 34px;text-align:left}
+  .grateful .gh{font-size:17px;color:var(--ink-2);font-weight:500;max-width:30ch;line-height:1.35}
+  .grateful .gs{font-size:23px;font-weight:700;color:var(--ink);margin-top:6px;letter-spacing:-.02em}
+  /* positions came from a gravity simulation (8 balls dropped into a 620x217 box, settled to
+     0.001px overlap: 5 resting on the floor, 3 nested in the valleys). Stored as percentages so the
+     whole pile scales with the container. */
+  .grateful-copy{flex:none}
+  .brands-cluster{position:relative;align-self:flex-end;flex:1;max-width:744px;aspect-ratio:930.86/128;margin:0 0 -48px auto}
+  /* no overflow:hidden here — it would clip the tooltip; the img itself is rounded instead */
+  .bc{position:absolute;aspect-ratio:1;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .bc img{border-radius:50%}
+  .bc img{transition:transform .28s cubic-bezier(.2,.7,.2,1)}
+  .bc:hover img{transform:rotate(10deg)}
+  .bc::after{content:attr(data-site);position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%) translateY(4px);white-space:nowrap;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:#F1EEE7;background:#26231F;padding:6px 10px;border-radius:7px;opacity:0;pointer-events:none;z-index:20;transition:opacity .2s ease,transform .2s ease}
+  .bc:hover::after{opacity:1;transform:translateX(-50%) translateY(0)}
+  @media(hover:none){.bc::after{display:none}}
+  .bc img{width:62%;height:62%;object-fit:contain;display:block}
+  /* app-icon style marks already carry their own coloured background — let them fill the ball */
+  .bc--fill img{width:100%;height:100%;object-fit:cover}
+  @keyframes balldrop{
+    0%{transform:translateY(-380px);opacity:0}
+    10%{opacity:1}
+    62%{transform:translateY(0);animation-timing-function:cubic-bezier(.3,0,.5,1)}
+    76%{transform:translateY(-17px)}
+    88%{transform:translateY(0)}
+    94%{transform:translateY(-5px)}
+    100%{transform:translateY(0)}
+  }
+  /* --tx and --rot are per-ball: the spin equals distance/radius, so they roll rather than slide */
+  @keyframes rollin{
+    from{transform:translateX(var(--tx)) rotate(var(--rot));opacity:0}
+    12%{opacity:1}
+    to{transform:translateX(0) rotate(0deg);opacity:1}
+  }
+  /* accelerating fall, then a small bounce — see the keyframe timing-function switch */
+  .brands-cluster.dropped .bc{animation:rollin 1500ms cubic-bezier(.37,0,.63,1) both}
+  .brands-cluster.dropped .bc:nth-child(1){animation-delay:0ms}
+  .brands-cluster.dropped .bc:nth-child(2){animation-delay:170ms}
+  .brands-cluster.dropped .bc:nth-child(3){animation-delay:340ms}
+  .brands-cluster.dropped .bc:nth-child(4){animation-delay:510ms}
+  .brands-cluster.dropped .bc:nth-child(5){animation-delay:680ms}
+  .brands-cluster.dropped .bc:nth-child(6){animation-delay:850ms}
+  .brands-cluster.dropped .bc:nth-child(7){animation-delay:1020ms}
+  /* after landing the animation is removed entirely, so the balls can never be stranded on the
+     0% keyframe (opacity:0) if the keyframes never advance — backgrounded tab, headless capture, etc. */
+  .brands-cluster.landed .bc{animation:none}
+  @media(prefers-reduced-motion:reduce){.brands-cluster.dropped .bc{animation:none}}
+  /* ============ CERTIFICATES ============ */
+  .cert-img{--shine:.28}
+  .cert-img::after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;transform:translateX(-130%);background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,var(--shine)) 50%,transparent 60%)}
+  .cert-card:hover .cert-img::after,
+  .cert-card.shimmer-once .cert-img::after{animation:shimmer 900ms ease-out 1 both}
+  @keyframes shimmer{from{transform:translateX(-130%)}to{transform:translateX(130%)}}
+  @media(prefers-reduced-motion:reduce){.cert-card:hover .cert-img::after,.cert-card.shimmer-once .cert-img::after{animation:none}}
+  .cert-card{padding:0}
+  .cert-shot{flex:1;display:flex;align-items:center;padding:22px}
+  .cert-img{position:relative;display:block;width:100%;min-width:0;border-radius:8px;border:1px solid var(--line);overflow:hidden;line-height:0}
+  .cert-shot img{display:block;width:100%;height:auto}
+  .cert-meta{padding:0 22px 22px}
+  .cert-meta h3{font-size:16px;font-weight:600;letter-spacing:-.01em}
+  .cert-meta .sub{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:5px;letter-spacing:.03em}
 
   /* ============ READING ============ */
   .reading{padding:24px}
   .reading .label{margin-bottom:18px}
-  .shelf{display:flex;gap:13px;flex-wrap:wrap}
-  .book{width:110px}
+  .shelf{display:flex;gap:13px;flex-wrap:nowrap}
+  .book{position:relative;display:block;width:110px}
+  .book .cover{transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+  .book:hover .cover{transform:scale(1.05)}
+  /* centred above the cover rather than cursor-following: a 110px book is narrower than the
+     label, so the follow-and-clamp logic would pin it in place anyway */
+  .book::after{content:attr(data-gr);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(3px);white-space:nowrap;font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:#F1EEE7;background:#26231F;padding:5px 9px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease;z-index:6}
+  .book:hover::after{opacity:1;transform:translateX(-50%) translateY(0)}
+  @media(hover:none){.book::after{display:none}}
   .book .cover{display:block;width:100%;height:166px;object-fit:cover;border-radius:4px 8px 8px 4px;box-shadow:0 14px 28px -16px rgba(40,30,20,.5);background:#eceae3}
   .book .meta-row{margin-top:10px}
 
   /* ============ CONTACT ============ */
-  .contact{padding:34px;justify-content:center;background:#16140F;border-color:#16140F;color:#F1EEE7}
-  .contact .label{color:#8d877a}
-  .contact h2{font-size:clamp(28px,3vw,42px);font-weight:600;letter-spacing:-.03em;line-height:1.08;margin-top:14px;max-width:20ch}
-  .contact h2 a{color:#E8855F;border-bottom:2px solid transparent;transition:border-color .2s}
-  .contact h2 a:hover{border-color:#E8855F}
-  .contact .sub{margin-top:14px;color:#b8b2a6;max-width:46ch;font-size:15px}
-  .contact .socials{display:flex;flex-wrap:wrap;gap:9px 20px;margin-top:24px;font-family:var(--mono);font-size:13px}
-  .contact .socials a{display:inline-flex;align-items:center;gap:6px;color:#d8d2c6;transition:color .18s}
-  .contact .socials a:hover{color:#E8855F}
-  .contact .socials a span{color:#7d776b}
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:26px 2px 6px;background:none;border:0;min-height:0;font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+  .foot-links{display:flex;gap:26px}
+  .foot-links a,.copymail{font:inherit;color:var(--ink-2);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px;transition:color .18s}
+  .foot-links a:hover,.copymail:hover{color:var(--accent-ink)}
+  .copymail.copied{color:var(--c-green);text-decoration:none}
 
-  footer{border-top:1px solid var(--line);padding:20px 0 36px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.03em}
+  /* ============ CASE STUDY (row 2) ============ */
+  .case{flex-direction:row;align-items:center;gap:40px;padding:38px 34px}
+  .case-body{flex:1;min-width:0}
+  .case h2{font-size:clamp(24px,2vw,31px);font-weight:600;letter-spacing:-.02em;line-height:1.2;margin-top:13px}
+  .case-lead{margin-top:12px;max-width:58ch;color:var(--ink-2);font-size:15px}
+  .case-lead em{font-style:normal;font-weight:600;color:var(--ink)}
+  .case-cta{display:inline-flex;align-items:center;gap:9px;margin-top:24px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:12px 20px;border-radius:999px;background:var(--ink);color:var(--bg);transition:background .2s}
+  .case-cta span{transition:transform .2s}
+  .case-cta:hover{background:var(--accent-ink)}
+  .case-cta:hover span{transform:translateX(3px)}
+  .case-viz{flex:none;width:318px}
+  .pmock{background:#2B2A26;border-radius:16px;padding:16px;box-shadow:0 22px 44px -24px rgba(30,25,18,.6)}
+  .pm-head{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#8d877a;display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .pm-dot{width:7px;height:7px;border-radius:50%;background:#81B64C}
+  .pm-row{display:flex;align-items:center;gap:10px;padding:10px;border-radius:11px;background:rgba(255,255,255,.05)}
+  .pm-row+.pm-row{margin-top:9px}
+  .pm-row--hi{background:rgba(129,182,76,.16);border:1px solid rgba(129,182,76,.45)}
+  .pm-av{width:32px;height:32px;border-radius:9px;background:#5C7FA8;flex:none}
+  .pm-av--2{background:#81B64C}
+  .pm-txt{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.3}
+  .pm-txt b{color:#F1EEE7;font-size:13px;font-weight:600}
+  .pm-txt span{color:#9a948a;font-family:var(--mono);font-size:10px}
+  .pm-btn{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;padding:6px 10px;border-radius:7px;background:#81B64C;color:#1B1A17;font-weight:600;flex:none}
+  .pm-btn--off{background:rgba(255,255,255,.08);color:#6f6a62}
 
+  /* ============ CHESS STAT CHIPS ============ */
+  .sectitle--chips b{flex:none}
+  .titlechips{display:flex;flex-wrap:wrap;gap:8px;margin-left:14px}
+  .cstat{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border:1px solid var(--line-2);border-radius:6px;white-space:nowrap}
+  .cstat b{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.06em}
+  .cstat--rapid{background:var(--t-green-1);color:var(--c-green)}
+  .cstat--blitz{background:var(--t-amber-1);color:var(--c-amber)}
+  .cstat--streak{background:var(--t-clay-1);color:var(--c-clay)}
+  .cstat .ci{flex:none;display:block;width:11px;height:11px}
+
+
+  /* ============ SPORTS BALL PIT ============ */
+  /* diameters are the real objects to scale: basketball 24.0cm, football 22.0cm,
+     tennis 6.7cm, shuttlecock skirt 6.5cm — positions from settle.mjs's sim (0.0000 overlap). */
+  .ballpit{position:absolute;left:0;right:0;bottom:0;aspect-ratio:255.47/76.63;container-type:inline-size;pointer-events:none}
+  .sball{position:absolute;aspect-ratio:1;display:flex;align-items:center;justify-content:center;line-height:1;overflow:visible}
+  /* a shuttlecock stands cork-down, so it is bottom-anchored rather than centred in its circle.
+     If sports/shuttlecock.png is missing the img removes itself and the 🏸 emoji shows instead. */
+  .sball--shuttle{top:auto}
+  .sball--shuttle img{width:100%;height:100%;object-fit:contain;display:block;transform:rotate(74.57deg)}
+  .sball--shuttle i{display:none;font-style:normal}
+  .sball--shuttle:not(:has(img)) i{display:block}
+  .ballpit.dropped .sball{animation:balldrop 1100ms cubic-bezier(.45,0,.75,.35) both}
+  .ballpit.dropped .sball:nth-child(1){animation-delay:0ms}
+  .ballpit.dropped .sball:nth-child(2){animation-delay:90ms}
+  .ballpit.dropped .sball:nth-child(3){animation-delay:180ms}
+  .ballpit.dropped .sball:nth-child(4){animation-delay:270ms}
+  .ballpit.landed .sball{animation:none}
+  @media(prefers-reduced-motion:reduce){.ballpit.dropped .sball{animation:none}}
+
+  /* ============ PLAY ME — square tile ============ */
+  .chesscard{min-height:250px}
+  .chesscard h3{margin-top:0}
+  .chesscard .sub{margin-top:6px}
+  .chesscard .chessboard{left:50%;right:auto;transform:translateX(-50%);bottom:-30px;width:180px;height:180px;background-size:45px 45px}
+
+  /* ============ WORK STRIP + ROW LABEL ============ */
+  .sectitle{display:flex;align-items:center;gap:0;padding:16px 2px 0;background:none;border:0;min-height:0}
+  .sectitle b{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--ink);white-space:nowrap}
+  .sectitle i{flex:none;height:1px;background:var(--line-2);width:calc(50vw - 50% - 14px);margin-left:calc(50% - 50vw);margin-right:14px}
+  /* the AI work sits in its own 3-column grid so it never inherits the 4-col spans */
+  .strip3{display:grid;gap:var(--gap);grid-template-columns:repeat(auto-fit,minmax(280px,1fr));background:none;border:0;min-height:0}
+  /* AI strip: card height = 24px offset + 90% of the mock, so the visual crops 10% at the bottom
+     instead of leaving dead space. cqw resolves against .proj--sm (the container), NOT .proj-shot. */
+  .proj--sm{min-height:0;container-type:inline-size}
+  .proj--sm .proj-shot{flex:none;height:calc(24px + 53cqw)}
+
+  /* mobile stacking order: hero, case study, work … then Currently and the life tiles */
+  @media(max-width:1000px){
+    .grateful{flex-direction:column;align-items:center;text-align:center;gap:20px}
+    .brands-cluster{max-width:none;width:100%;margin:0 auto -48px}
+    .now{order:1}
+    .tile-late{order:2}
+    .case{flex-direction:column;align-items:flex-start;gap:26px}
+    .case-viz{width:100%;max-width:344px}
+  }
   @media(max-width:640px){.wrap{padding:0 16px}.intro h1{font-size:28px}}
 
   /* ===== Lanyard widget (self-contained built R3F bundle, mounted into #lanyard-root) ===== */
   .wrap{position:relative}
   /* lanyard hangs in the intro's right whitespace; canvas extends below the card so a dragged badge stays visible outside the section (transparent, sits above the grid) */
   /* large click-through overlay (pointer-events:none) so the page underneath stays clickable; fades out while a headline phrase is hovered so its logo cluster shows unobstructed */
-  #lanyard-root{position:absolute;top:22px;right:176px;width:700px;height:780px;z-index:15;pointer-events:none;transition:opacity .3s ease}
+  #lanyard-root{position:absolute;top:80px;right:176px;width:700px;height:780px;z-index:15;pointer-events:none;transition:opacity .3s ease}
   #lanyard-root *{pointer-events:none !important} /* R3F forces its canvas + container to pointer-events:auto; override the whole subtree so it never blocks the page underneath */
-  .wrap:has(.intro h1 em:hover) #lanyard-root{opacity:0}
   .lanyard-wrapper{position:relative;width:100%;height:100%}
   @media(max-width:1000px){#lanyard-root{display:none}}
 </style>
 </head>
 <body id="top">
 
-  <header class="nav">
-    <div class="wrap nav__in">
-      <a href="#top" class="brand">Son&nbsp;Tung<span class="star">✦</span></a>
-      <nav class="nav__links">
-        <a href="#work">Work</a><a href="#play">Play</a><a href="#reading">Reading</a><a href="#contact">Contact</a>
-      </nav>
-    </div>
-  </header>
 
   <div class="wrap">
     <main class="bento">
 
       <!-- ROW 1 : intro (3) + currently (1) -->
       <section class="tile intro t-full w3">
-        <p class="kicker label">Product Designer · UX &amp; Behavioural Psychology</p>
+        <p class="kicker label">Product Designer</p>
         <h1>James likes <em class="blue">designing stuff</em>,<br><em class="clay">yapping about psychology</em>,<br><em class="green">playing games</em>.</h1>
         <div class="intrologos" aria-hidden="true">
           <div class="loset loset--design">
-            <span class="lgtile" style="background:#0E0E10"><svg viewBox="0 0 38 57" width="30" height="45"><path fill="#1ABCFE" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0Z"/><path fill="#0ACF83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0Z"/><path fill="#FF7262" d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19Z"/><path fill="#F24E1E" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5Z"/><path fill="#A259FF" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5Z"/></svg></span>
-            <span class="lgtile" style="background:#C2603C"><svg viewBox="0 0 44 44" width="48" height="48"><g stroke="#fff" stroke-width="3.4" stroke-linecap="round"><line x1="6" y1="22" x2="38" y2="22"/><line x1="8.1" y1="14" x2="35.9" y2="30"/><line x1="14" y1="8.1" x2="30" y2="35.9"/><line x1="22" y1="6" x2="22" y2="38"/><line x1="30" y1="8.1" x2="14" y2="35.9"/><line x1="35.9" y1="14" x2="8.1" y2="30"/></g></svg></span>
+            <span class="lgtile lgtile--emoji lgtile--logo"><svg viewBox="0 0 38 57" width="42" height="63"><path fill="#1ABCFE" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0Z"/><path fill="#0ACF83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0Z"/><path fill="#FF7262" d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19Z"/><path fill="#F24E1E" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5Z"/><path fill="#A259FF" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5Z"/></svg></span>
+            <span class="lgtile lgtile--emoji lgtile--logo"><svg viewBox="0 0 64 64" width="62" height="62"><path fill="#D97757" d="M29.6 22.8L30.8 3.0L33.8 3.0L34.5 22.8L35.0 23.0L46.7 6.7L49.3 8.4L39.1 25.7L39.0 25.6L56.6 17.5L58.0 20.2L41.3 29.9L41.2 29.5L61.7 30.5L61.7 33.5L41.2 34.5L41.2 34.4L57.9 44.8L56.4 47.5L38.8 38.6L39.0 38.4L49.2 56.3L46.6 57.9L34.8 41.1L34.3 41.2L33.0 61.2L29.9 61.1L29.4 41.1L29.8 41.2L18.7 59.8L16.0 58.4L25.5 38.9L25.6 39.0L9.0 48.6L7.4 46.0L23.0 34.9L23.0 34.9L2.1 35.0L2.0 31.9L22.7 30.0L22.8 29.7L6.6 19.7L8.1 17.0L25.2 25.4L24.9 25.7L13.0 6.4L15.6 4.7L28.9 23.0Z"/></svg></span>
+            <span class="lgtile lgtile--emoji lgtile--logo"><img src="logos/design-tool.png" alt="" /></span>
           </div>
           <div class="loset loset--psych">
-            <span class="lgtile" style="background:#3E5B86"><svg width="34" height="34" viewBox="0 0 22 22"><circle cx="11" cy="11" r="8" fill="#fff"/></svg></span>
-            <span class="lgtile" style="background:#6A5494"><svg width="34" height="34" viewBox="0 0 22 22"><path d="M11 3 19 18.5 3 18.5Z" fill="#fff"/></svg></span>
-            <span class="lgtile" style="background:#8A6A2F"><svg width="32" height="32" viewBox="0 0 22 22"><rect x="3" y="3" width="16" height="16" rx="4.5" fill="#fff"/></svg></span>
+            <span class="lgtile lgtile--emoji">🧠</span>
+            <span class="lgtile lgtile--emoji">💡</span>
+            <span class="lgtile lgtile--emoji">☁️</span>
           </div>
           <div class="loset loset--games">
-            <span class="lgtile" style="background:#26231F"><svg viewBox="0 0 40 40" width="50" height="50"><circle cx="20" cy="20" r="17.5" fill="#fff"/><polygon points="20,11.5 27.6,17 24.7,26 15.3,26 12.4,17" fill="#1B1A17"/><path d="M20 4.5 20 11.5 M35.2 16 27.6 17 M29 33 24.7 26 M11 33 15.3 26 M4.8 16 12.4 17" stroke="#1B1A17" stroke-width="1.7" fill="none"/></svg></span>
-            <span class="lgtile" style="background:#81B64C"><svg viewBox="0 0 50 50" width="56" height="56"><text x="25" y="37" font-size="40" text-anchor="middle" fill="#fff" font-family="Georgia,serif">&#9822;</text></svg></span>
-            <span class="lgtile" style="background:#6A5494"><svg viewBox="0 0 40 40" width="44" height="44"><g fill="#fff"><rect x="15" y="10" width="2.8" height="19" rx="1.4"/><rect x="28" y="8" width="2.8" height="19" rx="1.4"/><path d="M15 10 30.8 8 30.8 12.8 15 14.8Z"/><ellipse cx="13" cy="29" rx="4.8" ry="3.7"/><ellipse cx="26" cy="27" rx="4.8" ry="3.7"/></g></svg></span>
+            <span class="lgtile lgtile--emoji">⚽</span>
+            <span class="lgtile lgtile--emoji">♟️</span>
+            <span class="lgtile lgtile--emoji">🎹</span>
           </div>
         </div>
       </section>
@@ -252,131 +419,531 @@
       <aside class="tile now w1">
         <p class="label">Currently</p>
         <ul>
-          <li><b>BUILDING</b><span>Tempo v2</span></li>
-          <li><b>READING</b><span>Dune — F. Herbert</span></li>
-          <li><b>PLAYING</b><span>e4 openings</span></li>
-          <li><b>LEARNING</b><span>SwiftUI &amp; Metal</span></li>
-          <li><b>LISTENING</b><span>Lo-fi &amp; jazz</span></li>
+          <li><span class="ic ic--build"><svg viewBox="0 0 16 16" width="15" height="15" fill="currentColor"><path d="M4.6 6.9h3.2c1 0 1.7.8 1.7 1.7v3.2c0 1-.8 1.7-1.7 1.7H4.6c-1 0-1.7-.8-1.7-1.7V8.6c0-1 .8-1.7 1.7-1.7zm3.6-4.6h3.2c1 0 1.7.8 1.7 1.7v3.2c0 1-.8 1.7-1.7 1.7h-.7V8.6a2.9 2.9 0 0 0-2.9-2.9h-1.3V4c0-1 .8-1.7 1.7-1.7z"/></svg></span><div><b>BUILDING</b><span>Dots</span></div></li>
+          <li><span class="ic ic--read"><svg viewBox="0 0 16 16" width="15" height="15" fill="currentColor"><path d="M4.4 1.9h7.2c1.1 0 2 .9 2 2v9.4c0 .6-.7 1-1.2.6l-3.6-2.4a1.4 1.4 0 0 0-1.6 0l-3.6 2.4c-.5.4-1.2 0-1.2-.6V3.9c0-1.1.9-2 2-2z"/></svg></span><div><b>READING</b><span>Shinigami no seido</span></div></li>
+          <li><span class="ic ic--play"><svg viewBox="0 0 16 16" width="15" height="15" fill="currentColor"><path d="M8 1.9a2.4 2.4 0 0 1 1.5 4.3c1.3 1.1 2.2 2.3 2.5 4.2.1.6-.4 1.1-1 1.1H5c-.6 0-1.1-.5-1-1.1.3-1.9 1.2-3.1 2.5-4.2A2.4 2.4 0 0 1 8 1.9zM4.5 12.6h7c.6 0 1 .4 1 1s-.4 1-1 1h-7c-.6 0-1-.4-1-1s.4-1 1-1z"/></svg></span><div><b>PLAYING</b><span>Smith Morra Gambit</span></div></li>
+          <li><span class="ic ic--learn"><svg viewBox="0 0 16 16" width="15" height="15" fill="currentColor"><path d="M7.5 1.9a1.2 1.2 0 0 1 1 0l5.6 2.9c.6.3.6 1.2 0 1.5L8.5 9.2a1.2 1.2 0 0 1-1 0L1.9 6.3c-.6-.3-.6-1.2 0-1.5zM4.4 8.4l2.6 1.4c.6.3 1.4.3 2 0l2.6-1.4v2.7c0 1.5-1.7 2.6-3.6 2.6s-3.6-1.1-3.6-2.6z"/></svg></span><div><b>LEARNING</b><span>Design Engineer roadmap</span></div></li>
+          <li><span class="ic ic--listen"><svg viewBox="0 0 16 16" width="15" height="15" fill="currentColor"><path d="M13.2 1.7c.5-.1 1 .3 1 .8v7.2a2.3 2.3 0 1 1-1.6-2.2V4.6L7.3 5.7v5.7a2.3 2.3 0 1 1-1.6-2.2V4.2c0-.5.3-.9.8-1z"/></svg></span><div><b>LISTENING</b><span>Lo-fi &amp; jazz</span></div></li>
         </ul>
       </aside>
 
-      <!-- ROW 2 : mapEDU (2) + AllyUp (1) + Questie (1) -->
-      <a id="work" class="tile proj link-tile w2" href="https://mapedu.com" target="_blank" rel="noopener">
-        <span class="arrow">↗</span>
-        <div class="proj-shot"><div class="device device--pc" style="--acc:#4C6B3C"><div class="browser"><div class="bbar"><i></i><i></i><i></i><span class="burl"></span></div><img class="bshot" src="shots/mapedu.png" alt="mapEDU — Insight dashboard" /></div></div></div>
-        <div class="proj-body">
-          <div class="proj-head">
-            <h3>mapEDU</h3>
-            <div class="tags"><span class="badge b-amber">AI</span><span class="badge b-green">SaaS</span><span class="badge b-line">EdTech</span></div>
-          </div>
-          <p class="proj-desc">Improve curriculum mapping with AI</p>
-        </div>
-      </a>
+      <div class="sectitle sectitle--chips t-full w4"><i></i><b>Dedicated chess player</b><span class="titlechips"><span class="cstat cstat--rapid"><svg class="ci ci--rapid" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="currentColor"/><path d="M8.75 4.4a.75.75 0 0 0-1.5 0v3.9c0 .26.13.5.35.64l2.5 1.55a.75.75 0 1 0 .8-1.27L8.75 7.9z" fill="var(--t-green-1)"/></svg><b data-chess="bestRapid">2155</b> peak rapid</span><span class="cstat cstat--blitz"><svg class="ci ci--blitz" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M9.6 1.4 4.2 8.5c-.3.4 0 .9.5.9h3l-1.3 5.2c-.1.5.6.8.9.4l5.4-7.1c.3-.4 0-.9-.5-.9h-3l1.3-5.2c.1-.5-.6-.8-.9-.4z" fill="currentColor"/></svg><b data-chess="bestBlitz">2056</b> peak blitz</span><span class="cstat cstat--streak"><svg class="ci ci--streak" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M8 1.4c.4 2.3-1 3.1-2.2 4.3C4.6 6.9 4 8.1 4 9.5a4 4 0 0 0 8 0c0-1.7-.7-2.7-1.6-3.7-.3.6-.8 1-1.3 1.2.5-2 .1-4-1.1-5.6z" fill="currentColor"/></svg><b>47</b> day streak</span></span></div>
 
-      <a class="tile proj link-tile w1" href="https://allyup.club/" target="_blank" rel="noopener">
-        <span class="arrow">↗</span>
-        <div class="proj-shot"><img class="device device--mock" src="shots/allyup.png" alt="AllyUp app" /></div>
-        <div class="proj-body">
-          <div class="proj-head">
-            <h3>AllyUp</h3>
-            <div class="tags"><span class="badge b-lilac">Self</span><span class="badge b-clay">Mobile</span></div>
-          </div>
-          <p class="proj-desc">Habits with friends</p>
+      <!-- case study (3) + the bot, square (1) -->
+      <section id="case" class="tile case t-full w3">
+        <div class="case-body">
+          <p class="label">A Chess.com case study</p>
+          <h2>Challenging a friend who is already playing</h2>
+          <p class="case-lead">Challenge is unavailable at the moment you most want it — when a friend is <em>in a game</em>. So it waits its turn instead: <b>Play next</b>.</p>
+          <a class="case-cta" href="case-connect.html">Read experiment <span aria-hidden="true">→</span></a>
         </div>
-      </a>
-
-      <a class="tile proj link-tile w1" href="https://sidequestie.app/" target="_blank" rel="noopener">
-        <span class="arrow">↗</span>
-        <div class="proj-shot"><img class="device device--mock" src="shots/questie.png" alt="Questie app" /></div>
-        <div class="proj-body">
-          <div class="proj-head">
-            <h3>Questie</h3>
-            <div class="tags"><span class="badge b-lilac">Self</span><span class="badge b-clay">Mobile</span></div>
+        <div class="case-viz" aria-hidden="true">
+          <div class="pmock">
+            <div class="pm-head"><span class="pm-dot"></span> Friends online</div>
+            <div class="pm-row">
+              <span class="pm-av"></span>
+              <div class="pm-txt"><b>Linh</b><span>In a game · 10 min</span></div>
+              <span class="pm-btn pm-btn--off">Challenge</span>
+            </div>
+            <div class="pm-row pm-row--hi">
+              <span class="pm-av pm-av--2"></span>
+              <div class="pm-txt"><b>Linh</b><span>Queued — you are up next</span></div>
+              <span class="pm-btn">Play next</span>
+            </div>
           </div>
-          <p class="proj-desc">Side quests for a better life</p>
-        </div>
-      </a>
-
-      <!-- ROW 3 : ARQ (2) + Reach.cat (2) -->
-      <a class="tile proj link-tile w2" href="https://arq.live" target="_blank" rel="noopener">
-        <span class="arrow">↗</span>
-        <div class="proj-shot"><div class="device device--pc" style="--acc:#8A6A2F"><div class="browser"><div class="bbar bbar--dark"><i></i><i></i><i></i><span class="burl"></span></div><img class="bshot" src="shots/arq.png" alt="ARQ — Editor" /></div></div></div>
-        <div class="proj-body">
-          <div class="proj-head">
-            <h3>ARQ</h3>
-            <div class="tags"><span class="badge b-amber">Generative AI</span><span class="badge b-green">SaaS</span></div>
-          </div>
-          <p class="proj-desc">Create production-ready movies with AI</p>
-        </div>
-      </a>
-
-      <a class="tile proj link-tile w2" href="https://reach.cat" target="_blank" rel="noopener">
-        <span class="arrow">↗</span>
-        <div class="proj-shot"><div class="device device--pc" style="--acc:#3E5B86"><div class="browser"><div class="bbar"><i></i><i></i><i></i><span class="burl"></span></div><img class="bshot" src="shots/reach.png" alt="Reach.cat — Business dashboard" /></div></div></div>
-        <div class="proj-body">
-          <div class="proj-head">
-            <h3>Reach.cat</h3>
-            <div class="tags"><span class="badge b-blue">Marketing</span><span class="badge b-green">SaaS</span></div>
-          </div>
-          <p class="proj-desc">Personalized outreach at scale with AI</p>
-        </div>
-      </a>
-
-      <!-- ROW 4 : grateful / brands (full width) -->
-      <section class="tile grateful t-full w4">
-        <p class="gh">More products / brands I had the chance to work with / on</p>
-        <p class="gs">I'm grateful 🙌</p>
-        <div class="brands-cluster">
-          <span class="bc" style="width:104px;height:104px;background:#E3E8F0;margin-bottom:2px"></span>
-          <span class="bc" style="width:128px;height:128px;background:#3E5B86;margin-bottom:14px"></span>
-          <span class="bc" style="width:126px;height:126px;background:#1B1A17;margin-bottom:78px"></span>
-          <span class="bc" style="width:118px;height:118px;background:#6A5494;margin-bottom:6px"></span>
-          <span class="bc" style="width:120px;height:120px;background:#CDBFE6;margin-bottom:54px"></span>
-          <span class="bc" style="width:120px;height:120px;background:#B5532F;margin-bottom:4px"></span>
-          <span class="bc" style="width:122px;height:122px;background:#2F8FE0;margin-bottom:66px"></span>
-          <span class="bc" style="width:108px;height:108px;background:#2C4A3A;margin-bottom:2px"></span>
         </div>
       </section>
 
-      <!-- ROW 5 : books (2) + chess (1) + piano (1) -->
-      <section id="reading" class="tile reading w2">
-        <p class="label">Books I read</p>
-        <div class="shelf">
-          <div class="book"><img class="cover" src="covers/midnight-library.jpg" alt="The Midnight Library — Matt Haig" loading="lazy" /><div class="meta-row"><span class="badge b-line">Read</span></div></div>
-          <div class="book"><img class="cover" src="covers/hyunam-dong-bookshop.jpg" alt="Welcome to the Hyunam-dong Bookshop — Hwang Bo-reum" loading="lazy" /><div class="meta-row"><span class="badge b-line">Read</span></div></div>
-          <div class="book"><img class="cover" src="covers/hooked.jpg" alt="Hooked — Nir Eyal" loading="lazy" /><div class="meta-row"><span class="badge b-line">Read</span></div></div>
-          <div class="book"><img class="cover" src="covers/atomic-habits.jpg" alt="Atomic Habits — James Clear" loading="lazy" /><div class="meta-row"><span class="badge b-line">Read</span></div></div>
-        </div>
-      </section>
-
-      <a id="play" href="chess.html" class="tile play w1 link-tile">
-        <span class="arrow">↗</span>
+      <a id="play" href="chess.html" class="tile play w1 link-tile chesscard" data-tip="Click to play">
         <div class="top">
           <div>
-            <h3>Chess</h3>
-            <div style="margin-top:10px"><span class="badge b-lilac">2010 rapid chess.com</span></div>
-            <p class="sub" style="margin-top:8px">Play me →</p>
+            <h3>Play my bot</h3>
+            <p class="sub">A bot trained on 4,249 of my own Chess.com games.</p>
           </div>
         </div>
         <div class="chessboard"></div>
       </a>
 
-      <section class="tile play w1">
-        <div class="top">
-          <div><h3>Piano</h3><p class="sub">I heal by playing music</p></div>
-        </div>
-        <div class="piano">
-          <div class="pkeys">
-            <span class="wk"></span><span class="wk"></span><span class="wk"></span><span class="wk"></span><span class="wk"></span><span class="wk"></span><span class="wk"></span>
-            <span class="bk" style="left:20px"></span><span class="bk" style="left:48px"></span><span class="bk" style="left:104px"></span><span class="bk" style="left:132px"></span><span class="bk" style="left:160px"></span>
+      <div class="sectitle t-full w4"><i></i><b>App builder because it&rsquo;s so fun</b></div>
+
+      <div class="strip3 t-full w4">
+        <a id="work" class="tile proj link-tile" data-tip="sidequestie.app" href="https://sidequestie.app/" target="_blank" rel="noopener">
+          <div class="proj-shot"><div class="device device--iphone"><img class="ph-shot" src="shots/questie.png" alt="Questie app" /><img class="ph-frame" src="shots/iphone-frame.png" alt="" aria-hidden="true" /></div></div>
+          <div class="proj-body">
+            <div class="proj-head">
+              <h3>Questie</h3>
+              <div class="tags"><span class="badge b-blue">Social</span><span class="badge b-green">App Store</span></div>
+            </div>
+            <p class="proj-desc">Side quests for a better life</p>
           </div>
+        </a>
+
+        <a class="tile proj link-tile" data-tip="allyup.club" href="https://allyup.club/" target="_blank" rel="noopener">
+          <div class="proj-shot"><img class="device device--mock" src="shots/allyup.png" alt="AllyUp app" /></div>
+          <div class="proj-body">
+            <div class="proj-head">
+              <h3>AllyUp</h3>
+              <div class="tags"><span class="badge b-lilac">Productivity</span><span class="badge b-blue">Social</span></div>
+            </div>
+            <p class="proj-desc">Habits with friends</p>
+          </div>
+        </a>
+
+        <section class="tile proj" data-tip="Coming soon">
+          <div class="proj-shot"><div class="device device--iphone"><img class="ph-shot" src="shots/dots.png" alt="Dots app" /><img class="ph-frame" src="shots/iphone-frame.png" alt="" aria-hidden="true" /></div></div>
+          <div class="proj-body">
+            <div class="proj-head">
+              <h3>Dots</h3>
+              <div class="tags"><span class="badge b-lilac">Productivity</span><span class="badge b-amber">Building</span></div>
+            </div>
+            <p class="proj-desc">Celebrate everyday win</p>
+          </div>
+        </section>
+      </div>
+
+      <div class="sectitle t-full w4"><i></i><b>Four years designing AI products</b></div>
+
+      <div class="strip3 t-full w4">
+        <a class="tile proj link-tile proj--sm" data-tip="mapedu.com" href="https://mapedu.com" target="_blank" rel="noopener">
+          <div class="proj-shot"><div class="device device--pc" style="--acc:#4C6B3C"><div class="browser"><div class="bbar"><i></i><i></i><i></i><span class="burl"></span></div><img class="bshot" src="shots/mapedu.png" alt="mapEDU — Insight dashboard" /></div></div></div>
+          <div class="proj-body">
+            <div class="proj-head">
+              <h3>mapEDU</h3>
+              <div class="tags"><span class="badge b-amber">AI</span><span class="badge b-green">SaaS</span><span class="badge b-line">EdTech</span></div>
+            </div>
+            <p class="proj-desc">Improve curriculum mapping with AI</p>
+          </div>
+        </a>
+
+        <a class="tile proj link-tile proj--sm" data-tip="arq.live" href="https://arq.live" target="_blank" rel="noopener">
+          <div class="proj-shot"><div class="device device--pc" style="--acc:#8A6A2F"><div class="browser"><div class="bbar bbar--dark"><i></i><i></i><i></i><span class="burl"></span></div><img class="bshot" src="shots/arq.png" alt="ARQ — Editor" /></div></div></div>
+          <div class="proj-body">
+            <div class="proj-head">
+              <h3>ARQ</h3>
+              <div class="tags"><span class="badge b-amber">Generative AI</span><span class="badge b-green">SaaS</span></div>
+            </div>
+            <p class="proj-desc">Create production-ready movies with AI</p>
+          </div>
+        </a>
+
+        <a class="tile proj link-tile proj--sm" data-tip="reach.cat" href="https://reach.cat" target="_blank" rel="noopener">
+          <div class="proj-shot"><div class="device device--pc" style="--acc:#3E5B86"><div class="browser"><div class="bbar"><i></i><i></i><i></i><span class="burl"></span></div><img class="bshot" src="shots/reach.png" alt="Reach.cat — Business dashboard" /></div></div></div>
+          <div class="proj-body">
+            <div class="proj-head">
+              <h3>Reach.cat</h3>
+              <div class="tags"><span class="badge b-blue">Marketing</span><span class="badge b-green">SaaS</span></div>
+            </div>
+            <p class="proj-desc">Personalized outreach at scale with AI</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- grateful / brands band — restored 2026-09-22 -->
+      <section class="tile grateful t-full w4">
+        <div class="grateful-copy">
+          <p class="gh">More products / brands I had the chance to work with / on</p>
+          <p class="gs">I'm grateful 🙌</p>
+        </div>
+        <div class="brands-cluster">
+          <a class="bc bc--fill" style="width:13.751%;left:0.000%;top:0.000%;--tx:753.8%;--rot:863.8deg" href="https://vucar.vn/" target="_blank" rel="noopener" data-site="vucar.vn" aria-label="vucar.vn"><img src="brands/vucar.png" alt="Vucar" /></a>
+          <a class="bc bc--fill" style="width:12.891%;left:16.215%;top:6.250%;--tx:678.3%;--rot:777.2deg" href="https://snapvid.ai/" target="_blank" rel="noopener" data-site="snapvid.ai" aria-label="snapvid.ai"><img src="brands/snapvid-app.png" alt="Snapvid.ai" onerror="this.onerror=null;this.parentNode.classList.remove('bc--fill');this.src='brands/snapvid.png'" /></a>
+          <a class="bc bc--fill" style="width:13.536%;left:31.251%;top:1.563%;--tx:534.9%;--rot:612.9deg" href="https://fptshop.com.vn/" target="_blank" rel="noopener" data-site="fptshop.com.vn" aria-label="fptshop.com.vn"><img src="brands/fptshop-app.png" alt="FPT Shop" onerror="this.onerror=null;this.parentNode.classList.remove('bc--fill');this.src='brands/fptshop.png'" /></a>
+          <a class="bc bc--fill" style="width:13.106%;left:46.289%;top:4.688%;--tx:437.7%;--rot:501.5deg" href="https://dontchurn.io/" target="_blank" rel="noopener" data-site="dontchurn.io" aria-label="dontchurn.io"><img src="brands/dontchurn.png" alt="DontChurn" /></a>
+          <a class="bc bc--fill" style="width:12.676%;left:61.542%;top:7.813%;--tx:332.2%;--rot:380.7deg" href="https://tugan.ai/" target="_blank" rel="noopener" data-site="tugan.ai" aria-label="tugan.ai"><img src="brands/tugan.png" alt="Tugan.ai" /></a>
+          <a class="bc bc--fill" style="width:12.462%;left:74.647%;top:9.375%;--tx:232.8%;--rot:266.7deg" href="https://www.contentdash.app/" target="_blank" rel="noopener" data-site="contentdash.app" aria-label="contentdash.app"><img src="brands/contentdash-app.png" alt="ContentDash" onerror="this.onerror=null;this.parentNode.classList.remove('bc--fill');this.src='brands/contentdash.png'" /></a>
+          <a class="bc bc--fill" style="width:12.247%;left:87.753%;top:10.938%;--tx:129.8%;--rot:148.8deg" href="https://www.comfortdelgro.com/" target="_blank" rel="noopener" data-site="comfortdelgro.com" aria-label="comfortdelgro.com"><img src="brands/cdg-app.png" alt="ComfortDelGro (Zig)" onerror="this.onerror=null;this.parentNode.classList.remove('bc--fill');this.src='brands/cdg.png'" /></a>
         </div>
       </section>
 
+      <!-- certificates -->
+      <div class="sectitle t-full w4"><i></i><b>My certificates</b></div>
+
+      <a class="tile cert-card w2 link-tile" data-tip="See course" href="https://growth.design/courses/product-psychology" target="_blank" rel="noopener">
+        <div class="cert-shot"><span class="cert-img" style="--shine:.12"><img src="certs/product-psychology.jpg" alt="Product Psychology Certificate — growth.design" /></span></div>
+        <div class="cert-meta">
+          <h3>Product Psychology Masterclass</h3>
+          <p class="sub">growth.design · Sep 2026 · B.I.A.S. Framework</p>
+        </div>
+      </a>
+
+      <a class="tile cert-card w2 link-tile" data-tip="See course" href="https://uxfoundation.vn/Khoa-hoc-Psychology-in-UX-Design" target="_blank" rel="noopener">
+        <div class="cert-shot"><span class="cert-img"><img src="certs/psychology-in-ux-design.jpg" alt="Psychology in UX Design — UX Foundation" /></span></div>
+        <div class="cert-meta">
+          <h3>Psychology in UX Design</h3>
+          <p class="sub">UX Foundation · Aug 2024 · Outstanding Student</p>
+        </div>
+      </a>
+
+      <!-- ROW 7 : books · piano · sports, three equal columns -->
+      <div class="sectitle t-full w4"><i></i><b>My hobbies at free time</b></div>
+
+      <div class="strip3 t-full w4">
+        <section id="reading" class="tile reading tile-late">
+          <p class="label">Books I read</p>
+          <div class="shelf">
+            <a class="book" href="https://www.goodreads.com/book/show/52578297-the-midnight-library" target="_blank" rel="noopener" data-gr="See on Goodreads"><img class="cover" src="covers/midnight-library.jpg" alt="The Midnight Library — Matt Haig" loading="lazy" /><div class="meta-row"><span class="badge b-line">Read</span></div></a>
+            <a class="book" href="https://www.goodreads.com/book/show/133938826-welcome-to-the-hyunam-dong-bookshop" target="_blank" rel="noopener" data-gr="See on Goodreads"><img class="cover" src="covers/hyunam-dong-bookshop.jpg" alt="Welcome to the Hyunam-dong Bookshop — Hwang Bo-reum" loading="lazy" /><div class="meta-row"><span class="badge b-line">Read</span></div></a>
+            <a class="book" href="https://www.goodreads.com/book/show/2883244-1-litre-of-tears" target="_blank" rel="noopener" data-gr="See on Goodreads"><img class="cover" src="covers/1-litre-of-tears.jpg" alt="1 Litre of Tears — Kito Aya" loading="lazy" onerror="this.onerror=null;this.removeAttribute('src');this.alt=''" /><div class="meta-row"><span class="badge b-line">Read</span></div></a>
+            
+          </div>
+        </section>
+
+        <section class="tile play tile-late">
+          <div class="top">
+            <div><h3>Piano</h3><p class="sub">I heal by playing music</p></div>
+          <label class="pedal"><span>Pedal</span><input type="range" min="0" max="100" value="0" step="1" aria-label="Sustain pedal amount" /></label>
+          </div>
+            <span class="playme" aria-hidden="true">Play me!</span>
+          <div class="piano">
+            <div class="pkeys">
+            <span class="wk" data-key="z" data-f="261.63">Z</span><span class="wk" data-key="x" data-f="293.66">X</span><span class="wk" data-key="c" data-f="329.63">C</span><span class="wk" data-key="v" data-f="349.23">V</span><span class="wk" data-key="b" data-f="392">B</span><span class="wk" data-key="n" data-f="440">N</span><span class="wk" data-key="m" data-f="493.88">M</span><span class="wk" data-key="r" data-f="523.25">R</span><span class="wk" data-key="t" data-f="587.33">T</span><span class="wk" data-key="y" data-f="659.25">Y</span><span class="wk" data-key="u" data-f="698.46">U</span><span class="wk" data-key="i" data-f="783.99">I</span><span class="wk" data-key="o" data-f="880">O</span><span class="wk" data-key="p" data-f="987.77">P</span>
+            <span class="bk" style="left:17px" data-key="s" data-f="277.18">S</span><span class="bk" style="left:41px" data-key="d" data-f="311.13">D</span><span class="bk" style="left:89px" data-key="g" data-f="369.99">G</span><span class="bk" style="left:113px" data-key="h" data-f="415.3">H</span><span class="bk" style="left:137px" data-key="j" data-f="466.16">J</span><span class="bk" style="left:185px" data-key="5" data-f="554.37">5</span><span class="bk" style="left:209px" data-key="6" data-f="622.25">6</span><span class="bk" style="left:257px" data-key="8" data-f="739.99">8</span><span class="bk" style="left:281px" data-key="9" data-f="830.61">9</span><span class="bk" style="left:305px" data-key="0" data-f="932.33">0</span>
+          </div>
+          </div>
+        </section>
+
+        <section class="tile play tile-late">
+          <div class="top">
+            <div><h3>Sports</h3><p class="sub">To recharge myself</p></div>
+          </div>
+          <div class="ballpit" aria-hidden="true">
+          <span class="sball" style="width:29.749%;left:16.440%;top:0.825%;font-size:29.749cqw">🏀</span>
+          <span class="sball" style="width:27.270%;left:46.163%;top:9.089%;font-size:27.27cqw">⚽</span>
+          <span class="sball" style="width:8.305%;left:42.710%;top:0.000%;font-size:8.305cqw">🎾</span>
+          <span class="sball sball--shuttle" style="width:10.975%;left:72.804%;bottom:-8.148%;font-size:10.975cqw"><img src="sports/shuttlecock.png" alt="" onerror="this.remove()" /><i>🏸</i></span>
+        </div>
+        </section>
+      </div>
+
+      <footer class="foot t-full w4">
+        <span>© <span id="yr">2026</span></span>
+        <div class="foot-links">
+          <a href="https://www.linkedin.com/in/son-tung-james/" target="_blank" rel="noopener">LinkedIn</a>
+          <button type="button" class="copymail" data-email="ADD-YOUR-EMAIL">Email</button>
+        </div>
+      </footer>
     </main>
 
     <div id="lanyard-root"></div>
   </div>
+
+
+  <script>
+  /* Live Chess.com rating (public API, no auth, no server — fine on static hosting).
+     The number in the HTML is the fallback: if the API is slow, down or rate-limited,
+     the baked-in value just stays, so this can only ever improve what is shown.
+     Cached in localStorage for 6h so a reload is not a request. */
+  (function(){
+    var USER='transontung4010', KEY='cc-stats', TTL=21600000;
+    function paint(v){
+      document.querySelectorAll('[data-chess]').forEach(function(el){
+        var n=v[el.getAttribute('data-chess')];
+        if(n) el.textContent=n;
+      });
+    }
+    try{
+      var c=JSON.parse(localStorage.getItem(KEY)||'null');
+      if(c&&Date.now()-c.t<TTL){ paint(c.v); return; }
+    }catch(e){}
+    fetch('https://api.chess.com/pub/player/'+USER+'/stats')
+      .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function(j){
+        var last=function(o){ return o && o.last && o.last.rating; };
+        var best=function(o){ return o && o.best && o.best.rating; };
+        var v={ rapid:last(j.chess_rapid), blitz:last(j.chess_blitz), bullet:last(j.chess_bullet),
+                bestRapid:best(j.chess_rapid), bestBlitz:best(j.chess_blitz),
+                puzzles:j.tactics && j.tactics.highest && j.tactics.highest.rating };
+        paint(v);
+        try{ localStorage.setItem(KEY,JSON.stringify({t:Date.now(),v:v})); }catch(e){}
+      })
+      .catch(function(){});
+  })();
+  </script>
+
+  <script>
+  /* balls fall when their container first scrolls into view (brand pile + sports pit) */
+  (function(){
+    var pits=document.querySelectorAll('.brands-cluster,.ballpit');
+    if(!pits.length) return;
+    var land=function(el){ setTimeout(function(){ el.classList.add('landed'); }, 2900); };
+    if(!('IntersectionObserver' in window)){
+      pits.forEach(function(el){ el.classList.add('landed'); });
+      return;
+    }
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('dropped'); land(e.target); io.unobserve(e.target); }
+      });
+    },{threshold:.25});
+    pits.forEach(function(el){ io.observe(el); });
+  })();
+  </script>
+
+  <div class="coach" id="pedal-coach" role="status" aria-live="polite">
+    <span class="coach-msg"></span>
+    <button type="button" class="coach-x" aria-label="Dismiss">✕</button>
+    <i aria-hidden="true"></i>
+  </div>
+
+  <script>
+  /* Playable piano — Web Audio, no assets. Keyboard row S/E/D/R/F G/Y/H/U/J/I/K = C4..B4,
+     which is why the keycaps are labelled that way.
+     Notes SUSTAIN while the key is held (slow natural decay) and are damped on release,
+     the way a real piano's damper drops back onto the string. */
+  (function(){
+    var keys=[].slice.call(document.querySelectorAll('.pkeys [data-f]'));
+    if(!keys.length) return;
+    var byKey={}; keys.forEach(function(el){ byKey[el.dataset.key]=el; });
+    var ctx=null, master=null, voices={}, pedal=0;   // 0 = dampers down, 1 = fully lifted
+    var PEAK=0.32, ATTACK=0.006, RING=7, DAMP=0.19;
+
+    function audio(){
+      if(!ctx){
+        var AC=window.AudioContext||window.webkitAudioContext;
+        if(!AC) return null;
+        ctx=new AC();
+        master=ctx.createGain(); master.gain.value=0.5; master.connect(ctx.destination);
+      }
+      if(ctx.state==='suspended') ctx.resume();   // browsers need a gesture before audio starts
+      return ctx;
+    }
+    function damp(id,rel){
+      var v=voices[id]; if(!v) return;
+      var t=ctx.currentTime, R=(rel==null?DAMP:rel);
+      try{
+        var now=Math.max(v.g.gain.value,0.0001);
+        v.g.gain.cancelScheduledValues(t);
+        v.g.gain.setValueAtTime(now,t);
+        v.g.gain.exponentialRampToValueAtTime(0.0001,t+R);
+      }catch(e){}
+      try{ v.osc.stop(t+R+0.03); v.harm.stop(t+R+0.03); }catch(e){}
+      delete voices[id];
+    }
+    function strike(id,freq){
+      if(!audio()) return;
+      damp(id,0.012);                              // retrigger the same note cleanly
+      var t=ctx.currentTime;
+      var osc=ctx.createOscillator(), harm=ctx.createOscillator();
+      var g=ctx.createGain(), hg=ctx.createGain();
+      osc.type='triangle'; osc.frequency.value=freq;
+      harm.type='sine';    harm.frequency.value=freq*2; hg.gain.value=0.22;
+      osc.connect(g); harm.connect(hg); hg.connect(g); g.connect(master);
+      /* hammer strike, then the long decay of a held string — it keeps ringing until released */
+      g.gain.setValueAtTime(0.0001,t);
+      g.gain.exponentialRampToValueAtTime(PEAK,t+ATTACK);
+      g.gain.exponentialRampToValueAtTime(PEAK*0.22,t+2.4);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+RING);
+      osc.start(t); harm.start(t);
+      voices[id]={osc:osc,harm:harm,g:g};
+    }
+    function press(el){ if(!el||el.classList.contains('is-down')) return;
+      el.classList.add('is-down'); strike(el.dataset.key,parseFloat(el.dataset.f)); coachPlay(); }
+    /* Half-pedalling is real: the damper rests partly on the string, so release time grows
+       exponentially with pedal travel — 0.19s fully down, ~1.1s at half, ~6.5s fully lifted. */
+    function releaseTime(){ return DAMP*Math.pow(6.5/DAMP,pedal); }
+    function release(el){ if(!el||!el.classList.contains('is-down')) return;
+      el.classList.remove('is-down');
+      if(pedal>=0.98) return;            // fully lifted: let the string ring out on its own
+      damp(el.dataset.key,releaseTime());
+    }
+    function reDamp(){                    // lowering the pedal re-engages the dampers
+      var t=releaseTime();
+      Object.keys(voices).forEach(function(id){
+        var el=byKey[id];
+        if(!el||!el.classList.contains('is-down')) damp(id,t);
+      });
+    }
+
+    keys.forEach(function(el){
+      el.addEventListener('pointerdown',function(e){ e.preventDefault(); el.setPointerCapture&&el.setPointerCapture(e.pointerId); press(el); });
+      el.addEventListener('pointerup',function(){ release(el); });
+      el.addEventListener('pointercancel',function(){ release(el); });
+      el.addEventListener('pointerleave',function(){ release(el); });
+    });
+    window.addEventListener('keydown',function(e){
+      if(e.metaKey||e.ctrlKey||e.altKey||e.repeat) return;   // ignore auto-repeat: the note is already ringing
+      press(byKey[e.key.toLowerCase()]);
+    });
+    window.addEventListener('keyup',function(e){ release(byKey[e.key.toLowerCase()]); });
+    window.addEventListener('blur',function(){ keys.forEach(release); });
+
+    var pedalWrap=document.querySelector('.pedal'), pedalIn=pedalWrap&&pedalWrap.querySelector('input');
+    if(pedalIn){
+      var applyPedal=function(){
+        var prev=pedal;
+        pedal=pedalIn.value/100;
+        pedalWrap.style.setProperty('--p',pedalIn.value+'%');
+        pedalWrap.classList.toggle('is-on',pedal>0);
+        if(pedal<prev) reDamp();          // only damp further when the pedal is coming UP
+      };
+      pedalIn.addEventListener('input',applyPedal);
+      pedalIn.addEventListener('input',function(){ if(+pedalIn.value>0) coachPedal(); });
+      pedalIn.addEventListener('pointerdown',function(){ audio(); });   // a gesture, so unlock audio
+      applyPedal();
+    }
+
+    /* Pedal coach-mark. Only fires for someone who starts playing without ever finding the
+       pedal; it then walks them through it. Stage 1 sticks around until they dismiss it,
+       so it is the one tooltip on the page that is NOT hover-driven.
+         1  played first, pedal untouched  -> how to use the pedal   (persistent, has an ✕)
+         2  they moved the pedal           -> "Nice, now try playing!"
+         3  they played again              -> "Nice!", fades out on its own, done for good. */
+    var coach=document.getElementById('pedal-coach');
+    var coachMsg=coach&&coach.querySelector('.coach-msg');
+    var coachX=coach&&coach.querySelector('.coach-x');
+    var pianoCard=pedalWrap&&pedalWrap.closest('.tile');
+    var stage=0, pedalFound=false, coachDone=false, fadeTimer=null;
+
+    function placeCoach(){
+      if(!coach||!pedalWrap) return;
+      var r=pedalWrap.getBoundingClientRect(), w=coach.offsetWidth, h=coach.offsetHeight;
+      var x=Math.max(12,Math.min(r.left+r.width/2-w/2,window.innerWidth-w-12));
+      coach.style.left=Math.round(x)+'px';
+      coach.style.top=Math.round(r.top-h-10)+'px';
+      coach.style.setProperty('--ax',Math.round(r.left+r.width/2-x)+'px');   // arrow keeps pointing at the pedal
+    }
+    function showCoach(msg,short,final){
+      if(!coach) return;
+      coachMsg.textContent=msg;
+      coach.classList.toggle('is-auto',!!short);
+      coach.classList.toggle('is-final',!!final);
+      coach.classList.add('is-on');
+      placeCoach();                       // measure once the text is in, so the height is right
+      requestAnimationFrame(placeCoach);  // …then again after the reflow settles the wrap
+    }
+    function hideCoach(){ if(coach) coach.classList.remove('is-on'); }
+    function killCoach(){ clearTimeout(fadeTimer); coachDone=true; stage=0; hideCoach(); }
+
+    function coachPlay(){
+      if(coachDone||!coach) return;
+      if(stage===0&&!pedalFound){ stage=1; showCoach('Drag the Pedal slider — like a real sustain pedal, the notes keep ringing after you let go.'); }
+      else if(stage===2){ stage=3; showCoach('Nice!',true,true); fadeTimer=setTimeout(killCoach,1600); }
+    }
+    function coachPedal(){
+      pedalFound=true;
+      if(coachDone||stage!==1) return;
+      stage=2; showCoach('Nice, now try playing!',true,false);
+    }
+
+    if(coach){
+      coachX.addEventListener('click',killCoach);
+      /* "outside" means outside the piano card — playing a key or nudging the pedal must not
+         dismiss it, or stages 2 and 3 could never be reached. */
+      document.addEventListener('pointerdown',function(e){
+        if(coachDone||!coach.classList.contains('is-on')) return;
+        if(coach.contains(e.target)) return;
+        if(pianoCard&&pianoCard.contains(e.target)) return;
+        killCoach();
+      },true);
+      addEventListener('scroll',function(){ if(coach.classList.contains('is-on')) placeCoach(); },{passive:true});
+      addEventListener('resize',function(){ if(coach.classList.contains('is-on')) placeCoach(); });
+    }
+  })();
+  </script>
+
+  <script>
+  /* Certificates shimmer once on their own, the first time the whole card is on screen.
+     The class is removed afterwards so the hover shimmer keeps working normally. */
+  (function(){
+    var cards=[].slice.call(document.querySelectorAll('.cert-card'));
+    if(!cards.length || !('IntersectionObserver' in window)) return;
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        var el=e.target;
+        if(!e.isIntersecting) return;
+        /* "fully visible", but a card taller than the window can never reach ratio 1 */
+        var need=Math.min(0.98,(window.innerHeight-24)/(el.offsetHeight||1));
+        if(e.intersectionRatio < need) return;
+        io.unobserve(el);
+        el.classList.add('shimmer-once');
+        setTimeout(function(){ el.classList.remove('shimmer-once'); }, 1400);
+      });
+    },{threshold:[0,0.25,0.5,0.75,0.9,0.98,1]});
+    cards.forEach(function(el){ io.observe(el); });
+  })();
+  </script>
+
+  <script>
+  /* Hovering a headline phrase shows its logo cluster just below the cursor and lets it
+     track the pointer, instead of parking it where the photo is. */
+  (function(){
+    var intro=document.querySelector('.intro');
+    var layer=document.querySelector('.intrologos');
+    if(!intro||!layer) return;
+    var map=[['.intro h1 .blue','.loset--design'],['.intro h1 .clay','.loset--psych'],['.intro h1 .green','.loset--games']];
+    map.forEach(function(pair){
+      var phrase=document.querySelector(pair[0]), cluster=layer.querySelector(pair[1]);
+      if(!phrase||!cluster) return;
+      var raf=0, pending=null;
+      function place(e){
+        pending=e;
+        if(raf) return;
+        raf=requestAnimationFrame(function(){
+          raf=0;
+          var box=intro.getBoundingClientRect();
+          var x=pending.clientX-box.left, y=pending.clientY-box.top;
+          cluster.style.transform='translate('+Math.round(x-cluster.offsetWidth/2)+'px,'+Math.round(y+22)+'px)';
+        });
+      }
+      phrase.addEventListener('pointerenter',function(e){ place(e); cluster.style.opacity='1'; });
+      phrase.addEventListener('pointermove',place);
+      phrase.addEventListener('pointerleave',function(){ cluster.style.opacity='0'; });
+    });
+  })();
+  </script>
+
+  <script>
+  /* Work-card tooltips track the pointer (rAF-throttled). The card clips its overflow, so
+     the label is clamped inside and flips left/up near an edge. */
+  (function(){
+    var cards=[].slice.call(document.querySelectorAll('[data-tip]'));
+    cards.forEach(function(card){
+      var raf=0, last=null;
+      var w=(card.dataset.tip||'').length*6.2+18;   // approx label width; it is a pseudo-element
+      function move(e){
+        last=e;
+        if(raf) return;
+        raf=requestAnimationFrame(function(){
+          raf=0;
+          var b=card.getBoundingClientRect();
+          var x=last.clientX-b.left+14, y=last.clientY-b.top+18;
+          if(x+w > b.width-10) x=last.clientX-b.left-w-12;   // flip left
+          if(y+28 > b.height-6) y=last.clientY-b.top-34;      // flip above
+          card.style.setProperty('--mx',Math.round(Math.max(6,x))+'px');
+          card.style.setProperty('--my',Math.round(Math.max(6,y))+'px');
+        });
+      }
+      card.addEventListener('pointerenter',move);
+      card.addEventListener('pointermove',move);
+    });
+  })();
+  </script>
+
+  <script>
+  (function(){
+    var yr=document.getElementById('yr');
+    if(yr) yr.textContent=new Date().getFullYear();      // so the year never goes stale
+    var btn=document.querySelector('.copymail');
+    if(!btn) return;
+    btn.addEventListener('click',function(){
+      var addr=btn.dataset.email, done=function(){
+        var was=btn.textContent;
+        btn.textContent='Copied'; btn.classList.add('copied');
+        setTimeout(function(){ btn.textContent=was; btn.classList.remove('copied'); },1400);
+      };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(addr).then(done).catch(fallback);
+      } else fallback();
+      function fallback(){                                 // older browsers / insecure origin
+        var t=document.createElement('textarea');
+        t.value=addr; t.setAttribute('readonly',''); t.style.position='absolute'; t.style.left='-9999px';
+        document.body.appendChild(t); t.select();
+        try{ document.execCommand('copy'); done(); }catch(e){}
+        document.body.removeChild(t);
+      }
+    });
+  })();
+  </script>
 
   <script type="module" src="lanyard/lanyard.js"></script>
 </body>

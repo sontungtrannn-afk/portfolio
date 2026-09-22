@@ -9,9 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root{
-    --bg:#F1EEE7; --tile:#FCFBF8; --ink:#1B1A17; --ink-2:#57544E; --muted:#908C83;
-    --line:#E7E2D8; --line-2:#D8D1C4; --accent:#C2603C; --accent-ink:#A24A29;
-    --paper:#EFE7D8; --c-blue:#3E5B86; --c-green:#4C6B3C; --c-lilac:#6A5494;
+    --bg:#EFEFEF; --tile:#FBFBFB; --ink:#1B1A17; --ink-2:#57544E; --muted:#908C83;
+    --line:#E6E6E6; --line-2:#D6D6D6; --accent:#C2603C; --accent-ink:#A24A29;
+    --paper:#E9E9E9; --c-blue:#3E5B86; --c-green:#4C6B3C; --c-lilac:#6A5494;
     --sans:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -84,7 +84,11 @@
   .hc{background:var(--paper);position:relative}
   .hc::after{content:"";position:absolute;inset:0;background:var(--accent);opacity:var(--a,0)}
 
-  .endgrid{display:grid;grid-template-columns:1fr 280px;gap:28px;align-items:start}
+  /* Both cards end level: the King board is aspect-ratio-locked and taller than the four bars,
+     so the panel stretches to it and the bars share out the slack instead of clumping at the top. */
+  .endgrid{display:grid;grid-template-columns:1fr 280px;gap:28px;align-items:stretch}
+  .endgrid .panel{display:flex;flex-direction:column}
+  #endg-bars{flex:1;display:flex;flex-direction:column;justify-content:space-between}
   @media(max-width:720px){.endgrid{grid-template-columns:1fr}}
 
   /* mini opening boards */
