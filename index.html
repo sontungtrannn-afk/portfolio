@@ -134,7 +134,6 @@
   /* hover: browser visual grows to sit flush with the text column (22px inset each side, identical on all 3 PC cards) */
   .proj:hover .device--pc{width:calc(100% - 44px);max-width:760px}
   /* phones (AllyUp, Questie): pre-rendered iPhone mockup image - transparent PNG with the frame baked in */
-  .device--mock{display:block;width:79%;max-width:243px;top:7px;transform:translateX(-50%);transform-origin:top center;transition:transform .35s cubic-bezier(.2,.7,.2,1);filter:drop-shadow(0 22px 38px rgba(35,35,50,.28))}
   /* CSS bezel for raw screenshots; matches the footprint of the baked-in mockups */
   .device--iphone{width:66%;max-width:204px;top:7px;transform:translateX(-50%);transform-origin:top center;transition:transform .35s cubic-bezier(.2,.7,.2,1);filter:drop-shadow(0 22px 38px rgba(35,35,50,.28))}
   .device--iphone .ph-frame{display:block;width:100%;height:auto;position:relative;z-index:2}
@@ -142,7 +141,6 @@
      the bezel covers the square corners, so no rounding is needed on the shot itself */
   .device--iphone .ph-shot{position:absolute;left:4.381%;top:1.75%;width:91.237%;height:96.5%;object-fit:cover;border-radius:13.84%/6.35%;z-index:1}
   .proj:hover .device--iphone{transform:translateX(-50%) scale(1.05)}
-  .proj:hover .device--mock{transform:translateX(-50%) scale(1.05)}
   /* container-type makes the browser a query container; --u = 1px at the 536px design width, so the chrome bar scales with the mockup (hover + responsive) */
   .browser{background:#fff;border-radius:11px 11px 4px 4px;border:1px solid rgba(0,0,0,.07);box-shadow:0 26px 60px -30px rgba(40,40,60,.45);overflow:hidden;container-type:inline-size;--u:calc(100cqw / 536)}
   .bbar{height:calc(28 * var(--u));background:#fff;display:flex;align-items:center;gap:calc(6 * var(--u));padding:0 calc(12 * var(--u));border-bottom:1px solid #ececec}
@@ -430,7 +428,7 @@
         </ul>
       </aside>
 
-      <div class="sectitle sectitle--chips t-full w4"><i></i><b>Dedicated chess player</b><span class="titlechips"><span class="cstat cstat--rapid"><svg class="ci ci--rapid" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="currentColor"/><path d="M8.75 4.4a.75.75 0 0 0-1.5 0v3.9c0 .26.13.5.35.64l2.5 1.55a.75.75 0 1 0 .8-1.27L8.75 7.9z" fill="var(--t-green-1)"/></svg><b data-chess="bestRapid">2155</b> peak rapid</span><span class="cstat cstat--blitz"><svg class="ci ci--blitz" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M9.6 1.4 4.2 8.5c-.3.4 0 .9.5.9h3l-1.3 5.2c-.1.5.6.8.9.4l5.4-7.1c.3-.4 0-.9-.5-.9h-3l1.3-5.2c.1-.5-.6-.8-.9-.4z" fill="currentColor"/></svg><b data-chess="bestBlitz">2056</b> peak blitz</span><span class="cstat cstat--streak"><svg class="ci ci--streak" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M8 1.4c.4 2.3-1 3.1-2.2 4.3C4.6 6.9 4 8.1 4 9.5a4 4 0 0 0 8 0c0-1.7-.7-2.7-1.6-3.7-.3.6-.8 1-1.3 1.2.5-2 .1-4-1.1-5.6z" fill="currentColor"/></svg><b>47</b> day streak</span></span></div>
+      <div class="sectitle sectitle--chips t-full w4"><i></i><b>I'm a dedicated chess player</b><span class="titlechips"><span class="cstat cstat--rapid"><svg class="ci ci--rapid" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="currentColor"/><path d="M8.75 4.4a.75.75 0 0 0-1.5 0v3.9c0 .26.13.5.35.64l2.5 1.55a.75.75 0 1 0 .8-1.27L8.75 7.9z" fill="var(--t-green-1)"/></svg><b data-chess="bestRapid">2155</b> peak rapid</span><span class="cstat cstat--blitz"><svg class="ci ci--blitz" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M9.6 1.4 4.2 8.5c-.3.4 0 .9.5.9h3l-1.3 5.2c-.1.5.6.8.9.4l5.4-7.1c.3-.4 0-.9-.5-.9h-3l1.3-5.2c.1-.5-.6-.8-.9-.4z" fill="currentColor"/></svg><b data-chess="bestBlitz">2056</b> peak blitz</span><span class="cstat cstat--streak"><svg class="ci ci--streak" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M8 1.4c.4 2.3-1 3.1-2.2 4.3C4.6 6.9 4 8.1 4 9.5a4 4 0 0 0 8 0c0-1.7-.7-2.7-1.6-3.7-.3.6-.8 1-1.3 1.2.5-2 .1-4-1.1-5.6z" fill="currentColor"/></svg><b>47</b> day streak</span></span></div>
 
       <!-- case study (3) + the bot, square (1) -->
       <section id="case" class="tile case t-full w3">
@@ -467,7 +465,7 @@
         <div class="chessboard"></div>
       </a>
 
-      <div class="sectitle t-full w4"><i></i><b>App builder because it&rsquo;s so fun</b></div>
+      <div class="sectitle t-full w4"><i></i><b>I self-build apps because it's so fun</b></div>
 
       <div class="strip3 t-full w4">
         <a id="work" class="tile proj link-tile" data-tip="sidequestie.app" href="https://sidequestie.app/" target="_blank" rel="noopener">
@@ -482,7 +480,7 @@
         </a>
 
         <a class="tile proj link-tile" data-tip="allyup.club" href="https://allyup.club/" target="_blank" rel="noopener">
-          <div class="proj-shot"><img class="device device--mock" src="shots/allyup.png" alt="AllyUp app" /></div>
+          <div class="proj-shot"><div class="device device--iphone"><img class="ph-shot" src="shots/allyup.png" alt="AllyUp app" /><img class="ph-frame" src="shots/iphone-frame.png" alt="" aria-hidden="true" /></div></div>
           <div class="proj-body">
             <div class="proj-head">
               <h3>AllyUp</h3>
@@ -504,7 +502,7 @@
         </section>
       </div>
 
-      <div class="sectitle t-full w4"><i></i><b>Four years designing AI products</b></div>
+      <div class="sectitle t-full w4"><i></i><b>I have designed AI products for 4 years</b></div>
 
       <div class="strip3 t-full w4">
         <a class="tile proj link-tile proj--sm" data-tip="mapedu.com" href="https://mapedu.com" target="_blank" rel="noopener">
@@ -559,7 +557,7 @@
       </section>
 
       <!-- certificates -->
-      <div class="sectitle t-full w4"><i></i><b>My certificates</b></div>
+      <div class="sectitle t-full w4"><i></i><b>I love learning - here are my certificates</b></div>
 
       <a class="tile cert-card w2 link-tile" data-tip="See course" href="https://growth.design/courses/product-psychology" target="_blank" rel="noopener">
         <div class="cert-shot"><span class="cert-img" style="--shine:.12"><img src="certs/product-psychology.jpg" alt="Product Psychology Certificate - growth.design" /></span></div>
