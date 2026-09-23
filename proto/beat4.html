@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Beat 4 - The notification, mid-game</title>
+<style>
+/* Solution 1, from Johnny's side: he is deep in a game and the message arrives anyway.
+   The clip is his match and nothing else - it stops before the result screen - so the
+   only thing the card can show is how much play the interruption lands in the middle of. */
+:root{
+  --ios-bg:   rgba(38,38,40,.72);
+  --ios-text: #FFFFFF;
+  --ios-sub:  rgba(255,255,255,.86);
+  --ios-meta: rgba(255,255,255,.52);
+  --chess-green: #7FA650;
+}
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+#stage{position:absolute;top:0;left:0;width:1206px;height:2610px;transform-origin:0 0;background:#000}
+#vid{position:absolute;left:0;top:0;width:1206px;height:2610px;display:block}
+
+/* An iOS banner, not a Chess.com one: the system delivers this over whatever is on
+   screen, which is the whole objection to shipping it. */
+#noti{
+  position:absolute;left:48px;top:150px;width:1110px;z-index:20;
+  display:flex;align-items:center;gap:26px;
+  background:var(--ios-bg);border-radius:60px;
+  -webkit-backdrop-filter:blur(50px) saturate(1.6);
+  backdrop-filter:blur(50px) saturate(1.6);
+  box-shadow:0 18px 40px rgba(0,0,0,.4);
+  padding:28px 34px;box-sizing:border-box;
+  font-family:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  transform:translateY(-300px);opacity:0;
+  transition:transform .5s cubic-bezier(.32,.72,0,1), opacity .25s ease;
+}
+#stage.noti #noti{transform:translateY(0);opacity:1}
+#noti .icon{flex:none;width:112px;height:112px;border-radius:26px;display:block}
+#noti .body{flex:1;min-width:0}
+#noti .row{display:flex;align-items:baseline;gap:14px}
+#noti .title{flex:1;font-size:38px;font-weight:600;color:var(--ios-text);letter-spacing:.1px}
+#noti .when{font-size:32px;color:var(--ios-meta)}
+#noti .msg{margin-top:6px;font-size:38px;line-height:1.25;color:var(--ios-sub)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <video id="vid" src="../media/johnny-match.mp4" muted playsinline preload="auto"></video>
+
+  <div id="noti">
+    <img class="icon" src="assets/chesscom-icon.png" alt="" aria-hidden="true" />
+    <div class="body">
+      <div class="row"><span class="title">transontung4010</span><span class="when">now</span></div>
+      <div class="msg">Want to play?</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* The banner lands in the middle of the match, where the cost of it is the point. */
+var FIRE = 7.0, CLEAR = 12.0, END = 14.9;
+
+var stage = document.getElementById('stage');
+var vid   = document.getElementById('vid');
+var ticking = false;
+
+var pinned = parseInt(new URLSearchParams(location.search).get('w') || '', 10);
+function fit(){
+  var s;
+  if(pinned){
+    s = pinned/1206;
+    document.documentElement.style.width = document.body.style.width  = pinned+'px';
+    document.documentElement.style.height= document.body.style.height = Math.round(2610*s)+'px';
+  } else {
+    s = Math.min(innerWidth/1206, innerHeight/2610);
+    stage.style.left = ((innerWidth - 1206*s)/2) + 'px';
+  }
+  stage.style.transform = 'scale(' + s + ')';
+}
+addEventListener('resize', fit);
+if(!pinned) new ResizeObserver(fit).observe(document.documentElement);
+fit();
+
+function draw(){
+  var t = vid.currentTime;
+  stage.classList.toggle('noti', t >= FIRE && t < CLEAR);
+  if(parent !== window){
+    try{ parent.postMessage({proto:'progress', value: Math.max(0,Math.min(1,t/END))}, '*'); }catch(e){}
+  }
+  if(t >= END) vid.currentTime = 0;
+}
+/* rAF is throttled in some embedded browsers, so timeupdate backs it up. */
+function loop(){ ticking=false; draw();
+  if(!vid.paused && !vid.ended){ ticking=true; requestAnimationFrame(loop); } }
+function kick(){ if(!ticking){ ticking=true; requestAnimationFrame(loop); } }
+vid.addEventListener('timeupdate', draw);
+vid.addEventListener('play', kick);
+vid.addEventListener('loadedmetadata', function(){
+  if(parent === window) vid.play().catch(function(){});   /* embedded: wait to be told */
+});
+
+/* The embedding card owns playback and scrubbing. */
+addEventListener('message', function(e){
+  if(!e.data) return;
+  if(e.data.proto === 'play')  vid.play().catch(function(){});
+  if(e.data.proto === 'pause') vid.pause();
+  if(e.data.proto === 'seek'){
+    vid.currentTime = Math.max(0, Math.min(1, e.data.value)) * END;
+    draw();
+  }
+});
+</script>
+</body>
+</html>
