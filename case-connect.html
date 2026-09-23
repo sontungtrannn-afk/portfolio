@@ -31,12 +31,12 @@
   .label{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
 
   /* ============ SHELL: sticky rail + reading column ============ */
-  .wrap{max-width:1100px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:180px minmax(0,1fr);gap:56px;align-items:start}
+  .wrap{max-width:1150px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:56px;align-items:start}
   .rail{position:sticky;top:0;padding:48px 0;height:fit-content}
   .rail .back{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);transition:color .18s}
   .rail .back:hover{color:var(--accent-ink)}
   .rail nav{display:flex;flex-direction:column;align-items:flex-start;gap:9px;margin-top:34px}
-  .rail nav button{font-family:var(--sans);font-size:13px;line-height:1.35;text-align:left;color:var(--ink);background:none;border:0;padding:0;cursor:pointer;opacity:.45;transition:opacity .25s ease,color .25s ease}
+  .rail nav button{font-family:var(--sans);font-size:13px;line-height:1.35;text-align:left;white-space:nowrap;color:var(--ink);background:none;border:0;padding:0;cursor:pointer;opacity:.45;transition:opacity .25s ease,color .25s ease}
   .rail nav button:hover{opacity:1}
   .rail nav button[aria-current="true"]{opacity:1;color:var(--accent-ink);font-weight:500}
   .doc{padding:48px 0 120px;max-width:720px}
@@ -377,10 +377,14 @@
           <div class="rec-say">
             <div class="marker" aria-hidden="true"><b>Me</b><i></i></div>
             <div class="rec-face" aria-hidden="true">
-              <img class="on" data-from="0" src="avatars/me/thinking.svg" alt="" />
+              <img class="on" data-at="0"     src="avatars/me/thinking.svg" alt="" />
+              <img           data-at="0.159" src="avatars/me/happy.svg"    alt="" />
+              <img           data-at="0.510" src="avatars/me/relaxed.svg"  alt="" />
             </div>
             <div class="say">
-              <p class="on" data-from="0">Add a thought</p>
+              <p class="on" data-at="0">Johnny's up playing? How about a challenge?</p>
+              <p           data-at="0.159">Send him challenge to play me after his game? Let's do it!</p>
+              <p           data-at="0.510">Nice! Can't wait to play him!</p>
             </div>
           </div>
           <div class="rec-phone"><iframe class="ph-proto" src="proto/beat2.html" title="Beat 2 - my POV" loading="lazy"></iframe><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
@@ -396,10 +400,12 @@
           <div class="rec-say">
             <div class="marker" aria-hidden="true"><b>Johnny</b><i></i></div>
             <div class="rec-face" aria-hidden="true">
-              <img class="on" data-from="0" src="avatars/johnny/thinking.svg" alt="" />
+              <img class="on" data-at="0"     src="avatars/johnny/thinking.svg"  alt="" />
+              <img           data-at="0.638" src="avatars/johnny/surprised.svg" alt="" />
             </div>
             <div class="say">
-              <p class="on" data-from="0">Add a thought</p>
+              <p class="on" data-at="0">I'm think I'm winning here</p>
+              <p           data-at="0.638">Nice game... Oh James invited me to play? Why not?</p>
             </div>
           </div>
           <div class="rec-phone"><iframe class="ph-proto" src="proto/beat3.html" title="Beat 3 - Johnny's POV" loading="lazy"></iframe><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
@@ -620,6 +626,18 @@
 (function(){
   var frames = [].slice.call(document.querySelectorAll('.ph-proto'));
   if(!frames.length) return;
+
+  /* The face and the thought are keyed to fractions of the beat, so they follow the
+     prototype wherever it is - including while it is being dragged. */
+  function beats(row, v){
+    ['.rec-face', '.say'].forEach(function(sel){
+      var group = row.querySelector(sel);
+      if(!group) return;
+      var items = [].slice.call(group.querySelectorAll('[data-at]')), pick = items[0];
+      items.forEach(function(el){ if(v >= parseFloat(el.dataset.at)) pick = el; });
+      items.forEach(function(el){ el.classList.toggle('on', el === pick); });
+    });
+  }
   addEventListener('message', function(e){
     if(!e.data || e.data.proto !== 'progress') return;
     for(var i=0;i<frames.length;i++){
@@ -627,6 +645,7 @@
         var bar = frames[i].closest('.rec-row').querySelector('.rec-prog i');
         if(bar && !bar.parentNode.classList.contains('dragging'))
           bar.style.width = (e.data.value*100) + '%';
+        beats(frames[i].closest('.rec-row'), e.data.value);
         return;
       }
     }
