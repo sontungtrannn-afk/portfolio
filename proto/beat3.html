@@ -149,7 +149,21 @@ function loop(){ ticking=false; draw();
 function kick(){ if(!ticking){ ticking=true; requestAnimationFrame(loop); } }
 vid.addEventListener('timeupdate', draw);
 vid.addEventListener('play', kick);
-vid.addEventListener('loadedmetadata', function(){ vid.currentTime = START; vid.play().catch(function(){}); });
+vid.addEventListener('loadedmetadata', function(){
+  vid.currentTime = START;
+  if(parent === window) vid.play().catch(function(){});   /* embedded: wait to be told */
+});
+
+/* The embedding card owns playback and scrubbing. */
+addEventListener('message', function(e){
+  if(!e.data) return;
+  if(e.data.proto === 'play')  vid.play().catch(function(){});
+  if(e.data.proto === 'pause') vid.pause();
+  if(e.data.proto === 'seek'){
+    vid.currentTime = START + Math.max(0, Math.min(1, e.data.value)) * (END - START);
+    draw();
+  }
+});
 
 /* The card that embeds this draws the progress bar, so the beat reports where it is. */
 function post(p){

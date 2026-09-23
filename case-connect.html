@@ -85,8 +85,6 @@
   .rec-prog:hover,.rec-prog.dragging,.rec-prog:focus-visible{height:6px}
   .rec-prog:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .rec-prog i{display:block;height:100%;width:0;background:var(--ink)}
-  .rec-prog--ro{cursor:default;pointer-events:none}
-  .rec-prog--ro:hover{height:3px}
 
   /* whose screen this is — a big face beside the phone, with the thought it's having */
   .rec-say{flex:1;align-self:center;display:flex;flex-direction:column;align-items:center;max-width:340px;margin:0 auto}
@@ -195,8 +193,8 @@
       <button data-to="problem">The problem</button>
       <button data-to="workaround">My workaround</button>
       <button data-to="objection">The obvious objection</button>
-      <button data-to="tried">What I tried first</button>
-      <button data-to="v2">v2</button>
+      <button data-to="tried">Solution 1: Notification</button>
+      <button data-to="v2">Solution 2: Pending challenge</button>
       <button data-to="reflection">Reflection</button>
     </nav>
   </aside>
@@ -239,7 +237,7 @@
               <p data-from="6.3">Oh, he's playing? Okay</p>
             </div>
           </div>
-          <div class="rec-phone" data-taps="1.25:0.208,0.626 4.85:0.499,0.832"><video class="ph-vid" src="media/challenge-unavailable.mp4" autoplay muted playsinline aria-label="Challenge unavailable"></video><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
+          <div class="rec-phone" data-taps="1.25:0.208,0.626 4.85:0.499,0.832"><video class="ph-vid" src="media/challenge-unavailable.mp4" muted playsinline aria-label="Challenge unavailable"></video><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
           <div class="rec-prog" role="slider" tabindex="0" aria-label="Scrub recording" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>
         </div>
       </figure>
@@ -252,8 +250,8 @@
       <figure class="rec">
         <div class="rec-row rec-row--duo">
           <div class="duo-phones">
-            <div class="rec-phone" data-taps="1.05:0.899,0.951 4.75:0.500,0.216 15.55:0.902,0.760"><video class="ph-vid" src="media/me-message.mp4" autoplay muted playsinline aria-label="My screen"></video><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
-            <div class="rec-phone"><video class="ph-vid" src="media/johnny-nonotification.mp4" autoplay muted playsinline aria-label="Johnny's screen"></video><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /><div class="chip" aria-hidden="true" data-src="0" data-show-from="12" data-show-to="16.5"><b></b>No notification</div></div>
+            <div class="rec-phone" data-taps="1.05:0.899,0.951 4.75:0.500,0.216 15.55:0.902,0.760"><video class="ph-vid" src="media/me-message.mp4" muted playsinline aria-label="My screen"></video><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
+            <div class="rec-phone"><video class="ph-vid" src="media/johnny-nonotification.mp4" muted playsinline aria-label="Johnny's screen"></video><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /><div class="chip" aria-hidden="true" data-src="0" data-show-from="12" data-show-to="16.5"><b></b>No notification</div></div>
           </div>
           <div class="duo-below">
             <div class="rec-say" data-src="1">
@@ -312,7 +310,7 @@
               <p data-from="11.6">Maybe I need to wait until he's done then challenge at that exact moment?</p>
             </div>
           </div>
-          <div class="rec-phone" data-taps="2.25:0.900,0.593 5.45:0.302,0.345"><video class="ph-vid" src="media/spectating.mp4" autoplay muted playsinline aria-label="Spectating"></video><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
+          <div class="rec-phone" data-taps="2.25:0.900,0.593 5.45:0.302,0.345"><video class="ph-vid" src="media/spectating.mp4" muted playsinline aria-label="Spectating"></video><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
           <div class="rec-prog" role="slider" tabindex="0" aria-label="Scrub recording" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>
         </div>
       </figure>
@@ -330,7 +328,7 @@
 
     <!-- ===== WHAT I TRIED FIRST ===== -->
     <section class="sec" id="tried">
-      <span class="label">What I tried first</span>
+      <span class="label">Solution 1: Notification</span>
       <h2>v1 - Message notifications</h2>
 
       <figure class="rec">
@@ -341,7 +339,6 @@
             <div class="note note--clay"><b>Note</b><span>Add a note</span></div>
           </div>
         </div>
-        <figcaption>Notification flow - native vs. in-app</figcaption>
       </figure>
 
       <p>The smallest possible fix: notify people when they get a message, the way League of Legends and FC Online do. Keep it small enough not to break focus.</p>
@@ -355,7 +352,6 @@
             <div class="note note--blue"><b>Note</b><span>Add a note</span></div>
           </div>
         </div>
-        <figcaption>Delayed notification - sender POV</figcaption>
       </figure>
 
       <p><b>Killed it.</b> A delayed notification still hands both people work at the worst possible moment. He has to read it, decide, navigate back to me, and send a challenge - all in the post-game window where attention has already left the building. It defers the information.</p>
@@ -367,11 +363,14 @@
 
     <!-- ===== V2 ===== -->
     <section class="sec" id="v2">
-      <span class="label">v2</span>
+      <span class="label">Solution 2: Pending challenge</span>
       <h2>v2 - [ name the design ]</h2>
-      <p>The Challenge button isn't failing because I lack permission. It's failing on timing. Those are different failures and they deserve different responses - <b>a permission failure should say no, a timing failure should say not yet.</b></p>
-      <p>So instead of returning an error state at peak motivation, capture the intent and execute it at the earliest valid moment.</p>
-      <p>The psychology is the part I find interesting. The intent to play a specific person is perishable - it peaks the instant I see their name and decays fast. A blocked action doesn't pause that decay, it accelerates it, because now I've been told no. Queuing converts a dead end into an open loop: I've committed, he can see it, and <b>the commitment does the waiting instead of me.</b></p>
+      <p>What if I could still notify Johnny without disrupting him mid game? Or even better,
+        letting him know that I'm challenging him the moment he had finished? That's what I tried
+        to do here.</p>
+      <p>Knowing that Johnny's playing, the best thing I can do is to schedule a challenge for
+        Johnny after his match. And the best thing for me is that I don't have to wait for Johnny
+        anxiously. This experience can look like this:</p>
 
       <figure class="rec">
         <div class="rec-row">
@@ -385,12 +384,12 @@
             </div>
           </div>
           <div class="rec-phone"><iframe class="ph-proto" src="proto/beat2.html" title="Beat 2 - my POV" loading="lazy"></iframe><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
-          <div class="rec-prog rec-prog--ro" aria-hidden="true"><i></i></div>
+          <div class="rec-prog" aria-hidden="true"><i></i></div>
         </div>
-        <figcaption>[ Caption ]</figcaption>
       </figure>
 
-      <p>[ What this step shows. ]</p>
+      <p>From Johnny's pov, he would only get my challenge after his match. Now he had all kinds
+        of motivation to hit that green check to play me!</p>
 
       <figure class="rec">
         <div class="rec-row">
@@ -404,38 +403,12 @@
             </div>
           </div>
           <div class="rec-phone"><iframe class="ph-proto" src="proto/beat3.html" title="Beat 3 - Johnny's POV" loading="lazy"></iframe><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
-          <div class="rec-prog rec-prog--ro" aria-hidden="true"><i></i></div>
+          <div class="rec-prog" aria-hidden="true"><i></i></div>
         </div>
-        <figcaption>[ Caption ]</figcaption>
       </figure>
 
-      <p>[ What this step shows. ]</p>
 
-      <figure class="rec">
-        <div class="rec-row">
-          <div class="rec-phone"><div class="ph-blank"><span>Recording</span></div><img class="ph-frame" src="shots/iphone-frame.png" alt="" aria-hidden="true" /></div>
-          <div class="rec-notes">
-            <div class="note note--green"><b>Note</b><span>Add a note</span></div>
-            <div class="note note--amber"><b>Note</b><span>Add a note</span></div>
-          </div>
-        </div>
-        <figcaption>[ Caption ]</figcaption>
-      </figure>
 
-      <p>[ What this step shows. ]</p>
-
-      <figure class="rec">
-        <div class="rec-row">
-          <div class="rec-phone"><div class="ph-blank"><span>Recording</span></div><img class="ph-frame" src="shots/iphone-frame.png" alt="" aria-hidden="true" /></div>
-          <div class="rec-notes">
-            <div class="note note--clay"><b>Note</b><span>Add a note</span></div>
-            <div class="note note--lilac"><b>Note</b><span>Add a note</span></div>
-          </div>
-        </div>
-        <figcaption>[ Caption ]</figcaption>
-      </figure>
-
-      <p>[ Closing line on the v2 flow. ]</p>
     </section>
 
     <!-- ===== REFLECTION ===== -->
@@ -605,8 +578,45 @@
 </script>
 
 <script>
+/* ---- hold every recording until its card is fully in view ----------------
+   Nothing plays off-screen: a beat that has already run by the time you reach it
+   is a beat you never saw. A card taller than the window counts as in view once
+   it fills the window. */
+(function(){
+  var rows = [].slice.call(document.querySelectorAll('.rec-row'));
+  if(!rows.length) return;
+
+  function fullyVisible(el){
+    var r = el.getBoundingClientRect(), vh = innerHeight || 0;
+    return r.height <= vh ? (r.top >= 0 && r.bottom <= vh)
+                          : (r.top <= 0 && r.bottom >= vh);
+  }
+  rows.forEach(function(row){
+    var vids   = [].slice.call(row.querySelectorAll('video.ph-vid'));
+    var protos = [].slice.call(row.querySelectorAll('.ph-proto'));
+    if(!vids.length && !protos.length) return;
+    var on = null;
+    function set(next){
+      if(next === on) return; on = next;
+      vids.forEach(function(v){ next ? v.play().catch(function(){}) : v.pause(); });
+      protos.forEach(function(f){
+        try{ f.contentWindow.postMessage({proto: next ? 'play' : 'pause'}, '*'); }catch(e){}
+      });
+    }
+    var check = function(){ set(fullyVisible(row)); };
+    var io = new IntersectionObserver(check,
+      {threshold:[0,.1,.25,.5,.75,.9,.99,1]});
+    io.observe(row);
+    addEventListener('scroll', check, {passive:true});
+    addEventListener('resize', check);
+    check();
+  });
+})();
+</script>
+
+<script>
 /* The v2 cards hold a running prototype rather than a video, so each one reports its own
-   position and the card draws the same bar the recordings use. */
+   position and the card draws the same bar the recordings use, and can scrub it. */
 (function(){
   var frames = [].slice.call(document.querySelectorAll('.ph-proto'));
   if(!frames.length) return;
@@ -615,10 +625,45 @@
     for(var i=0;i<frames.length;i++){
       if(frames[i].contentWindow === e.source){
         var bar = frames[i].closest('.rec-row').querySelector('.rec-prog i');
-        if(bar) bar.style.width = (e.data.value*100) + '%';
+        if(bar && !bar.parentNode.classList.contains('dragging'))
+          bar.style.width = (e.data.value*100) + '%';
         return;
       }
     }
+  });
+
+  /* Drag the bar to scrub the prototype, the same gesture the recordings use. */
+  frames.forEach(function(f){
+    var track = f.closest('.rec-row').querySelector('.rec-prog');
+    if(!track) return;
+    var bar = track.querySelector('i'), wasPlaying = true;
+    function send(type, value){
+      try{ f.contentWindow.postMessage({proto:type, value:value}, '*'); }catch(e){}
+    }
+    function seek(e){
+      var r = track.getBoundingClientRect();
+      var v = r.width ? Math.max(0, Math.min(1, (e.clientX - r.left)/r.width)) : 0;
+      bar.style.width = (v*100) + '%';
+      send('seek', v);
+    }
+    track.addEventListener('pointerdown', function(e){
+      e.preventDefault();
+      if(!track.classList.contains('dragging')){
+        track.classList.add('dragging'); send('pause');
+      }
+      track.setPointerCapture(e.pointerId); seek(e);
+    });
+    track.addEventListener('pointermove', function(e){
+      if(track.hasPointerCapture && track.hasPointerCapture(e.pointerId)) seek(e);
+    });
+    function end(e){
+      if(!track.classList.contains('dragging')) return;
+      track.classList.remove('dragging');
+      try{ track.releasePointerCapture(e.pointerId); }catch(err){}
+      send('play');
+    }
+    track.addEventListener('pointerup', end);
+    track.addEventListener('pointercancel', end);
   });
 })();
 </script>
