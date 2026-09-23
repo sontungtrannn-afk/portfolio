@@ -6,3 +6,19 @@ chess/maia-1900.onnx
 
 # unreferenced personal doc — the two cert JPGs are what the page actually shows
 certs/psychology-in-ux-design.pdf
+
+# scratch frame-inspector for video redaction work
+_frames.html
+media/_orig.mp4
+_avatars.html
+_picker.html
+media/_o.mp4
+media/_ocut.mp4
+avatars/_hair/
+avatars/_try/
+
+# avatar exploration — only avatars/me and avatars/johnny are used by the case study
+avatars/notionists/
+avatars/lorelei-*.svg
+avatars/notionists-*.svg
+avatars/open-peeps-*.svg
