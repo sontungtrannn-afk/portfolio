@@ -22,3 +22,8 @@ avatars/notionists/
 avatars/lorelei-*.svg
 avatars/notionists-*.svg
 avatars/open-peeps-*.svg
+
+# Raw Chess.com captures and scratch prototypes - working files only. The three
+# assets the published prototypes need live in proto/assets/, censored.
+_ref/
+_proto/

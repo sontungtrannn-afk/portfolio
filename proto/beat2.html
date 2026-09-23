@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Beat 2 - Challenge while playing</title>
+<style>
+/* Authored in the screenshot's pixel space (1206 x 2622, iPhone @3x).
+   Two bases, two palettes: home.png came from a still capture, sheet.png from the
+   screen recording. They were encoded differently, so each layer's overlay colours
+   are sampled from its OWN base - mixing them would show as a seam. */
+:root{
+  /* home layer (from home.png) */
+  --card:        #3E3A37;
+  --btn:         #4F4B4A;
+  --btn-top:     #5E5B56;
+  --btn-bottom:  #4A4742;
+  --green-top:   #85B551;
+  --green-bottom:#7CA853;
+  --green-shade: #5F9847;
+  --glyph:       #E7E7E7;
+  --status:      #C8C8C8;
+  /* sheet layer (from sheet.png) */
+  --sheet-bg:    #262322;
+  --sheet-raised:#2E2B29;
+  --sheet-green: #7FA650;
+  --sheet-text:  #E8E8E8;
+  --sheet-muted: #A8A5A2;
+  --cta-top:     #78AF43;   /* primary button, measured off the sheet */
+  --cta-mid:     #629A3E;
+  --cta-bottom:  #518C3B;
+}
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+#stage{position:absolute;top:0;left:0;width:1206px;height:2622px;transform-origin:0 0}
+#base{position:absolute;inset:0;width:1206px;height:2622px;display:block}
+
+/* ---- home layer ------------------------------------------------------- */
+#home{position:absolute;inset:0;transform-origin:50% 0;
+  transition:transform .45s cubic-bezier(.32,.72,0,1), filter .45s ease}
+#stage.open #home{transform:scale(.94) translateY(28px);filter:brightness(.55)}
+
+.patch{position:absolute;left:66px;top:1809px;width:372px;height:132px;background:var(--card)}
+.status-patch{position:absolute;left:40px;top:1728px;width:423px;height:46px;background:#3F3B3A}
+.status{position:absolute;left:36px;top:1730px;width:432px;height:42px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  font-size:33px;line-height:1;color:var(--status);letter-spacing:.1px}
+/* The card's status is the persistent record that the challenge is queued - it stays
+   after the banner has gone, so the screen still answers "did that work?" later. */
+.status [data-state]{display:none}
+.status [data-state="idle"]{display:block}
+#stage.sent .status [data-state="idle"]{display:none}
+#stage.sent .status [data-state="sent"]{display:block;color:var(--sheet-green)}
+
+.actions{position:absolute;left:72px;top:1815px;width:360px;height:120px;display:flex;gap:24px}
+.btn{flex:1;border:0;padding:0;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;position:relative;transition:transform .09s ease, filter .09s ease}
+.btn svg{display:block;width:68px;height:68px}
+.btn--secondary{background:linear-gradient(180deg,var(--btn) 0%,var(--btn-bottom) 100%);
+  box-shadow:inset 0 2px 0 var(--btn-top)}
+.btn--secondary svg{fill:var(--glyph)}
+.btn--primary{background:linear-gradient(180deg,var(--green-top) 0%,var(--green-bottom) 100%);
+  box-shadow:inset 0 -6px 0 var(--green-shade)}
+.btn--primary svg{fill:#fff}
+.btn:active,.btn.is-pressed{transform:translateY(3px);filter:brightness(.92)}
+
+/* A programmatic click fires no :active and shows no cursor, so an auto-running
+   recording needs the touch drawn explicitly. 132px is a 44pt fingertip at @3x. */
+#tap{position:absolute;width:132px;height:132px;margin:-66px 0 0 -66px;border-radius:50%;
+  background:rgba(255,255,255,.26);border:3px solid rgba(255,255,255,.72);
+  opacity:0;pointer-events:none;z-index:60}
+#tap.go{animation:tapping .55s ease-out}
+@keyframes tapping{
+  0%{opacity:0;transform:scale(.35)}
+  22%{opacity:1;transform:scale(.8)}
+  100%{opacity:0;transform:scale(1.4)}
+}
+
+/* ---- toast ------------------------------------------------------------ */
+/* Rebuilt from the app's own banner (the "Challenge failed" one in the recording):
+   a full-width band directly under the status bar, centred white text, no icon.
+   Its fill is the page background, exactly as the real one is - it reads because it
+   covers content, so a faint shadow keeps it from looking like a hole. */
+#toast{
+  position:absolute;left:49px;top:186px;width:1109px;z-index:20;
+  background:#35312D;border-radius:22px;box-shadow:0 12px 30px rgba(0,0,0,.5);
+  padding:30px 40px;box-sizing:border-box;text-align:center;
+  font-family:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  font-size:44px;line-height:1.3;color:#fff;
+  transform:translateY(-320px);opacity:0;
+  transition:transform .42s cubic-bezier(.32,.72,0,1), opacity .2s ease;
+}
+#toast span{display:block}
+#stage.toasting #toast{transform:translateY(0);opacity:1}
+
+/* ---- scrim + sheet ---------------------------------------------------- */
+#scrim{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;
+  transition:opacity .45s ease}
+#stage.open #scrim{opacity:.5}
+
+/* The sheet is the recording cropped below its top edge (y=106 at 720px wide),
+   so it slides as the real modal does and leaves the parent visible above it. */
+#sheet{position:absolute;left:0;top:177px;width:1206px;height:2446px;
+  transform:translateY(2446px);
+  transition:transform .45s cubic-bezier(.32,.72,0,1)}
+#stage.open #sheet{transform:translateY(0)}
+#sheet img{position:absolute;inset:0;width:1206px;height:2446px;display:block}
+#close{position:absolute;left:30px;top:60px;width:130px;height:130px;cursor:pointer}
+
+/* ---- the new bit: what happens because he is mid-game ----------------- */
+/* Sits in the empty band between "I play as" and the primary button, so it reads as
+   a condition on the action you are about to take. */
+.info{
+  position:absolute;left:49px;top:1448px;width:1109px;box-sizing:border-box;
+  display:flex;gap:28px;align-items:flex-start;
+  background:var(--sheet-raised);border-radius:22px;padding:38px 40px;
+  border-left:8px solid var(--sheet-green);
+  font-family:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  opacity:0;transform:translateY(16px);
+  transition:opacity .3s ease .32s, transform .3s ease .32s;
+}
+#stage.open .info{opacity:1;transform:translateY(0)}
+
+/* The primary button is baked into the sheet image, so it is covered and redrawn.
+   Measured: x 29-690, y 1254-1353 at 720px wide; radius ~28 in sheet pixels. */
+.cta{
+  position:absolute;left:49px;top:1923px;width:1109px;height:168px;
+  border:0;padding:0;border-radius:28px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,var(--cta-top) 0%,var(--cta-mid) 55%,var(--cta-bottom) 100%);
+  font-family:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  font-size:52px;font-weight:700;color:#fff;letter-spacing:.2px;
+  transition:transform .09s ease, filter .09s ease;
+}
+.cta:active,.cta.is-pressed{transform:translateY(3px);filter:brightness(.93)}
+.info svg{flex:none;width:60px;height:60px;fill:var(--sheet-green);margin-top:2px}
+.info b{display:block;font-size:44px;line-height:1.25;font-weight:600;color:var(--sheet-text)}
+.info span{display:block;margin-top:10px;font-size:40px;line-height:1.35;color:var(--sheet-muted)}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <div id="home">
+    <img id="base" src="assets/home.png" alt="" />
+    <div class="patch"></div>
+    <div class="status-patch"></div>
+    <div class="status"><span data-state="idle">Playing</span><span data-state="sent">Challenge sent</span></div>
+
+    <div class="actions">
+      <button class="btn btn--primary" aria-label="Watch">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19.8 8.4c-3.7 0-6.2 2.1-7.1 5.6L9.4 27.4h11.9l1.6-13.6c.3-3.4-.8-5.4-3.1-5.4Z"/>
+          <path d="M28.2 8.4c3.7 0 6.2 2.1 7.1 5.6l3.3 13.4H26.7l-1.6-13.6c-.3-3.4.8-5.4 3.1-5.4Z"/>
+          <path fill-rule="evenodd" d="M14.6 23.6a10.4 10.4 0 1 0 0 20.8 10.4 10.4 0 0 0 0-20.8Zm0 6a4.4 4.4 0 1 1 0 8.8 4.4 4.4 0 0 1 0-8.8Z"/>
+          <path fill-rule="evenodd" d="M33.4 23.6a10.4 10.4 0 1 0 0 20.8 10.4 10.4 0 0 0 0-20.8Zm0 6a4.4 4.4 0 1 1 0 8.8 4.4 4.4 0 0 1 0-8.8Z"/>
+        </svg>
+      </button>
+      <button class="btn btn--secondary" id="challenge" aria-label="Challenge">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M6 8.5A2.5 2.5 0 0 1 8.5 6h31A2.5 2.5 0 0 1 42 8.5V22h-5.5V11.5h-25v25H22V42H8.5A2.5 2.5 0 0 1 6 39.5Z"/>
+          <path d="M11.5 11.5h12.5V24H11.5Z"/>
+          <circle cx="34" cy="34" r="13.5" fill="var(--btn)"/>
+          <path fill-rule="evenodd" d="M34 23.5a10.5 10.5 0 1 0 0 21 10.5 10.5 0 0 0 0-21Zm-2.1 5.6h4.2v3.8h3.8v4.2h-3.8v3.8h-4.2v-3.8h-3.8v-4.2h3.8Z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="toast"><span>Challenge sent to johnny13456. Wait for his game to finish</span></div>
+
+  <div id="scrim"></div>
+
+  <div id="sheet">
+    <img src="assets/sheet.png" alt="" />
+    <div id="close" aria-label="Close"></div>
+
+    <button class="cta">Submit challenge</button>
+
+    <div class="info">
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M24 2a22 22 0 1 0 0 44 22 22 0 0 0 0-44Zm0 6a3 3 0 0 1 3 3v13.2l8.1 4.7a3 3 0 1 1-3 5.2l-9.6-5.6A3 3 0 0 1 21 26V11a3 3 0 0 1 3-3Z"/>
+      </svg>
+      <div>
+        <b>johnny13456 is in a game right now</b>
+        <span>We'll deliver your challenge the moment their game ends.</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tap" aria-hidden="true"></div>
+</div>
+
+<script>
+/* Stage fitting: ?w=720 pins the page to the exact size of your real app captures,
+   which is the mode to screen-record in. */
+var stage = document.getElementById('stage');
+var pinned = parseInt(new URLSearchParams(location.search).get('w') || '', 10);
+function fit(){
+  var s;
+  if(pinned){
+    s = pinned/1206;
+    document.documentElement.style.width = document.body.style.width  = pinned+'px';
+    document.documentElement.style.height= document.body.style.height = Math.round(2622*s)+'px';
+  } else {
+    s = Math.min(innerWidth/1206, innerHeight/2622);
+    stage.style.left = ((innerWidth - 1206*s)/2) + 'px';
+  }
+  stage.style.transform = 'scale(' + s + ')';
+}
+addEventListener('resize', fit);
+if(!pinned) new ResizeObserver(fit).observe(document.documentElement);
+fit();
+
+var challengeBtn = document.getElementById('challenge');
+function openSheet(){
+  stage.classList.add('open');
+  stage.classList.remove('sent');          /* so the beat replays cleanly */
+}
+challengeBtn.addEventListener('click', openSheet);
+document.getElementById('close').addEventListener('click', function(){
+  stage.classList.remove('open');
+});
+
+/* Submitting dismisses the sheet, then the banner drops in once the sheet is clear -
+   sequenced rather than simultaneous, so the eye follows one thing at a time. */
+var toastTimer, ctaBtn = document.querySelector('.cta');
+function submit(){
+  stage.classList.remove('open');
+  stage.classList.add('sent');
+  clearTimeout(toastTimer);
+  setTimeout(function(){ stage.classList.add('toasting'); }, 260);
+  toastTimer = setTimeout(function(){ stage.classList.remove('toasting'); }, 260 + 3600);
+}
+ctaBtn.addEventListener('click', submit);
+
+/* ---- self-running demo -------------------------------------------------
+   Plays the whole beat on a loop so it can be screen-recorded untouched.
+   ?auto=0 hands control back for clicking through it by hand. */
+var AUTO = new URLSearchParams(location.search).get('auto') !== '0';
+var ring = document.getElementById('tap'), timers = [];
+function at(ms, fn){ timers.push(setTimeout(fn, ms)); }
+
+function tap(el, then){
+  var sr = stage.getBoundingClientRect(), br = el.getBoundingClientRect();
+  var k = 1206 / sr.width;                       /* client px -> stage px */
+  ring.style.left = ((br.left + br.width/2  - sr.left) * k) + 'px';
+  ring.style.top  = ((br.top  + br.height/2 - sr.top ) * k) + 'px';
+  ring.classList.remove('go'); void ring.offsetWidth; ring.classList.add('go');
+  /* Let the touch register before the screen reacts - without the beat, the ring and
+     the transition start together and it reads as if nothing was pressed. */
+  el.classList.add('is-pressed');
+  at(150, function(){ el.classList.remove('is-pressed'); });
+  at(300, function(){ if(then) then(); });
+}
+
+/* The card that embeds this draws the progress bar, so the beat reports where it is. */
+var CYCLE = 14500, cycleStart = 0;
+function post(){
+  if(parent !== window){
+    try{ parent.postMessage({proto:'progress',
+      value: Math.max(0, Math.min(1, (Date.now()-cycleStart)/CYCLE))}, '*'); }catch(e){}
+  }
+  requestAnimationFrame(post);
+}
+
+function run(){
+  timers.forEach(clearTimeout); timers = [];
+  clearTimeout(toastTimer);
+  cycleStart = Date.now();
+  stage.classList.remove('open','sent','toasting');
+  at(2000,  function(){ tap(challengeBtn, openSheet); });
+  at(6800,  function(){ tap(ctaBtn, submit); });  /* 4.8s to read the notice */
+  at(14500, run);                                 /* ~14.5s loop */
+}
+if(AUTO){ at(600, run); requestAnimationFrame(post); }
+</script>
+</body>
+</html>

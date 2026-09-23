@@ -85,6 +85,8 @@
   .rec-prog:hover,.rec-prog.dragging,.rec-prog:focus-visible{height:6px}
   .rec-prog:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .rec-prog i{display:block;height:100%;width:0;background:var(--ink)}
+  .rec-prog--ro{cursor:default;pointer-events:none}
+  .rec-prog--ro:hover{height:3px}
 
   /* whose screen this is — a big face beside the phone, with the thought it's having */
   .rec-say{flex:1;align-self:center;display:flex;flex-direction:column;align-items:center;max-width:340px;margin:0 auto}
@@ -105,9 +107,15 @@
   .rec-face img.on{visibility:visible}
   .rec-phone{flex:none;position:relative;width:281px}
   .rec-phone .ph-frame{display:block;width:100%;height:auto;position:relative;z-index:2}
+  /* where a finger actually went, recovered from the recordings. ~44pt at this scale. */
+  .ph-tap{position:absolute;width:11%;aspect-ratio:1;margin:-5.5% 0 0 -5.5%;border-radius:50%;
+    background:rgba(255,255,255,.26);border:2px solid rgba(255,255,255,.8);
+    opacity:0;pointer-events:none;z-index:3}
   .rec-phone .ph-blank{position:absolute;left:3.608%;top:1.375%;width:92.784%;height:97.25%;border-radius:14.44%/6.68%;z-index:1;
     background:repeating-linear-gradient(135deg,#F4F4F4 0 9px,#EFEFEF 9px 18px);
     display:flex;align-items:center;justify-content:center}
+  .rec-phone .ph-proto{position:absolute;left:3.608%;top:1.375%;width:92.784%;height:97.25%;
+    border:0;border-radius:14.44%/6.68%;background:#000;z-index:1;display:block}
   .rec-phone .ph-vid{position:absolute;left:3.608%;top:1.375%;width:92.784%;height:97.25%;
     object-fit:cover;border-radius:14.44%/6.68%;z-index:1;display:block;background:#EFEFEF}
   .rec-phone .ph-blank span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
@@ -231,7 +239,7 @@
               <p data-from="6.3">Oh, he's playing? Okay</p>
             </div>
           </div>
-          <div class="rec-phone"><video class="ph-vid" src="media/challenge-unavailable.mp4" autoplay muted playsinline aria-label="Challenge unavailable"></video><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
+          <div class="rec-phone" data-taps="1.25:0.208,0.626 4.85:0.499,0.832"><video class="ph-vid" src="media/challenge-unavailable.mp4" autoplay muted playsinline aria-label="Challenge unavailable"></video><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
           <div class="rec-prog" role="slider" tabindex="0" aria-label="Scrub recording" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>
         </div>
       </figure>
@@ -244,7 +252,7 @@
       <figure class="rec">
         <div class="rec-row rec-row--duo">
           <div class="duo-phones">
-            <div class="rec-phone"><video class="ph-vid" src="media/me-message.mp4" autoplay muted playsinline aria-label="My screen"></video><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
+            <div class="rec-phone" data-taps="1.05:0.899,0.951 4.75:0.500,0.216 15.55:0.902,0.760"><video class="ph-vid" src="media/me-message.mp4" autoplay muted playsinline aria-label="My screen"></video><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
             <div class="rec-phone"><video class="ph-vid" src="media/johnny-nonotification.mp4" autoplay muted playsinline aria-label="Johnny's screen"></video><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /><div class="chip" aria-hidden="true" data-src="0" data-show-from="12" data-show-to="16.5"><b></b>No notification</div></div>
           </div>
           <div class="duo-below">
@@ -304,7 +312,7 @@
               <p data-from="11.6">Maybe I need to wait until he's done then challenge at that exact moment?</p>
             </div>
           </div>
-          <div class="rec-phone"><video class="ph-vid" src="media/spectating.mp4" autoplay muted playsinline aria-label="Spectating"></video><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
+          <div class="rec-phone" data-taps="2.25:0.900,0.593 5.45:0.302,0.345"><video class="ph-vid" src="media/spectating.mp4" autoplay muted playsinline aria-label="Spectating"></video><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
           <div class="rec-prog" role="slider" tabindex="0" aria-label="Scrub recording" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>
         </div>
       </figure>
@@ -367,11 +375,17 @@
 
       <figure class="rec">
         <div class="rec-row">
-          <div class="rec-phone"><div class="ph-blank"><span>Recording</span></div><img class="ph-frame" src="shots/iphone-frame.png" alt="" aria-hidden="true" /></div>
-          <div class="rec-notes">
-            <div class="note note--amber"><b>Note</b><span>Add a note</span></div>
-            <div class="note note--clay"><b>Note</b><span>Add a note</span></div>
+          <div class="rec-say">
+            <div class="marker" aria-hidden="true"><b>Me</b><i></i></div>
+            <div class="rec-face" aria-hidden="true">
+              <img class="on" data-from="0" src="avatars/me/thinking.svg" alt="" />
+            </div>
+            <div class="say">
+              <p class="on" data-from="0">Add a thought</p>
+            </div>
           </div>
+          <div class="rec-phone"><iframe class="ph-proto" src="proto/beat2.html" title="Beat 2 - my POV" loading="lazy"></iframe><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
+          <div class="rec-prog rec-prog--ro" aria-hidden="true"><i></i></div>
         </div>
         <figcaption>[ Caption ]</figcaption>
       </figure>
@@ -380,11 +394,17 @@
 
       <figure class="rec">
         <div class="rec-row">
-          <div class="rec-phone"><div class="ph-blank"><span>Recording</span></div><img class="ph-frame" src="shots/iphone-frame.png" alt="" aria-hidden="true" /></div>
-          <div class="rec-notes">
-            <div class="note note--lilac"><b>Note</b><span>Add a note</span></div>
-            <div class="note note--blue"><b>Note</b><span>Add a note</span></div>
+          <div class="rec-say">
+            <div class="marker" aria-hidden="true"><b>Johnny</b><i></i></div>
+            <div class="rec-face" aria-hidden="true">
+              <img class="on" data-from="0" src="avatars/johnny/thinking.svg" alt="" />
+            </div>
+            <div class="say">
+              <p class="on" data-from="0">Add a thought</p>
+            </div>
           </div>
+          <div class="rec-phone"><iframe class="ph-proto" src="proto/beat3.html" title="Beat 3 - Johnny's POV" loading="lazy"></iframe><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div>
+          <div class="rec-prog rec-prog--ro" aria-hidden="true"><i></i></div>
         </div>
         <figcaption>[ Caption ]</figcaption>
       </figure>
@@ -460,6 +480,32 @@
     });
     groups.forEach(function(g){ g.items.sort(function(a,b){ return a.from-b.from; }); });
 
+    /* Taps recovered from each recording: the ring is driven straight off the clock
+       rather than a CSS animation, so scrubbing lands on the right frame of it. */
+    var taps=[];
+    [].slice.call(row.querySelectorAll('.rec-phone[data-taps]')).forEach(function(ph){
+      var v=videoFor(ph), frame=ph.querySelector('.ph-frame');
+      ph.dataset.taps.trim().split(/\s+/).forEach(function(spec){
+        var a=spec.split(':'), xy=a[1].split(',');
+        var ring=document.createElement('div');
+        ring.className='ph-tap'; ring.setAttribute('aria-hidden','true');
+        /* the aperture is inset inside the frame image, so place within that box */
+        ring.style.left=(3.608 + parseFloat(xy[0])*92.784)+'%';
+        ring.style.top =(1.375 + parseFloat(xy[1])*97.25)+'%';
+        ph.insertBefore(ring, frame);
+        taps.push({ring:ring, v:v, t:parseFloat(a[0])});
+      });
+    });
+    var TAP_DUR=0.55;
+    function drawTaps(){
+      taps.forEach(function(k){
+        var p=(k.v.currentTime - k.t)/TAP_DUR;
+        if(p<0 || p>1){ k.ring.style.opacity=0; return; }
+        k.ring.style.transform = 'scale(' + (0.35 + p*1.05) + ')';
+        k.ring.style.opacity = p<0.22 ? (p/0.22) : (1 - (p-0.22)/0.78);
+      });
+    }
+
     var chips=[].slice.call(row.querySelectorAll('[data-show-from]')).map(function(el){
       return {el:el, v:videoFor(el), from:parseFloat(el.dataset.showFrom),
               to:parseFloat(el.dataset.showTo)};
@@ -483,6 +529,7 @@
         var t=c.v.currentTime;
         c.el.classList.toggle('on', t>=c.from && t<=c.to);
       });
+      drawTaps();
     }
     /* rAF while playing, with timeupdate as a backstop — rAF is throttled in some embedded browsers */
     function loop(){ ticking=false; draw();
@@ -553,6 +600,25 @@
     }
 
     pickMaster(); draw();
+  });
+})();
+</script>
+
+<script>
+/* The v2 cards hold a running prototype rather than a video, so each one reports its own
+   position and the card draws the same bar the recordings use. */
+(function(){
+  var frames = [].slice.call(document.querySelectorAll('.ph-proto'));
+  if(!frames.length) return;
+  addEventListener('message', function(e){
+    if(!e.data || e.data.proto !== 'progress') return;
+    for(var i=0;i<frames.length;i++){
+      if(frames[i].contentWindow === e.source){
+        var bar = frames[i].closest('.rec-row').querySelector('.rec-prog i');
+        if(bar) bar.style.width = (e.data.value*100) + '%';
+        return;
+      }
+    }
   });
 })();
 </script>

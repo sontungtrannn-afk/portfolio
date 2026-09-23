@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Beat 3 - Johnny gets it the moment his game ends</title>
+<style>
+/* Johnny's POV. The base is the real recording (720x1558) scaled to the same 1206-wide
+   stage the other beats use, so all three cut together at one size.
+
+   The You Won! modal is baked into the footage, so to make room for the challenge it is
+   pushed down: the status bar is pinned as a still strip, and everything below it is
+   translated down, with the revealed band filled in the app's own backdrop colour.
+   Placeholder until the real Chess.com screenshot of this screen goes in. */
+:root{
+  --backdrop:   #0D0B0C;   /* the dimmed backdrop behind the modal   */
+  --toast-bg:   #35312D;
+  --toast-text: #FFFFFF;
+  --green-top:   #85B551;
+  --green-bottom:#7CA853;
+  --green-shade: #5F9847;
+  --grey:        #4F4B4A;
+  --grey-top:    #5E5B56;
+  --grey-bottom: #4A4742;
+}
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+#stage{position:absolute;top:0;left:0;width:1206px;height:2610px;transform-origin:0 0;
+  background:var(--backdrop)}
+
+/* The banner overlays - nothing below it moves. */
+#vid{position:absolute;left:0;top:0;width:1206px;height:2610px;display:block}
+
+/* The redaction was baked in for the whole clip, so once the modal opens it carries on
+   smearing that screen region - now modal pixels - as a pale box. Before the modal it is
+   doing its job and must stay; after, it is an artefact, so it gets covered in the modal's
+   own surface colour. Measured at video x 20-433, y 281-370. */
+/* Covers the modal's whole empty band, edge to edge, so there is no partial rectangle to
+   spot. The modal is not one flat surface - a lighter header down to video y 289, a darker
+   body below - so the fill steps at exactly that boundary. Modal spans video x 28-691. */
+#censorfix{position:absolute;left:0;top:432px;width:1206px;height:201px;display:none;
+  background:var(--backdrop)}
+#censorfix::after{content:"";position:absolute;left:47px;top:0;width:1110px;height:201px;
+  background:linear-gradient(#302E2C 0 54px, #22201E 54px 100%)}
+#stage.modal #censorfix{display:block}
+
+/* The real Chess.com incoming-challenge banner, measured off a capture of it:
+   full-bleed row under the status bar - avatar, the terms and who sent it, then a red
+   decline and a green accept as rounded squares. Source was 828x1792, so every value
+   here is that measurement x1.4565 into this 1206-wide stage. */
+#toast{
+  position:absolute;left:0;bottom:0;width:1206px;z-index:20;
+  /* Translucent, not a fade: a flat low-opacity fill so what is behind it tints the
+     panel. The soft shadow above it was reading as a gradient edge, so it is gone. */
+  background:rgba(20,18,17,.30);
+  -webkit-backdrop-filter:blur(40px) saturate(1.4);
+  backdrop-filter:blur(40px) saturate(1.4);
+  /* the extra bottom padding clears the home indicator, as a bottom sheet would */
+  padding:52px 44px 76px;box-sizing:border-box;
+  display:flex;align-items:center;gap:31px;
+  font-family:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  transform:translateY(340px);opacity:0;
+  transition:transform .42s cubic-bezier(.32,.72,0,1), opacity .2s ease;
+}
+#stage.toasting #toast{transform:translateY(0);opacity:1}
+#toast .ava{flex:none;width:131px;height:131px;border-radius:18px;display:block}
+#toast .meta{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+#toast .t1{font-size:38px;line-height:1.15;color:#C9C9C9}
+#toast .t2{font-size:38px;line-height:1.15;font-weight:700;color:#fff}
+.act{
+  flex:none;width:126px;height:126px;border:0;padding:0;border-radius:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .09s ease, filter .09s ease;
+}
+.act svg{width:58px;height:58px;fill:#fff}
+.act--no{background:#D84B3A}
+.act--yes{background:#A5C65E;margin-left:1px}
+.act:active{transform:translateY(3px);filter:brightness(.92)}
+
+</style>
+</head>
+<body>
+<div id="stage">
+  <video id="vid" src="../media/johnny-nonotification.mp4" muted playsinline preload="auto"></video>
+  <div id="censorfix" aria-hidden="true"></div>
+
+  <div id="toast">
+    <img class="ava" src="assets/avatar.png" alt="" aria-hidden="true" />
+    <div class="meta">
+      <span class="t1">10 min (Rated)</span>
+      <span class="t2">transontung4010 (2071)</span>
+    </div>
+    <button class="act act--no" aria-label="Decline">
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <path d="M38 14.1 33.9 10 24 19.9 14.1 10 10 14.1 19.9 24 10 33.9 14.1 38 24 28.1 33.9 38 38 33.9 28.1 24z"/>
+      </svg>
+    </button>
+    <button class="act act--yes" aria-label="Accept">
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18.6 35.4 8.2 25l4.2-4.2 6.2 6.2L35.6 10l4.2 4.2z"/>
+      </svg>
+    </button>
+  </div>
+
+</div>
+
+<script>
+/* The beat: he is mid-game, his opponent abandons at 35.0s, the You Won! modal settles
+   at 36.5s, and the challenge that was waiting arrives 300ms after it - so he reads the
+   result first, then gets the next game handed to him. */
+var START = 28.0;
+var MODAL = 36.5;
+var FIRE  = MODAL + 0.3;
+/* Ends 5s after the challenge lands, and well before 44.0s where he taps into the next
+   game - the beat is about the moment it arrives, not what he does afterwards.
+   CLEAR == END, so the banner is still up when it loops. */
+var CLEAR = 41.8;
+var END   = 41.8;
+
+var stage = document.getElementById('stage');
+var vid   = document.getElementById('vid');
+var ticking = false;
+
+var pinned = parseInt(new URLSearchParams(location.search).get('w') || '', 10);
+function fit(){
+  var s;
+  if(pinned){
+    s = pinned/1206;
+    document.documentElement.style.width = document.body.style.width  = pinned+'px';
+    document.documentElement.style.height= document.body.style.height = Math.round(2610*s)+'px';
+  } else {
+    s = Math.min(innerWidth/1206, innerHeight/2610);
+    stage.style.left = ((innerWidth - 1206*s)/2) + 'px';
+  }
+  stage.style.transform = 'scale(' + s + ')';
+}
+addEventListener('resize', fit);
+if(!pinned) new ResizeObserver(fit).observe(document.documentElement);
+fit();
+
+function draw(){
+  var t = vid.currentTime;
+  stage.classList.toggle('toasting', t >= FIRE && t < CLEAR);
+  stage.classList.toggle('modal', t >= MODAL);
+  post((t - START) / (END - START));
+  if(t >= END) { vid.currentTime = START; }
+}
+/* rAF is throttled in some embedded browsers, so timeupdate backs it up. */
+function loop(){ ticking=false; draw();
+  if(!vid.paused && !vid.ended){ ticking=true; requestAnimationFrame(loop); } }
+function kick(){ if(!ticking){ ticking=true; requestAnimationFrame(loop); } }
+vid.addEventListener('timeupdate', draw);
+vid.addEventListener('play', kick);
+vid.addEventListener('loadedmetadata', function(){ vid.currentTime = START; vid.play().catch(function(){}); });
+
+/* The card that embeds this draws the progress bar, so the beat reports where it is. */
+function post(p){
+  if(parent === window) return;
+  try{ parent.postMessage({proto:'progress', value: Math.max(0,Math.min(1,p))}, '*'); }catch(e){}
+}
+</script>
+</body>
+</html>

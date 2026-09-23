@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Beat 1 - Watch + Challenge</title>
+<style>
+/* Everything is authored in the screenshot's own pixel space (1206 x 2622, iPhone @3x),
+   so every number here is a measurement off the real app, not a guess. The whole stage
+   is scaled as one unit to fit the window. */
+:root{
+  --card:        #3E3A37;   /* friend-card surface beside the button */
+  --btn:         #4F4B4A;   /* secondary button fill                 */
+  --btn-top:     #5E5B56;   /* its 2px top highlight                 */
+  --btn-bottom:  #4A4742;   /* its bottom edge                       */
+  --green-top:   #85B551;   /* primary green, top of the gradient    */
+  --green-bottom:#7CA853;   /* primary green, bottom                 */
+  --green-shade: #5F9847;   /* the darker lip under a green button   */
+  --glyph:       #E7E7E7;   /* icon colour on the secondary button   */
+  --status:      #C8C8C8;   /* friend-card status line               */
+}
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+#stage{
+  position:absolute;top:0;left:0;
+  width:1206px;height:2622px;
+  transform-origin:0 0;
+}
+#base{position:absolute;inset:0;width:1206px;height:2622px;display:block}
+
+/* The old full-width Challenge button is baked into the screenshot, so it gets covered.
+   Bounds measured from the image: x 72-431, y 1815-1934. */
+.patch{position:absolute;left:66px;top:1809px;width:372px;height:132px;background:var(--card)}
+
+/* The status line is baked into the screenshot too, so it gets the same patch-and-
+   redraw treatment. Measured: "Online" sits x 200-303, y 1738-1764, centred in the card. */
+.status-patch{position:absolute;left:40px;top:1728px;width:423px;height:46px;background:#3F3B3A}
+.status{
+  position:absolute;left:36px;top:1730px;width:432px;height:42px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+  font-size:33px;line-height:1;color:var(--status);letter-spacing:.1px;
+}
+
+.actions{position:absolute;left:72px;top:1815px;width:360px;height:120px;display:flex;gap:24px}
+.btn{
+  flex:1;border:0;padding:0;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;position:relative;
+  transition:transform .09s ease, filter .09s ease;
+}
+.btn svg{display:block;width:68px;height:68px}
+.btn--secondary{
+  background:linear-gradient(180deg,var(--btn) 0%,var(--btn-bottom) 100%);
+  box-shadow:inset 0 2px 0 var(--btn-top);
+}
+.btn--secondary svg{fill:var(--glyph)}
+.btn--primary{
+  background:linear-gradient(180deg,var(--green-top) 0%,var(--green-bottom) 100%);
+  box-shadow:inset 0 -6px 0 var(--green-shade);
+}
+.btn--primary svg{fill:#fff}
+.btn:active,.btn.is-pressed{transform:translateY(3px);filter:brightness(.92)}
+
+/* A programmatic click fires no :active and shows no cursor, so an auto-running
+   recording needs the touch drawn explicitly. 132px is a 44pt fingertip at @3x. */
+#tap{position:absolute;width:132px;height:132px;margin:-66px 0 0 -66px;border-radius:50%;
+  background:rgba(255,255,255,.26);border:3px solid rgba(255,255,255,.72);
+  opacity:0;pointer-events:none;z-index:60}
+#tap.go{animation:tapping .55s ease-out}
+@keyframes tapping{
+  0%{opacity:0;transform:scale(.35)}
+  22%{opacity:1;transform:scale(.8)}
+  100%{opacity:0;transform:scale(1.4)}
+}
+</style>
+</head>
+<body>
+<div id="stage">
+  <img id="base" src="assets/home.png" alt="" />
+  <div class="patch"></div>
+
+  <div class="status-patch"></div>
+  <div class="status">Playing</div>
+
+  <div class="actions">
+    <!-- WATCH - primary green, binoculars -->
+    <button class="btn btn--primary" aria-label="Watch">
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19.8 8.4c-3.7 0-6.2 2.1-7.1 5.6L9.4 27.4h11.9l1.6-13.6c.3-3.4-.8-5.4-3.1-5.4Z"/>
+        <path d="M28.2 8.4c3.7 0 6.2 2.1 7.1 5.6l3.3 13.4H26.7l-1.6-13.6c-.3-3.4.8-5.4 3.1-5.4Z"/>
+        <path fill-rule="evenodd" d="M14.6 23.6a10.4 10.4 0 1 0 0 20.8 10.4 10.4 0 0 0 0-20.8Zm0 6a4.4 4.4 0 1 1 0 8.8 4.4 4.4 0 0 1 0-8.8Z"/>
+        <path fill-rule="evenodd" d="M33.4 23.6a10.4 10.4 0 1 0 0 20.8 10.4 10.4 0 0 0 0-20.8Zm0 6a4.4 4.4 0 1 1 0 8.8 4.4 4.4 0 0 1 0-8.8Z"/>
+      </svg>
+    </button>
+
+    <!-- CHALLENGE - secondary, board + plus -->
+    <button class="btn btn--secondary" aria-label="Challenge">
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <!-- board: frame with a solid top-left quadrant, open where the plus sits -->
+        <path fill-rule="evenodd" d="M6 8.5A2.5 2.5 0 0 1 8.5 6h31A2.5 2.5 0 0 1 42 8.5V22h-5.5V11.5h-25v25H22V42H8.5A2.5 2.5 0 0 1 6 39.5Z"/>
+        <path d="M11.5 11.5h12.5V24H11.5Z"/>
+        <!-- the gap ring: card colour, so the disc reads as sitting on top -->
+        <circle cx="34" cy="34" r="13.5" fill="var(--btn)"/>
+        <path fill-rule="evenodd" d="M34 23.5a10.5 10.5 0 1 0 0 21 10.5 10.5 0 0 0 0-21Zm-2.1 5.6h4.2v3.8h3.8v4.2h-3.8v3.8h-4.2v-3.8h-3.8v-4.2h3.8Z"/>
+      </svg>
+    </button>
+    <div id="tap" aria-hidden="true"></div>
+  </div>
+</div>
+
+<script>
+/* The stage is authored at 1206x2622 and scaled as one unit, anchored top-left so the
+   result is deterministic. ?w=720 pins the page to an exact output size - that is the
+   mode to screen-record in, since 720x1566 is what the real app captures already are. */
+var stage = document.getElementById('stage');
+var pinned = parseInt(new URLSearchParams(location.search).get('w') || '', 10);
+function fit(){
+  var s;
+  if(pinned){
+    s = pinned/1206;
+    document.documentElement.style.width = document.body.style.width  = pinned+'px';
+    document.documentElement.style.height= document.body.style.height = Math.round(2622*s)+'px';
+  } else {
+    s = Math.min(innerWidth/1206, innerHeight/2622);
+    stage.style.left = ((innerWidth - 1206*s)/2) + 'px';
+  }
+  stage.style.transform = 'scale(' + s + ')';
+}
+addEventListener('resize', fit);
+if(!pinned) new ResizeObserver(fit).observe(document.documentElement);
+fit();
+
+/* ---- self-running demo -------------------------------------------------
+   Presses each button in turn on a loop, so the card can be screen-recorded
+   untouched and still read as interactive. ?auto=0 turns it off. */
+var AUTO = new URLSearchParams(location.search).get('auto') !== '0';
+var ring = document.getElementById('tap'), timers = [];
+var btns = [].slice.call(document.querySelectorAll('.btn'));
+function at(ms, fn){ timers.push(setTimeout(fn, ms)); }
+
+function tap(el){
+  var sr = stage.getBoundingClientRect(), br = el.getBoundingClientRect();
+  var k = 1206 / sr.width;                       /* client px -> stage px */
+  ring.style.left = ((br.left + br.width/2  - sr.left) * k) + 'px';
+  ring.style.top  = ((br.top  + br.height/2 - sr.top ) * k) + 'px';
+  ring.classList.remove('go'); void ring.offsetWidth; ring.classList.add('go');
+  el.classList.add('is-pressed');
+  at(300, function(){ el.classList.remove('is-pressed'); });
+}
+
+function run(){
+  timers.forEach(clearTimeout); timers = [];
+  at(2000, function(){ tap(btns[0]); });         /* Watch    */
+  at(5000, function(){ tap(btns[1]); });         /* Challenge */
+  at(8000, run);
+}
+if(AUTO) at(600, run);
+</script>
+</body>
+</html>
