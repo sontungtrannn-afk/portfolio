@@ -42,7 +42,10 @@
   .doc{padding:48px 0 120px;max-width:720px}
 
   /* ============ HEADER ============ */
-  .eyebrow{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+  .eyebrow{display:flex;flex-wrap:wrap;gap:8px}
+  .eyebrow span{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--ink-2);background:var(--tile);
+    border:1px solid var(--line-2);border-radius:6px;padding:4px 9px;white-space:nowrap}
   .doc h1{font-size:clamp(34px,5vw,52px);font-weight:600;letter-spacing:-.035em;line-height:1.04;margin:14px 0 14px}
   .deck{font-size:19px;line-height:1.55;color:var(--ink-2);max-width:620px}
   .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:24px;margin:40px 0 0;padding:26px 0;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
@@ -128,10 +131,6 @@
   .note--blue{background:var(--t-blue-1);color:var(--c-blue);--rot:-1deg}
   .note--green{background:var(--t-green-1);color:var(--c-green);--rot:2deg}
   .note--lilac{background:var(--t-lilac-1);color:var(--c-lilac);--rot:-1.5deg}
-  .banner{width:100%;aspect-ratio:16/9;border-radius:var(--r);border:1px solid var(--line);
-    background:repeating-linear-gradient(135deg,#F4F4F4 0 9px,#EFEFEF 9px 18px);
-    display:flex;align-items:center;justify-content:center}
-  .banner span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
   /* two-phone variant: both screens side by side, with room underneath to demonstrate */
   .rec-row--duo{flex-direction:column;align-items:stretch;gap:0}
   .duo-phones{display:flex;justify-content:center;gap:56px}
@@ -200,7 +199,7 @@
   </aside>
 
   <main class="doc">
-    <p class="eyebrow">Chess.com &middot; Self-initiated &middot; 2026</p>
+    <p class="eyebrow"><span>Chess.com</span><span>Self-initiated</span><span>2026</span></p>
     <h1>Play next</h1>
     <p class="deck">Capturing the intent to play when the action is blocked.</p>
 
@@ -208,13 +207,9 @@
     <!-- ===== OVERVIEW ===== -->
     <section class="sec" id="overview">
       <span class="label">Overview</span>
-      <h2>Chess.com has 200M members, and the person I most want to play is usually mid-game.</h2>
-      <p>I have 24 friends on Chess.com. Playing a stranger is fine. Playing someone I know is better - I have history, I know their openings, there's something at stake beyond the rating.</p>
+      <h2>I love playing chess on Chess.com. But playing with a friend can be inconvenient sometimes</h2>
+      <p>And I will discuss this "sometimes" with this case study! I have 24 friends on Chess.com. Playing a stranger is fine. Playing someone I know is better - I have history, I know their openings, there's something at stake beyond the rating.</p>
       <p>But almost every time I open the app, my friends are either offline or already in a game. <b>The moment I want to play them is the one moment I can't.</b></p>
-
-      <figure class="rec">
-        <div class="banner"><span>Banner</span></div>
-      </figure>
     </section>
 
     <!-- ===== THE PROBLEM ===== -->
