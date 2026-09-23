@@ -296,6 +296,10 @@
 
   /* ============ CASE STUDY (row 2) ============ */
   .case{flex-direction:row;align-items:center;gap:40px;padding:38px 34px}
+  .case-viz{flex:none;width:200px}
+  .case-viz img{display:block;width:100%;height:auto}
+  @media(max-width:640px){.case{flex-direction:column;align-items:flex-start;gap:26px}
+    .case-viz{width:100%;max-width:240px;align-self:center}}
   .case-body{flex:1;min-width:0}
   .case h2{font-size:clamp(24px,2vw,31px);font-weight:600;letter-spacing:-.02em;line-height:1.2;margin-top:13px}
   .case-lead{margin-top:12px;max-width:58ch;color:var(--ink-2);font-size:15px}
@@ -304,20 +308,6 @@
   .case-cta span{transition:transform .2s}
   .case-cta:hover{background:var(--accent-ink)}
   .case-cta:hover span{transform:translateX(3px)}
-  .case-viz{flex:none;width:318px}
-  .pmock{background:#2B2A26;border-radius:16px;padding:16px;box-shadow:0 22px 44px -24px rgba(30,25,18,.6)}
-  .pm-head{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#8d877a;display:flex;align-items:center;gap:8px;margin-bottom:14px}
-  .pm-dot{width:7px;height:7px;border-radius:50%;background:#81B64C}
-  .pm-row{display:flex;align-items:center;gap:10px;padding:10px;border-radius:11px;background:rgba(255,255,255,.05)}
-  .pm-row+.pm-row{margin-top:9px}
-  .pm-row--hi{background:rgba(129,182,76,.16);border:1px solid rgba(129,182,76,.45)}
-  .pm-av{width:32px;height:32px;border-radius:9px;background:#5C7FA8;flex:none}
-  .pm-av--2{background:#81B64C}
-  .pm-txt{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.3}
-  .pm-txt b{color:#F1EEE7;font-size:13px;font-weight:600}
-  .pm-txt span{color:#9a948a;font-family:var(--mono);font-size:10px}
-  .pm-btn{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;padding:6px 10px;border-radius:7px;background:#81B64C;color:#1B1A17;font-weight:600;flex:none}
-  .pm-btn--off{background:rgba(255,255,255,.08);color:#6f6a62}
 
   /* ============ CHESS STAT CHIPS ============ */
   .sectitle--chips b{flex:none}
@@ -372,8 +362,6 @@
     .brands-cluster{max-width:none;width:100%;margin:0 auto -48px}
     .now{order:1}
     .tile-late{order:2}
-    .case{flex-direction:column;align-items:flex-start;gap:26px}
-    .case-viz{width:100%;max-width:344px}
   }
   @media(max-width:640px){.wrap{padding:0 16px}.intro h1{font-size:28px}}
 
@@ -437,20 +425,8 @@
           <p class="case-lead">Challenge is unavailable at the moment you most want it - when a friend is <em>in a game</em>. So it waits its turn instead: <b>Play next</b>.</p>
           <a class="case-cta" href="case-connect.html">Read experiment <span aria-hidden="true">→</span></a>
         </div>
-        <div class="case-viz" aria-hidden="true">
-          <div class="pmock">
-            <div class="pm-head"><span class="pm-dot"></span> Friends online</div>
-            <div class="pm-row">
-              <span class="pm-av"></span>
-              <div class="pm-txt"><b>Linh</b><span>In a game · 10 min</span></div>
-              <span class="pm-btn pm-btn--off">Challenge</span>
-            </div>
-            <div class="pm-row pm-row--hi">
-              <span class="pm-av pm-av--2"></span>
-              <div class="pm-txt"><b>Linh</b><span>Queued - you are up next</span></div>
-              <span class="pm-btn">Play next</span>
-            </div>
-          </div>
+        <div class="case-viz">
+          <img src="shots/case-card.png" alt="A friend's card on Chess.com reading Challenge sent, beneath watch and challenge buttons" />
         </div>
       </section>
 
