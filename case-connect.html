@@ -93,17 +93,29 @@
   .marker b{font-family:var(--mono);font-size:15px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
   .marker i{width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;
     border-top:11px solid var(--accent)}
-  .rec-face{position:relative;width:100%;max-width:320px;aspect-ratio:1}
+  .rec-face{position:relative;width:100%;max-width:288px;aspect-ratio:1}
   /* grid-stacked so the box keeps the width and height of the longest line and never jumps */
+  /* On a single-phone card the thought gets its own full-width row under both the
+     character and the phone. Kept inside the narrow character column it has nowhere to
+     go on one line; centred on the card it slides under the phone. */
+  .rec-row:not(.rec-row--duo){display:grid;grid-template-columns:minmax(0,1fr) auto;
+    column-gap:28px;align-items:center}
+  .rec-row:not(.rec-row--duo) .rec-say{display:contents}
+  .rec-row:not(.rec-row--duo) .marker{grid-column:1;grid-row:1;justify-self:center}
+  .rec-row:not(.rec-row--duo) .rec-face{grid-column:1;grid-row:2;justify-self:center}
+  .rec-row:not(.rec-row--duo) .rec-phone{grid-column:2;grid-row:1/3}
+  .rec-row:not(.rec-row--duo) .say{grid-column:1/-1;grid-row:3;justify-self:center;
+    margin-top:26px;max-width:100%}
   .say{position:relative;align-self:center;display:flex;align-items:center;justify-content:center;
-    width:fit-content;max-width:100%;min-height:75px;margin-top:26px;
+    width:fit-content;max-width:none;min-height:75px;margin-top:26px;
     background:var(--bg);border:1px solid var(--line-2);border-radius:16px;padding:13px 18px;text-align:center}
   .say p{position:absolute;left:18px;right:18px;margin:0;font-size:15px;line-height:1.55;
+    white-space:nowrap;
     color:var(--ink);display:none}
   .say p.on{position:relative;left:auto;right:auto;display:block}
   .rec-face img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;visibility:hidden}
   .rec-face img.on{visibility:visible}
-  .rec-phone{flex:none;position:relative;width:281px}
+  .rec-phone{flex:none;position:relative;width:267px}
   .rec-phone .ph-frame{display:block;width:100%;height:auto;position:relative;z-index:2}
   /* where a finger actually went, recovered from the recordings. ~44pt at this scale. */
   .ph-tap{position:absolute;width:11%;aspect-ratio:1;margin:-5.5% 0 0 -5.5%;border-radius:50%;
@@ -135,12 +147,12 @@
   /* two-phone variant: both screens side by side, with room underneath to demonstrate */
   .rec-row--duo{flex-direction:column;align-items:stretch;gap:0}
   .duo-phones{display:flex;justify-content:center;gap:56px}
-  .duo-phones .rec-phone{width:230px}
+  .duo-phones .rec-phone{width:219px}
   .duo-below{display:flex;justify-content:center;gap:56px;margin-top:26px}
   .duo-below > *{width:230px}
   .duo-below > *{display:flex;flex-direction:column;align-items:center}
   .duo-below .rec-say{flex:none;align-self:stretch;max-width:none;margin:0}
-  .duo-below .rec-face{max-width:196px}
+  .duo-below .rec-face{max-width:176px}
   .duo-below .say{margin-top:18px}
   .duo-below > *{position:relative}
   /* fires the moment Send is hit on the left phone; pinned to the top right of Johnny's device */
@@ -588,8 +600,19 @@
   var rows = [].slice.call(document.querySelectorAll('.rec-row'));
   if(!rows.length) return;
 
+  /* "Fully in view" means the screen itself, not the card: a card carries the character
+     and the thought under the phone, and waiting for all of that means a tall one never
+     qualifies on a short window. */
+  function box(row){
+    var ps = [].slice.call(row.querySelectorAll('.rec-phone'));
+    if(!ps.length) return row.getBoundingClientRect();
+    var top = Infinity, bottom = -Infinity;
+    ps.forEach(function(p){ var r = p.getBoundingClientRect();
+      top = Math.min(top, r.top); bottom = Math.max(bottom, r.bottom); });
+    return {top:top, bottom:bottom, height:bottom-top};
+  }
   function fullyVisible(el){
-    var r = el.getBoundingClientRect(), vh = innerHeight || 0;
+    var r = box(el), vh = innerHeight || 0;
     return r.height <= vh ? (r.top >= 0 && r.bottom <= vh)
                           : (r.top <= 0 && r.bottom >= vh);
   }
