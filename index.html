@@ -87,9 +87,11 @@
   .loset svg{display:block}
   /* big app-icon tiles, tilted & spaced (not overlapping) for a playful hand-tossed look */
   .lgtile{width:64px;height:64px;border-radius:17px;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 28px -12px rgba(40,35,30,.45)}
-  .lgtile--emoji{width:auto;height:auto;background:none;box-shadow:none;border-radius:0;font-size:56px;line-height:1;filter:drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff) drop-shadow(0 10px 14px rgba(40,35,30,.28))}
+  .lgtile--emoji{width:auto;height:auto;background:none;box-shadow:none;border-radius:0;font-size:56px;line-height:1;filter:drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 10px 14px rgba(40,35,30,.28))}
   .lgtile--logo{display:flex;align-items:center;justify-content:center;font-size:0}
   .lgtile--logo img{display:block;width:62px;height:62px;border-radius:17px}
+  .lgtile--logo img.lg-raw{border-radius:0}
+  .lgtile--logo img.lg-gh{border-radius:50%;background:#fff}
   .loset .lgtile:nth-child(1){transform:rotate(-8deg) translateY(-12px)}
   .loset .lgtile:nth-child(2){transform:rotate(9deg) translateY(13px)}
   .loset .lgtile:nth-child(3){transform:rotate(-5deg) translateY(-5px)}
@@ -168,6 +170,9 @@
   .play{padding:22px;justify-content:space-between;gap:14px;min-height:230px}
   .play:has(.pkeys) .top{align-items:center}
   .play .top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .play .top>div{flex:1;min-width:0}
+  .play .proj-head{margin-bottom:0}
+  .play .proj-head h3{font-size:17px}
   .play h3{font-size:17px;font-weight:600}
   .play .sub{font-size:14px;color:var(--ink-2);margin-top:3px}
   .play .viz{margin-top:auto;display:flex;align-items:flex-end;min-height:50px}
@@ -294,32 +299,6 @@
   .foot-links a{color:var(--ink-2);text-decoration:underline;text-underline-offset:3px;transition:color .18s}
   .foot-links a:hover{color:var(--accent-ink)}
 
-  /* ============ CASE STUDY (row 2) ============ */
-  .case{flex-direction:row;align-items:center;gap:40px;padding:38px 34px}
-  .case-viz{flex:none;width:160px}
-  .case-viz img{display:block;width:100%;height:auto}
-  @media(max-width:640px){.case{flex-direction:column;align-items:flex-start;gap:26px}
-    .case-viz{width:100%;max-width:192px;align-self:center}}
-  .case-body{flex:1;min-width:0}
-  .case h2{font-size:clamp(24px,2vw,31px);font-weight:600;letter-spacing:-.02em;line-height:1.2;margin-top:13px}
-  .case-lead{margin-top:12px;max-width:58ch;color:var(--ink-2);font-size:15px}
-  .case-lead em{font-style:normal;font-weight:600;color:var(--ink)}
-  .case-cta{display:inline-flex;align-items:center;gap:9px;margin-top:24px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:12px 20px;border-radius:999px;background:var(--ink);color:var(--bg);transition:background .2s}
-  .case-cta span{transition:transform .2s}
-  .case-cta:hover{background:var(--accent-ink)}
-  .case-cta:hover span{transform:translateX(3px)}
-
-  /* ============ CHESS STAT CHIPS ============ */
-  .sectitle--chips b{flex:none}
-  .titlechips{display:flex;flex-wrap:wrap;gap:8px;margin-left:14px}
-  .cstat{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border:1px solid var(--line-2);border-radius:6px;white-space:nowrap}
-  .cstat b{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.06em}
-  .cstat--rapid{background:var(--t-green-1);color:var(--c-green)}
-  .cstat--blitz{background:var(--t-amber-1);color:var(--c-amber)}
-  .cstat--streak{background:var(--t-clay-1);color:var(--c-clay)}
-  .cstat .ci{flex:none;display:block;width:11px;height:11px}
-
-
   /* ============ SPORTS BALL PIT ============ */
   /* diameters are the real objects to scale: basketball 24.0cm, football 22.0cm,
      tennis 6.7cm, shuttlecock skirt 6.5cm - positions from settle.mjs's sim (0.0000 overlap). */
@@ -341,6 +320,12 @@
 
   /* ============ PLAY ME - square tile ============ */
   .chesscard{min-height:250px}
+  .pixme{position:absolute;left:50%;transform:translateX(-50%);bottom:180px;display:block;image-rendering:pixelated;z-index:0}
+  .chesscard .chessboard{z-index:1}
+  .play-cta{display:inline-flex;align-items:center;gap:9px;margin-top:16px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:10px 18px;border-radius:999px;background:var(--ink);color:var(--bg);text-decoration:none;transition:background .2s}
+  .play-cta span{transition:transform .2s}
+  .play-cta:hover{background:var(--accent-ink)}
+  .play-cta:hover span{transform:translateX(3px)}
   .chesscard h3{margin-top:0}
   .chesscard .sub{margin-top:6px}
   .chesscard .chessboard{left:50%;right:auto;transform:translateX(-50%);bottom:-30px;width:180px;height:180px;background-size:45px 45px}
@@ -383,18 +368,17 @@
 
       <!-- ROW 1 : intro (3) + currently (1) -->
       <section class="tile intro t-full w3">
-        <p class="kicker label">Product Designer - AI Products</p>
-        <h1>James likes <em class="blue">designing stuff</em>,<br><em class="clay">yapping about psychology</em>,<br><em class="green">playing games</em>.</h1>
+        <p class="kicker label">Senior Product Designer - AI &amp; SaaS</p>
+        <h1>James likes <em class="blue">designing stuff,</em><br><em class="clay">shipping with AI</em><br>and <em class="green">playing games</em>.</h1>
         <div class="intrologos" aria-hidden="true">
           <div class="loset loset--design">
             <span class="lgtile lgtile--emoji lgtile--logo"><svg viewBox="0 0 38 57" width="42" height="63"><path fill="#1ABCFE" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0Z"/><path fill="#0ACF83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0Z"/><path fill="#FF7262" d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19Z"/><path fill="#F24E1E" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5Z"/><path fill="#A259FF" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5Z"/></svg></span>
-            <span class="lgtile lgtile--emoji lgtile--logo"><svg viewBox="0 0 64 64" width="62" height="62"><path fill="#D97757" d="M29.6 22.8L30.8 3.0L33.8 3.0L34.5 22.8L35.0 23.0L46.7 6.7L49.3 8.4L39.1 25.7L39.0 25.6L56.6 17.5L58.0 20.2L41.3 29.9L41.2 29.5L61.7 30.5L61.7 33.5L41.2 34.5L41.2 34.4L57.9 44.8L56.4 47.5L38.8 38.6L39.0 38.4L49.2 56.3L46.6 57.9L34.8 41.1L34.3 41.2L33.0 61.2L29.9 61.1L29.4 41.1L29.8 41.2L18.7 59.8L16.0 58.4L25.5 38.9L25.6 39.0L9.0 48.6L7.4 46.0L23.0 34.9L23.0 34.9L2.1 35.0L2.0 31.9L22.7 30.0L22.8 29.7L6.6 19.7L8.1 17.0L25.2 25.4L24.9 25.7L13.0 6.4L15.6 4.7L28.9 23.0Z"/></svg></span>
-            <span class="lgtile lgtile--emoji lgtile--logo"><img src="logos/design-tool.png" alt="" /></span>
+            <span class="lgtile lgtile--emoji">✏️</span>
           </div>
-          <div class="loset loset--psych">
-            <span class="lgtile lgtile--emoji">🧠</span>
-            <span class="lgtile lgtile--emoji">💡</span>
-            <span class="lgtile lgtile--emoji">☁️</span>
+          <div class="loset loset--ai">
+            <span class="lgtile lgtile--emoji lgtile--logo"><img class="lg-raw" src="logos/claude.png" alt="" /></span>
+            <span class="lgtile lgtile--emoji lgtile--logo"><img src="logos/design-tool.png" alt="" /></span>
+            <span class="lgtile lgtile--emoji lgtile--logo"><img class="lg-raw lg-gh" src="logos/github.png" alt="" /></span>
           </div>
           <div class="loset loset--games">
             <span class="lgtile lgtile--emoji">⚽</span>
@@ -415,69 +399,7 @@
         </ul>
       </aside>
 
-      <div class="sectitle sectitle--chips t-full w4"><i></i><b>I'm a dedicated chess player</b><span class="titlechips"><span class="cstat cstat--rapid"><svg class="ci ci--rapid" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><circle cx="8" cy="8" r="6.4" fill="currentColor"/><path d="M8.75 4.4a.75.75 0 0 0-1.5 0v3.9c0 .26.13.5.35.64l2.5 1.55a.75.75 0 1 0 .8-1.27L8.75 7.9z" fill="var(--t-green-1)"/></svg><b data-chess="bestRapid">2155</b> peak rapid</span><span class="cstat cstat--blitz"><svg class="ci ci--blitz" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M9.6 1.4 4.2 8.5c-.3.4 0 .9.5.9h3l-1.3 5.2c-.1.5.6.8.9.4l5.4-7.1c.3-.4 0-.9-.5-.9h-3l1.3-5.2c.1-.5-.6-.8-.9-.4z" fill="currentColor"/></svg><b data-chess="bestBlitz">2056</b> peak blitz</span><span class="cstat cstat--streak"><svg class="ci ci--streak" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><path d="M8 1.4c.4 2.3-1 3.1-2.2 4.3C4.6 6.9 4 8.1 4 9.5a4 4 0 0 0 8 0c0-1.7-.7-2.7-1.6-3.7-.3.6-.8 1-1.3 1.2.5-2 .1-4-1.1-5.6z" fill="currentColor"/></svg><b>47</b> day streak</span></span></div>
-
-      <!-- case study (3) + the bot, square (1) -->
-      <section id="case" class="tile case t-full w3">
-        <div class="case-body">
-          <p class="label">A Chess.com case study</p>
-          <h2>Challenging a friend who is already playing</h2>
-          <p class="case-lead">Challenge is unavailable at the moment you most want it - when a friend is <em>in a game</em>. So it waits its turn instead: <b>Play next</b>.</p>
-          <a class="case-cta" href="case-connect.html">Read experiment <span aria-hidden="true">→</span></a>
-        </div>
-        <div class="case-viz">
-          <img src="shots/case-card.png" alt="A friend's card on Chess.com reading Challenge sent, beneath watch and challenge buttons" />
-        </div>
-      </section>
-
-      <a id="play" href="chess.html" class="tile play w1 link-tile chesscard" data-tip="Click to play">
-        <div class="top">
-          <div>
-            <h3>Play my bot</h3>
-            <p class="sub">A bot trained on 4,249 of my own Chess.com games.</p>
-          </div>
-        </div>
-        <div class="chessboard"></div>
-      </a>
-
-      <div class="sectitle t-full w4"><i></i><b>I self-build apps because it's so fun</b></div>
-
-      <div class="strip3 t-full w4">
-        <a id="work" class="tile proj link-tile" data-tip="sidequestie.app" href="https://sidequestie.app/" target="_blank" rel="noopener">
-          <div class="proj-shot"><div class="device device--iphone"><img class="ph-shot" src="shots/questie.png" alt="Questie app" /><img class="ph-frame" src="shots/iphone-frame.png" alt="" aria-hidden="true" /></div></div>
-          <div class="proj-body">
-            <div class="proj-head">
-              <h3>Questie</h3>
-              <div class="tags"><span class="badge b-blue">Social</span><span class="badge b-green">App Store</span></div>
-            </div>
-            <p class="proj-desc">Side quests for a better life</p>
-          </div>
-        </a>
-
-        <a class="tile proj link-tile" data-tip="allyup.club" href="https://allyup.club/" target="_blank" rel="noopener">
-          <div class="proj-shot"><div class="device device--iphone"><img class="ph-shot" src="shots/allyup.png" alt="AllyUp app" /><img class="ph-frame" src="shots/iphone-frame.png" alt="" aria-hidden="true" /></div></div>
-          <div class="proj-body">
-            <div class="proj-head">
-              <h3>AllyUp</h3>
-              <div class="tags"><span class="badge b-lilac">Productivity</span><span class="badge b-blue">Social</span></div>
-            </div>
-            <p class="proj-desc">Habits with friends</p>
-          </div>
-        </a>
-
-        <section class="tile proj" data-tip="Coming soon">
-          <div class="proj-shot"><div class="device device--iphone"><img class="ph-shot" src="shots/dots.png" alt="Dots app" /><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div></div>
-          <div class="proj-body">
-            <div class="proj-head">
-              <h3>Dots</h3>
-              <div class="tags"><span class="badge b-lilac">Productivity</span><span class="badge b-amber">Building</span></div>
-            </div>
-            <p class="proj-desc">Celebrate everyday win</p>
-          </div>
-        </section>
-      </div>
-
-      <div class="sectitle t-full w4"><i></i><b>I have designed AI products for 4 years</b></div>
+      <div class="sectitle t-full w4"><i></i><b>I have designed AI &amp; SaaS products for 4 years</b></div>
 
       <div class="strip3 t-full w4">
         <a class="tile proj link-tile proj--sm" data-tip="mapedu.com" href="https://mapedu.com" target="_blank" rel="noopener">
@@ -485,7 +407,7 @@
           <div class="proj-body">
             <div class="proj-head">
               <h3>mapEDU</h3>
-              <div class="tags"><span class="badge b-amber">AI</span><span class="badge b-green">SaaS</span><span class="badge b-line">EdTech</span></div>
+              <div class="tags"><span class="badge b-amber">AI</span><span class="badge b-green">SaaS</span><span class="badge b-blue">EdTech</span></div>
             </div>
             <p class="proj-desc">Improve curriculum mapping with AI</p>
           </div>
@@ -532,6 +454,44 @@
       </section>
 
       <!-- certificates -->
+      <div class="sectitle t-full w4"><i></i><b>I self-build apps because it's so fun</b></div>
+
+      <div class="strip3 t-full w4">
+        <a id="work" class="tile proj link-tile" data-tip="sidequestie.app" href="https://sidequestie.app/" target="_blank" rel="noopener">
+          <div class="proj-shot"><div class="device device--iphone"><img class="ph-shot" src="shots/questie.png" alt="Questie app" /><img class="ph-frame" src="shots/iphone-frame.png" alt="" aria-hidden="true" /></div></div>
+          <div class="proj-body">
+            <div class="proj-head">
+              <h3>Questie</h3>
+              <div class="tags"><span class="badge b-blue">Social</span><span class="badge b-green">App Store</span></div>
+            </div>
+            <p class="proj-desc">Side quests for a better life</p>
+          </div>
+        </a>
+
+        <section class="tile proj" data-tip="Coming soon">
+          <div class="proj-shot"><div class="device device--iphone"><img class="ph-shot" src="shots/dots.png" alt="Dots app" /><img class="ph-frame" src="shots/iphone-frame-noisland.png" alt="" aria-hidden="true" /></div></div>
+          <div class="proj-body">
+            <div class="proj-head">
+              <h3>Dots</h3>
+              <div class="tags"><span class="badge b-lilac">Productivity</span><span class="badge b-amber">Building</span></div>
+            </div>
+            <p class="proj-desc">Celebrate everyday win</p>
+          </div>
+        </section>
+
+        <section id="play" class="tile play w1 chesscard">
+          <div class="top">
+            <div>
+              <div class="proj-head"><h3>Play my chess bot</h3><div class="tags"><span class="badge b-green">Chess</span><span class="badge b-lilac">Data</span></div></div>
+              <p class="sub">I play chess pretty well, and I built a bot that mimics my playing style</p>
+              <a class="play-cta" href="chess.html">Play <span aria-hidden="true">→</span></a>
+            </div>
+          </div>
+          <svg class="pixme" viewBox="0 0 24 24" width="96" height="96" shape-rendering="crispEdges" aria-hidden="true"><path fill="#1B1A17" d="M7 0h8v1h-8zM6 1h3v1h-3zM11 1h3v1h-3zM15 1h2v1h-2zM5 2h2v1h-2zM9 2h3v1h-3zM13 2h3v1h-3zM17 2h2v1h-2zM4 3h2v1h-2zM7 3h6v1h-6zM14 3h3v1h-3zM18 3h2v1h-2zM4 4h16v1h-16zM4 5h3v1h-3zM17 5h3v1h-3zM4 6h1v1h-1zM19 6h1v1h-1z"/><path fill="#3B3731" d="M9 1h2v1h-2zM14 1h1v1h-1zM7 2h2v1h-2zM12 2h1v1h-1zM16 2h1v1h-1zM6 3h1v1h-1zM13 3h1v1h-1zM17 3h1v1h-1z"/><path fill="#F1C9A5" d="M7 5h10v1h-10zM5 6h14v1h-14zM4 7h2v1h-2zM9 7h6v1h-6zM18 7h2v1h-2zM4 8h1v1h-1zM11 8h2v1h-2zM19 8h1v1h-1zM4 9h1v1h-1zM6 9h1v1h-1zM9 9h1v1h-1zM14 9h1v1h-1zM17 9h1v1h-1zM19 9h1v1h-1zM4 10h1v1h-1zM6 10h4v1h-4zM14 10h4v1h-4zM19 10h1v1h-1zM4 11h1v1h-1zM11 11h2v1h-2zM19 11h1v1h-1zM4 12h16v1h-16zM4 13h7v1h-7zM13 13h7v1h-7zM4 14h16v1h-16zM4 15h5v1h-5zM15 15h5v1h-5zM5 16h6v1h-6zM13 16h6v1h-6zM6 17h12v1h-12zM9 18h6v1h-6zM9 19h6v1h-6zM11 20h2v1h-2z"/><path fill="#2A2724" d="M6 7h3v1h-3zM15 7h3v1h-3z"/><path fill="#121110" d="M5 8h6v1h-6zM13 8h6v1h-6zM5 9h1v1h-1zM10 9h4v1h-4zM18 9h1v1h-1zM5 10h1v1h-1zM10 10h4v1h-4zM18 10h1v1h-1zM5 11h6v1h-6zM13 11h6v1h-6z"/><path fill="#121110" d="M7 9h2v1h-2zM15 9h2v1h-2z"/><path fill="#DDA983" d="M11 13h2v1h-2zM8 18h1v1h-1zM15 18h1v1h-1zM8 19h1v1h-1zM15 19h1v1h-1zM10 20h1v1h-1zM13 20h1v1h-1z"/><path fill="#A8523D" d="M9 15h1v1h-1zM14 15h1v1h-1zM11 16h2v1h-2z"/><path fill="#FFFFFF" d="M10 15h4v1h-4z"/><path fill="#2B2A2F" d="M2 19h6v1h-6zM16 19h6v1h-6zM1 20h9v1h-9zM14 20h9v1h-9zM0 21h24v1h-24zM0 22h2v1h-2zM22 22h2v1h-2zM0 23h24v1h-24z"/><path fill="#403E45" d="M2 22h20v1h-20z"/></svg>
+          <div class="chessboard"></div>
+        </section>
+      </div>
+
       <div class="sectitle t-full w4"><i></i><b>I love learning - here are my certificates</b></div>
 
       <a class="tile cert-card w2 link-tile" data-tip="See course" href="https://growth.design/courses/product-psychology" target="_blank" rel="noopener">
@@ -602,38 +562,6 @@
     <div id="lanyard-root"></div>
   </div>
 
-
-  <script>
-  /* Live Chess.com rating (public API, no auth, no server - fine on static hosting).
-     The number in the HTML is the fallback: if the API is slow, down or rate-limited,
-     the baked-in value just stays, so this can only ever improve what is shown.
-     Cached in localStorage for 6h so a reload is not a request. */
-  (function(){
-    var USER='transontung4010', KEY='cc-stats', TTL=21600000;
-    function paint(v){
-      document.querySelectorAll('[data-chess]').forEach(function(el){
-        var n=v[el.getAttribute('data-chess')];
-        if(n) el.textContent=n;
-      });
-    }
-    try{
-      var c=JSON.parse(localStorage.getItem(KEY)||'null');
-      if(c&&Date.now()-c.t<TTL){ paint(c.v); return; }
-    }catch(e){}
-    fetch('https://api.chess.com/pub/player/'+USER+'/stats')
-      .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
-      .then(function(j){
-        var last=function(o){ return o && o.last && o.last.rating; };
-        var best=function(o){ return o && o.best && o.best.rating; };
-        var v={ rapid:last(j.chess_rapid), blitz:last(j.chess_blitz), bullet:last(j.chess_bullet),
-                bestRapid:best(j.chess_rapid), bestBlitz:best(j.chess_blitz),
-                puzzles:j.tactics && j.tactics.highest && j.tactics.highest.rating };
-        paint(v);
-        try{ localStorage.setItem(KEY,JSON.stringify({t:Date.now(),v:v})); }catch(e){}
-      })
-      .catch(function(){});
-  })();
-  </script>
 
   <script>
   /* balls fall when their container first scrolls into view (brand pile + sports pit) */
@@ -845,7 +773,7 @@
     var intro=document.querySelector('.intro');
     var layer=document.querySelector('.intrologos');
     if(!intro||!layer) return;
-    var map=[['.intro h1 .blue','.loset--design'],['.intro h1 .clay','.loset--psych'],['.intro h1 .green','.loset--games']];
+    var map=[['.intro h1 .blue','.loset--design'],['.intro h1 .clay','.loset--ai'],['.intro h1 .green','.loset--games']];
     map.forEach(function(pair){
       var phrase=document.querySelector(pair[0]), cluster=layer.querySelector(pair[1]);
       if(!phrase||!cluster) return;
